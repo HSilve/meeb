@@ -11,6 +11,8 @@ router.post('/login', (req, res, next) => {
         res.status(401).send('Incorrect password')
       } else {
         req.login(user, err => err ? next(err) : res.json(user))
+        // someone has just authenticated -- what do I want to do in english???
+        // We call serializeUser -- so we can save this to the session! 
       }
     })
     .catch(next)
@@ -29,7 +31,7 @@ router.post('/signup', (req, res, next) => {
 })
 
 router.post('/logout', (req, res) => {
-  req.logout()
+  req.logout() // removes userId from session
   res.redirect('/')
 })
 

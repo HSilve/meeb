@@ -24,10 +24,14 @@ module.exports = app
 if (process.env.NODE_ENV !== 'production') require('../secrets')
 
 // passport registration
-passport.serializeUser((user, done) => done(null, user.id))
-passport.deserializeUser((id, done) =>
+passport.serializeUser((user, done) => done(null, user.id)) // what do I do?! Obj to string --> and stores this string on the specific client/server session!
+// this browser has authenticated --> for future requests they don't need to do this anymore
+  // I am going to use for later requests
+  // invoke right after we verify authentication
+passport.deserializeUser((id, done) => // opposite of serialize -- string to Object
+  // get id FROM session of this client/server relationship
   db.models.user.findById(id)
-    .then(user => done(null, user))
+    .then(user => done(null, user)) // what does this done function do!? puts this user on request object as req.user
     .catch(done))
 
 const createApp = () => {
@@ -45,11 +49,15 @@ const createApp = () => {
   app.use(session({
     secret: process.env.SESSION_SECRET || 'my best friend is Cody',
     store: sessionStore,
-    resave: false,
-    saveUninitialized: false
+    // possible concurrency issues
+    resave: false, // if we don't change anything on req.session don't resave
+    saveUninitialized: false // if we don't change anything after initializing, don't actually save it (no cookie if req.session wasn't updated on first request)
   }))
-  app.use(passport.initialize())
-  app.use(passport.session())
+
+  /* I HAVE to be below session middleware*/
+  app.use(passport.initialize()) // sets everything up
+  app.use(passport.session()) // checks in on session and calls WHAT Fn? deserializeUser --> now I have req.user
+  // what might we have on the session about the user  --> user.id
 
   // auth and api routes
   app.use('/auth', require('./auth'))

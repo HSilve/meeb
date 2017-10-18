@@ -13,13 +13,21 @@ const User = db.define('user', {
   },
   salt: {
     type: Sequelize.STRING
-  },
+  }, // string -- used in conjunction with actual password then hashed and then now we have like a unique hashedPas
+  // people might have same password and we don't want the hashes to look the same
+  // rainbow
   googleId: {
     type: Sequelize.STRING
   }
 })
 
 module.exports = User
+
+const Todo = require('./todo')
+
+User.prototype.findTodos = function () {
+  return Todo.findAll({where: { userId: this.id})
+}
 
 /**
  * instanceMethods
