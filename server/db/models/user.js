@@ -16,6 +16,16 @@ const User = db.define('user', {
   },
   googleId: {
     type: Sequelize.STRING
+  },
+  name: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  image: {
+    type: Sequelize.STRING
+  },
+  userName: {
+    type: Sequelize.STRING
   }
 })
 
@@ -52,6 +62,12 @@ const setSaltAndPassword = user => {
     user.password = User.encryptPassword(user.password, user.salt)
   }
 }
+const setUserName = user => {
+  if (user.changed('name')) {
+    const name = user.name.split(',');
+    user.userName = name[0][0] + name[name.length - 1]
+  }
+}
 
-User.beforeCreate(setSaltAndPassword)
-User.beforeUpdate(setSaltAndPassword)
+User.beforeCreate(setSaltAndPassword, setUserName)
+User.beforeUpdate(setSaltAndPassword, setUserName)
