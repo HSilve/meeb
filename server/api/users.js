@@ -12,26 +12,33 @@ router.get('/', (req, res, next) => {
     .then(users => res.json(users))
     .catch(next)
 })
-// router.get('/:userId', (req, res, next) => {
-//   User.findById(req.params.userId)
-//     .then(users => res.json(users))
-//     .catch(next)
-// })
-// router.put('/', (req, res, next) => {
-//   User.update(req.body)
-//   .then(user => res.json(user))
-//   .catch(next)
-// })
+router.get('/:userId', (req, res, next) => {
+  User.findById(req.params.userId)
+    .then(users => res.json(users))
+    .catch(next)
+})
+router.put('/:userId', (req, res, next) => {
+  User.findById(req.params.userId)
+  .then(user => res.json(user.update(req.body)))
+  .catch(next)
+})
 
-// router.post('/', (req, res, next) => {
-//   User.create({
-//     name: req.body.name,
-//     email: req.body.email,
-//     password: req.body.password,
-//     image: req.body.image
+router.post('/', (req, res, next) => {
+  User.create({
+    name: req.body.name,
+    email: req.body.email,
+    password: req.body.password,
+    image: req.body.image
 
-//   })
-//   .then(user => res.json(user))
-//   .catch(next)
-// })
+  })
+  .then(user => res.json(user))
+  .catch(next)
+})
 
+router.delete('/:userId', (req, res, next) => {
+  User.delete({
+    where: {id: req.params.userId}
+  })
+  .then(row => res.json(row))
+  .catch(next)
+})
