@@ -1,17 +1,32 @@
+import axios from 'axios'
+
 // ACTION TYPES
 
 const GET_MESSAGE = 'GET_MESSAGE';
 const GET_MESSAGES = 'GET_MESSAGES';
+const DELETE_MESSAGE = 'DELETE_MESSAGE';
+const POST_MESSAGE = 'POST_MESSAGE';
+
 
 // ACTION CREATORS
 
-export function getMessage (message) {
+export function getMessage(message) {
   const action = { type: GET_MESSAGE, message };
   return action;
 }
 
-export function getMessages (messages) {
+export function getMessages(messages) {
   const action = { type: GET_MESSAGES, messages };
+  return action;
+}
+
+export function deleteMessage(id) {
+  const action = { type: DELETE_MESSAGE, id };
+  return action;
+}
+
+export function postMessage(message) {
+  const action = { type: POST_MESSAGE, message };
   return action;
 }
 
@@ -42,9 +57,21 @@ export function getMessages (messages) {
 //   };
 // }
 
+export const addMessage = (message, whiteboardId) => dispatch => {
+  axios.post(`/${whiteboardId}/message`, message)
+    .then(res => dispatch(postMessage(res.data)))
+    .catch(err => console.error(`Could not create ${message}!`, err));
+};
+
+export const removeMessage = id => dispatch => {
+  dispatch(deleteMessage(id));
+  axios.delete(`/api/message/${id}`)
+    .catch(err => console.error(`Could not remove ${id}!`, err));
+};
+
 // REDUCER
 
-export default function reducer (state = [], action) {
+export default function reducer(state = [], action) {
 
   switch (action.type) {
 
@@ -52,7 +79,13 @@ export default function reducer (state = [], action) {
       return action.messages;
 
     case GET_MESSAGE:
-      return [...state, action.message];
+      return action.message;
+
+    case DELETE_MESSAGE:
+      return state.filter(message => message.id != action.id);
+
+    case POST_MESSAGE:
+      return [...state, action.message]
 
     default:
       return state;

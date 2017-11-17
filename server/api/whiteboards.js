@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { Whiteboard, Message} = require('../db/models')
+const { Whiteboard, Message } = require('../db/models')
 module.exports = router
 
 router.get('/', (req, res, next) => {
@@ -28,13 +28,13 @@ router.post('/', (req, res, next) => {
     .then(whiteboard => res.json(whiteboard))
     .catch(next)
 })
-router.put('/:whiteboardId/message', (req, res, next) => {
+router.post('/:whiteboardId/message', (req, res, next) => {
 
-        Message.create({
-        text: req.body.text,
-        userId: req.body.userId,
-        whiteboardId: req.params.whiteboardId
-      })
+  Message.create({
+    text: req.body.text,
+    userId: req.body.userId,
+    whiteboardId: req.params.whiteboardId
+  })
     .then(message => res.json(message))
     .catch(next)
 })
