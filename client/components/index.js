@@ -6,4 +6,4 @@
 export {default as Main} from './main'
 export {default as UserHome} from './user-home'
 export {Login, Signup} from './auth-form'
-export {ActionPanel} from './action-panel'
+export {default as ActionPanel} from './action-panel'

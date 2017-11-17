@@ -1,21 +1,23 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
+import { bindAll } from 'lodash';
 
 class ActionPanel extends React.Component {
   constructor() {
     super()
     this.state = {
-      inputToggle: false,
+      expandToggle: false,
       textToggle: false,
       imageToggle: false,
       linkToggle: false,
       drawToggle: false
     }
+    bindAll(this, 'toggle', 'handleSubmit')
   }
 
   toggle (type) {
-    if (type === 'expand') this.setState({ inputToggle: !this.setState.inputToggle })
+    if (type === 'expand') this.setState({ expandToggle: !this.state.expandToggle })
 
     else if (type === 'text') this.setState({ textToggle: !this.state.textToggle })
 
@@ -26,24 +28,35 @@ class ActionPanel extends React.Component {
     else this.setState({ drawToggle: !this.state.drawToggle })
   }
 
+  handleSubmit (evt) {
+    evt.preventDefault()
+    console.log(evt.target.text.value)
+    console.log(evt.target.file.value)
+}
+
   render() {
     return (
       <div>
-        <button type="submit" onClick={() => this.state.toggle('expand')}>+</button>
+        <button type="submit" onClick={() => this.toggle('expand')}>+</button>
         { this.state.expandToggle &&
            <span>
-             <div onClick={() => this.state.toggle('text')}>Text</div>
-             <div>Image</div>
-             <div>Link</div>
+             <div onClick={() => this.toggle('text')}>Text</div>
+             <div onClick={() => this.toggle('image')}>Image</div>
+             <div onClick={() => this.toggle('link')}>Link</div>
              <div>Draw</div>
            </span>
         }
 
         <div>
-          { (this.state.textToggle || this.state.linkToggle) && <input type="text" /> }
-
+          <form onSubmit={this.handleSubmit} encType="multipart/form-data" >
+          { (this.state.textToggle || this.state.linkToggle) && <input name="text" type="text" /> }
           { this.state.imageToggle &&
-          <}
+            <div>
+              <input name="file" type="file" />
+            </div>
+          }
+          <button type="submit">Insert</button>
+          </form>
         </div>
       </div>
     )
