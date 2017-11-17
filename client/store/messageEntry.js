@@ -2,13 +2,13 @@ import axios from 'axios'
 import socket from '../socket';
 
 // ACTION TYPES
-const GET_MESSAGE = 'GET_MESSAGE';
+const POST_MESSAGE = 'POST_MESSAGE';
 const GET_MESSAGES = 'GET_MESSAGES';
 
 // ACTION CREATORS
 
-export function getMessage (message) {
-  const action = { type: GET_MESSAGE, message };
+export function postMessage (message) {
+  const action = { type: POST_MESSAGE, message };
   return action;
 }
 
@@ -31,13 +31,13 @@ export function fetchMessages () {
   };
 }
 
-export function postMessage (message) {
+export function createMessage (message) {
 
   return function thunk (dispatch) {
     return axios.put('api/:whiteboardId', message)
       .then(res => res.data)
       .then(newMessage => {
-        const action = getMessage(newMessage);
+        const action = postMessage(newMessage);
         dispatch(action);
         socket.emit('new-message', newMessage);
       });
@@ -52,7 +52,7 @@ export default function reducer (state = [], action) {
     case GET_MESSAGES:
       return action.messages;
 
-    case GET_MESSAGE:
+    case POST_MESSAGE:
       return [...state, action.message];
 
     default:
