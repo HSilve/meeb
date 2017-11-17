@@ -28,16 +28,6 @@ router.post('/', (req, res, next) => {
     .then(whiteboard => res.json(whiteboard))
     .catch(next)
 })
-router.post('/:whiteboardId/message', (req, res, next) => {
-
-  Message.create({
-    text: req.body.text,
-    userId: req.body.userId,
-    whiteboardId: req.params.whiteboardId
-  })
-    .then(message => res.json(message))
-    .catch(next)
-})
 
 router.delete('/:whiteboardId', (req, res, next) => {
   Whiteboard.destroy({

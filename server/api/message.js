@@ -7,7 +7,7 @@ router.get('/', (req, res, next) => {
     .then(users => res.json(users))
     .catch(next)
 })
-
+// Not being used at this time
 router.get('/:id', (req, res, next) => {
   Message.findById(req.params.id, { include: [{ all: true }] })
     .then(message => res.json(message))
@@ -17,12 +17,6 @@ router.get('/:id', (req, res, next) => {
 router.post('/', (req, res, next) => {
   Message.create(req.body)
     .then(message => res.json(message))
-    .catch(next);
-})
-
-router.put('/:id', (req, res, next) => {
-  Message.findById(req.params.id)
-    .then(message => res.json(message.update(req.body)))
     .catch(next);
 })
 
