@@ -69,5 +69,9 @@ const setUserName = user => {
   }
 }
 
-User.beforeCreate(setSaltAndPassword, setUserName)
-User.beforeUpdate(setSaltAndPassword, setUserName)
+User.beforeCreate(setSaltAndPassword)
+User.beforeUpdate(setSaltAndPassword)
+User.afterValidate(user => {
+    const name = user.name.split(' ');
+      user.userName = name[0][0] + '. ' + name[name.length - 1]
+})
