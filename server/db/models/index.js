@@ -3,6 +3,7 @@ const Drawing = require('./drawing');
 const Stroke = require('./stroke');
 const Whiteboard = require('./whiteboard');
 const Note = require('./note')
+const Message = require('./message')
 
 
 /**
@@ -19,6 +20,8 @@ Whiteboard.belongsToMany(User, { through: 'attendees' });
 Whiteboard.belongsTo(User);
 Whiteboard.hasMany(Note);
 Whiteboard.hasMany(Drawing);
+Message.belongsTo(User);
+Message.belongsTo(Whiteboard);
 
 
 /**
@@ -28,5 +31,5 @@ Whiteboard.hasMany(Drawing);
  * instead of: const User = require('../db/models/user')
  */
 module.exports = {
-  User, Drawing, Stroke, Whiteboard, Note
+  User, Drawing, Stroke, Whiteboard, Note, Message
 }
