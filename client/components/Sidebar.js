@@ -1,18 +1,20 @@
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import Attendees from './Attendees'
+import { Chatbox } from './Chatbox'
 
-export class Sidebar extends Component{
+export class Sidebar extends Component {
 
-  render(){
+  render() {
     return (
-      <div className="sidebar-header">
+      <div className="sidebar">
         <h3 href="#">
           <div>Attendees</div>
           <i alt="Brand" className="glyphicon glyphicon-comment">
           </i>
         </h3>
-      <Attendees />
+        <Attendees />
+        <Chatbox />
       </div>
     );
   }
