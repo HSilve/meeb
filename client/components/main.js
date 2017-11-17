@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {withRouter, Link} from 'react-router-dom'
 import {logout} from '../store'
+import {Sidebar} from './Sidebar'
+import {Chatbox} from './Chatbox'
 
 /**
  * COMPONENT
@@ -33,6 +35,8 @@ const Main = (props) => {
       </nav>
       <hr />
       {children}
+      <Sidebar />
+      <Chatbox />
     </div>
   )
 }
