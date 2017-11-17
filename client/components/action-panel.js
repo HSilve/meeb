@@ -17,7 +17,7 @@ class ActionPanel extends React.Component {
     this.handleFileUpload = this.handleFileUpload.bind(this)
   }
 
-  toggle (type) {
+  toggle(type) {
     if (type === 'expand') this.setState({ expandToggle: !this.state.expandToggle })
     else if (type === 'text') this.setState({ textToggle: !this.state.textToggle })
     else if (type === 'image') this.setState({ imageToggle: !this.state.imageToggle })
@@ -37,7 +37,7 @@ class ActionPanel extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="fixed-action-btn">
         <button type="submit" onClick={() => this.toggle('expand')}>+</button>
         { this.state.expandToggle &&
            <span>

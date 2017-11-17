@@ -12,10 +12,37 @@ body {
   nav a {
     display: inline-block;
     margin: 1em;
+
+  }
+
+  nav {
+    height: 10vh;
+    background-color: blue;
   }
 
   form div {
     margin: 1em;
     display: inline-block;
+  }
+
+  .sidebar {
+    background-color: grey;
+    display: flex;
+    flex-direction: column;
+    width: 20vw;
+  }
+
+  #main-space {
+    display: flex;
+    flex-direction: row;
+    // height: 70vh;
+  }
+
+  #whiteboard {
+    width: 70vw;
+    background-color: green;
+  }
+  .aUser {
+    font: 30%;
   }
 }
