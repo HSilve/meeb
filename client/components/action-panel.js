@@ -34,7 +34,7 @@ class ActionPanel extends React.Component {
 
   render() {
     return (
-      <div className="btn-floating btn-large waves-effect waves-ligth red">
+      <div className="fixed-action-btn">
         <button type="submit" onClick={() => this.toggle('expand')}>+</button>
         {this.state.expandToggle &&
           <span>
