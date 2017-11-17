@@ -1,9 +1,10 @@
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 
 export class Attendees extends Component {
-  render(){
-    return(
+  render() {
+    let names = ['Maria Betances', 'Blanca Sanchez', 'Evlis Henry', 'Erica Chai']
+    return (
       <div className="row">
         <div className="col s3" id="sidePanel">
           <div className='chip'>
