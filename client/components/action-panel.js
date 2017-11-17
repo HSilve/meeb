@@ -45,7 +45,7 @@ class ActionPanel extends React.Component {
              <div onClick={() => this.toggle('image')}>Image</div>
              <div onClick={() => this.toggle('link')}>Link</div>
              <div>Draw</div>
-            <form onSubmit={(evt) => {evt.preventDefault(); this.props.handleSubmit(evt, this.state.file )} } encType="multipart/form-data" >
+            <form onSubmit={(evt) => {evt.preventDefault(); this.props.handleSubmit(evt, this.state.file, this.props.user.id )} } encType="multipart/form-data" >
             { (this.state.textToggle || this.state.linkToggle) && <input name="text" type="text" /> }
             { this.state.imageToggle &&
               <div>
@@ -69,12 +69,12 @@ const mapState = state => {
 
 const mapDispatch = (dispatch) => {
   return {
-    handleSubmit (evt, image) {
+    handleSubmit (evt, image, userId) {
       evt.preventDefault()
       const text = evt.target.text && evt.target.text.value
       const link = evt.target.link && evt.target.link.value
       const whiteboardId = 1
-      dispatch(addNote({ image, text, link, whiteboardId }))
+      dispatch(addNote({ image, text, link, whiteboardId, userId }))
     }
   }
 }

@@ -1,38 +1,54 @@
 import axios from 'axios'
 
 const GET_NOTES = 'GET_NOTES'
+const INSERT_NOTE = 'ADD_NOTE'
+const REMOVE_NOTE = 'REMOVE_NOTE'
+const UPDATE_NOTE = 'UPDATE_NOTE'
 const defaultNotes = []
 
 const getNotes = notes => ({ type: GET_NOTES, notes })
+const insertNote = note => ({ type: INSERT_NOTE, note })
+const removeNote = noteId => ({ type: REMOVE_NOTE, noteId })
+const updateNote = note => ({ type: UPDATE_NOTE, note })
 
 // takes in whiteboardId and returns all notes in the selected whiteboard
 export const fetchNotes = whiteboardId =>
   dispatch =>
     axios.get(`/api/whiteboards/${whiteboardId}`)
       .then(whiteboard => {
-        console.log(whiteboard)
-        dispatch(getNotes(whiteboard.data.notes))
+        dispatch(getNotes(whiteboard.data))
       })
       .catch(err => console.log(err))
 
 export const addNote = (note) =>
-  dispatch => {
-    console.log(note)
+  dispatch =>
     axios.post(`/api/notes`, { note })
-      .then(_ => dispatch(fetchNotes(note.whiteboardId)))
+      .then(createdNote => dispatch(insertNote(createdNote)))
       .catch(err => console.log(err))
-  }
+
 
 export const deleteNote = note =>
   dispatch =>
     axios.delete(`/api/notes/${note.id}`)
-      .then(_ => dispatch(fetchNotes(note.whiteboardId)))
+      .then(_ => dispatch(removeNote(note.id)))
+      .catch(err => console.log(err))
+
+export const editNote = note =>
+  dispatch =>
+    axios.put(`/api/notes/${note.id}`, note)
+      .then(updatedNote => dispatch(updateNote(updatedNote)))
       .catch(err => console.log(err))
 
 export default function (state = defaultNotes, action) {
   switch (action.type) {
     case GET_NOTES:
       return action.notes
+    case INSERT_NOTE:
+      return state.concat(action.note)
+    case REMOVE_NOTE:
+      return state.filter(note => note.id !== action.noteId)
+    case UPDATE_NOTE:
+      return state.filter(note => note.id !== action.note.id).concat(action.note)
     default:
       return state
   }
