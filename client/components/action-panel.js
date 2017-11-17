@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { bindAll } from 'lodash';
+import { addNote } from '../store'
 
 class ActionPanel extends React.Component {
   constructor() {
@@ -11,51 +11,51 @@ class ActionPanel extends React.Component {
       textToggle: false,
       imageToggle: false,
       linkToggle: false,
-      drawToggle: false
+      drawToggle: false,
+      file: {}
     }
-    bindAll(this, 'toggle', 'handleSubmit')
+    this.handleFileUpload = this.handleFileUpload.bind(this)
   }
 
   toggle(type) {
     if (type === 'expand') this.setState({ expandToggle: !this.state.expandToggle })
-
     else if (type === 'text') this.setState({ textToggle: !this.state.textToggle })
-
     else if (type === 'image') this.setState({ imageToggle: !this.state.imageToggle })
-
     else if (type === 'link') this.setState({ linkToggle: !this.state.linkToggle })
-
     else this.setState({ drawToggle: !this.state.drawToggle })
   }
 
-  handleSubmit(evt) {
+  handleFileUpload(evt) {
     evt.preventDefault()
+
+    // console.log(evt.target.files)
+    // const image = new FormData()
+    // image.append('file', evt.target.files[0])
+    console.log(evt.target.files[0])
+    this.setState({ file: evt.target.files[0]})
   }
 
   render() {
     return (
       <div className="fixed-action-btn">
         <button type="submit" onClick={() => this.toggle('expand')}>+</button>
-        {this.state.expandToggle &&
-          <span>
-            <div onClick={() => this.toggle('text')}>Text</div>
-            <div onClick={() => this.toggle('image')}>Image</div>
-            <div onClick={() => this.toggle('link')}>Link</div>
-            <div>Draw</div>
-          </span>
-        }
-
-        <div>
-          <form onSubmit={this.handleSubmit} encType="multipart/form-data" >
-            {(this.state.textToggle || this.state.linkToggle) && <input name="text" type="text" />}
-            {this.state.imageToggle &&
+        { this.state.expandToggle &&
+           <span>
+             <div onClick={() => this.toggle('text')}>Text</div>
+             <div onClick={() => this.toggle('image')}>Image</div>
+             <div onClick={() => this.toggle('link')}>Link</div>
+             <div>Draw</div>
+            <form onSubmit={(evt) => {evt.preventDefault(); this.props.handleSubmit(evt, this.state.file, this.props.user.id )} } encType="multipart/form-data" >
+            { (this.state.textToggle || this.state.linkToggle) && <input name="text" type="text" /> }
+            { this.state.imageToggle &&
               <div>
-                <input name="file" type="file" />
+                <input name="file" type="file" onChange={this.handleFileUpload} />
               </div>
             }
             <button type="submit">Insert</button>
-          </form>
-        </div>
+            </form>
+          </span>
+        }
       </div>
     )
   }
@@ -67,6 +67,16 @@ const mapState = state => {
   }
 }
 
-const mapDispatch = null
+const mapDispatch = (dispatch) => {
+  return {
+    handleSubmit (evt, image, userId) {
+      evt.preventDefault()
+      const text = evt.target.text && evt.target.text.value
+      const link = evt.target.link && evt.target.link.value
+      const whiteboardId = 1
+      dispatch(addNote({ image, text, link, whiteboardId, userId }))
+    }
+  }
+}
 
 export default connect(mapState, mapDispatch)(ActionPanel)
