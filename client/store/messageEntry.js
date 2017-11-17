@@ -34,7 +34,7 @@ export function fetchMessages () {
 export function postMessage (message) {
 
   return function thunk (dispatch) {
-    return axios.put('/api/:whiteboardId', message)
+    return axios.put('api/:whiteboardId', message)
       .then(res => res.data)
       .then(newMessage => {
         const action = getMessage(newMessage);
