@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {withRouter, Link} from 'react-router-dom'
 import {logout} from '../store'
+import ActionPanel from './action-panel'
 import {Sidebar} from './Sidebar'
 import {Chatbox} from './Chatbox'
 
@@ -17,8 +18,8 @@ const Main = (props) => {
 
   return (
     <div>
-      <h1>BOILERMAKER</h1>
       <nav>
+        <Link to="/action-panel">Action Panel</Link>
         {
           isLoggedIn
             ? <div>
@@ -37,6 +38,7 @@ const Main = (props) => {
       {children}
       <Sidebar />
       <Chatbox />
+      <ActionPanel />
     </div>
   )
 }
