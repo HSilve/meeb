@@ -21,35 +21,20 @@ const getAttendees = attendees => ({type: GET_ATTENDEES, attendees})
 const updateAttendees = attendees => ({type: UPDATE_ATTENDEES, attendees})
 const removeAttendees = () => ({type: REMOVE_ATTENDEES})
 
-/**
- * THUNK CREATORS
- */
- export function getAttendees (attendees) {
-   const action = { type: GET_ATTENDEES, attendees };
-   return action;
- }
-
- export function getAttendees (attendees) {
-   const action = { type: GET_ATTENDEES, attendees };
-   return action;
- }
-
  // THUNK CREATORS
 
- export function fetchAttendeess () {
-
+ export function fetchAttendees () {
    return function thunk (dispatch) {
      return axios.get('/api/:whiteboardId')
        .then(res => res.data)
        .then(attendees => {
-         const action = getAttendeess(attendees);
+         const action = getAttendees(attendees);
          dispatch(action);
        });
    };
  }
 
  export function postAttendees (attendees) {
-
    return function thunk (dispatch) {
      return axios.put('api/:whiteboardId', attendees)
        .then(res => res.data)
@@ -66,7 +51,10 @@ const removeAttendees = () => ({type: REMOVE_ATTENDEES})
 
    switch (action.type) {
 
-     case GET_ATTENDEE:
+     case GET_ATTENDEES:
+       return [...state, action.attendees];
+
+     case UPDATE_ATTENDEES:
        return [...state, action.attendees];
 
      default:

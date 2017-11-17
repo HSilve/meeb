@@ -1,7 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { fetchAttendees } from '../store'
 
 export class Attendees extends Component {
+  componentDidMount(){
+    this.props.getAttendees()
+  }
   render() {
     let names = ['Maria Betances', 'Blanca Sanchez', 'Evlis Henry', 'Erica Chai']
     return (
@@ -29,8 +33,18 @@ export class Attendees extends Component {
   }
 }
 
-const mapState = null
+const mapState = (state) => {
+  return {
+    attendees: state.attendees
+  }
+}
 
-const mapDispatch = null
+const mapDispatch = (dispatch) => {
+  return {
+    getAttendees: () => {
+      dispatch(fetchAttendees())
+    }
+  }
+}
 
 export default connect(mapState, mapDispatch)(Attendees)
