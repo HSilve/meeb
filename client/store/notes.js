@@ -9,18 +9,23 @@ const getNotes = notes => ({ type: GET_NOTES, notes })
 export const fetchNotes = whiteboardId =>
   dispatch =>
     axios.get(`/api/whiteboards/${whiteboardId}`)
-      .then(whiteboard => dispatch(getNotes(whiteboard.data.notes)))
+      .then(whiteboard => {
+        console.log(whiteboard)
+        dispatch(getNotes(whiteboard.data.notes))
+      })
       .catch(err => console.log(err))
 
-export const addNote = (note, whiteboardId) =>
-  dispatch =>
-    axios.post(`/api/notes`, { note, whiteboardId })
-      .then(_ => dispatch(fetchNotes(whiteboardId)))
+export const addNote = (note) =>
+  dispatch => {
+    console.log(note)
+    axios.post(`/api/notes`, { note })
+      .then(_ => dispatch(fetchNotes(note.whiteboardId)))
       .catch(err => console.log(err))
+  }
 
 export const deleteNote = note =>
   dispatch =>
-    axios.post(`/api/notes/${note.id}`)
+    axios.delete(`/api/notes/${note.id}`)
       .then(_ => dispatch(fetchNotes(note.whiteboardId)))
       .catch(err => console.log(err))
 
