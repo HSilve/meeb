@@ -10,7 +10,7 @@
  * Now that you've got the main idea, check it out in practice below!
  */
 const db = require('../server/db')
-const {User} = require('../server/db/models')
+const {User, Message, Note, Whiteboard} = require('../server/db/models')
 
 async function seed () {
   await db.sync({force: true})
@@ -18,13 +18,38 @@ async function seed () {
   // Whoa! Because we `await` the promise that db.sync returns, the next line will not be
   // executed until that promise resolves!
 
-  const users = await Promise.all([
+  await Promise.all([
     User.create({email: 'cody@email.com', password: '123', name: 'Cody D. Dog'}),
-    User.create({email: 'murphy@email.com', password: '123', name: 'Murphy A. Law'})
+    User.create({email: 'murphy@email.com', password: '123', name: 'Murphy A. Law'}),
+    User.create({email: 'Blanca@email.com', password: '456', name: 'Blanca Sanchez '}),
+    User.create({email: 'Maria@email.com', password: '456', name: 'Maria Betances'}),
+    User.create({email: 'Erica@email.com', password: '456', name: 'Erica Chai'}),
+    User.create({email: 'Evlis@email.com', password: '456', name: 'Evlis Henry'})
   ])
+  await Promise.all([
+    Whiteboard.create({host: "No one at all", userId: 1}),
+    Whiteboard.create({host: "FullStack", userId: 2})
+
+  ])
+
+  await Promise.all([
+    Message.create({text: "I'm posting this message here", userId: 1, whiteboardId: 1 }),
+    Message.create({text: 'Can I delete my own message', userId: 4, whiteboardId: 1 }),
+    Message.create({text: "I'm just sending this to join the chat ", userId: 6, whiteboardId: 1 }),
+    Message.create({text: 'Do you know any good vegan places besides Chipotle?', userId: 5, whiteboardId: 1 }),
+    Message.create({text: 'Just some random text to go here', userId: 3, whiteboardId: 1 }),
+    Message.create({text: 'Hey, do not forget about me', userId: 2, whiteboardId: 1 })
+  ])
+  await Promise.all([
+    Note.create({text: 'The Best Idea In The World', highlighted: true, link: "http://www.github.com", userId: 6, whiteboardId: 1}),
+    Note.create({text: 'Just about the worst Idea Ever', userId: 1, whiteboardId: 1 }),
+    Note.create({text: "I'm just a lone note", userId: 2, whiteboardId: 2 }),
+    Note.create({text: 'I wanna be a branch off the best idea', image: 'http://completecarnivore.com/wp-content/uploads/2016/07/short-rib-location.jpg', userId: 4, whiteboardId: 1 })
+  ])
+
   // Wowzers! We can even `await` on the right-hand side of the assignment operator
   // and store the result that the promise resolves to in a variable! This is nice!
-  console.log(`seeded ${users.length} users`)
+  console.log('seeded')
   console.log(`seeded successfully`)
 }
 
@@ -49,3 +74,10 @@ seed()
  * of the async function
  */
 console.log('seeding...')
+
+
+//message
+//note
+//user
+//whiteboard
+
