@@ -5,7 +5,6 @@ import socket from '../socket';
 const POST_MESSAGE = 'POST_MESSAGE';
 const GET_MESSAGES = 'GET_MESSAGES';
 const DELETE_MESSAGE = 'DELETE_MESSAGE';
-const POST_MESSAGE = 'POST_MESSAGE';
 
 
 // ACTION CREATORS
@@ -27,16 +26,16 @@ export function postMessage(message) {
 
 // THUNK CREATORS
 
-export const fetchMessages = (whiteboardId) => {
+export const fetchMessages = () =>
   dispatch =>
-    axios.get(`/api/whiteboards/${whiteboardId}`)
+    axios.get(`/api/message`)
       .then(res =>
         dispatch(getMessages(res.data)))
       .catch(err => console.log(err))
-}
 
-export const addMessage = (message, whiteboardId) => dispatch => {
-  axios.post(`/${whiteboardId}/message`, message)
+
+export const addMessage = (message) => dispatch => {
+  axios.post(`/api/message`, message)
     .then(res => dispatch(postMessage(res.data)))
     .catch(err => console.error(`Could not create ${message}!`, err));
 };
@@ -56,11 +55,8 @@ export default function reducer (state = [], action) {
     case GET_MESSAGES:
       return action.messages;
 
-    case GET_MESSAGE:
-      return action.message;
-
     case DELETE_MESSAGE:
-      return state.filter(message => message.id != action.id);
+      return state.filter(message => message.id !== action.id);
 
     case POST_MESSAGE:
       return [...state, action.message]

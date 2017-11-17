@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {createMessages} from '../store/messageEntry'
+import {addMessage} from '../store/messageEntry'
 
 export class MessageEntry extends Component{
   constructor(props) {
@@ -10,9 +10,14 @@ export class MessageEntry extends Component{
     }
   }
 
+  // componentDidMount(){
+  //   const {id} = this.props.match.params
+  // }
+
   render(){
     const {handleSubmit} = this.props
     const {content} = this.state
+
     return(
       <form id="new-message-form" onSubmit={evt => handleSubmit(content, evt)}>
         <div className="input-group input-group-lg">
@@ -36,7 +41,6 @@ const mapState = (state) => {
   return {
     text: state.text,
     userId: state.userId,
-    whiteboardId: state.whiteboardId
   }
 }
 
@@ -44,7 +48,7 @@ const mapDispatch = (dispatch) => {
   return {
     handleSubmit (message, evt) {
       evt.preventDefault()
-      dispatch(createMessages(message))
+      dispatch(addMessage(message))
     }
   }
 }
