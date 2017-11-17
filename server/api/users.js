@@ -36,7 +36,7 @@ router.post('/', (req, res, next) => {
 })
 
 router.delete('/:userId', (req, res, next) => {
-  User.delete({
+  User.destroy({
     where: {id: req.params.userId}
   })
   .then(row => res.json(row))
