@@ -1,8 +1,10 @@
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
-import {addMessage} from '../store/messageEntry'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { addMessage } from '../store/messageEntry'
+import { fetchRoom } from '../store/whiteboard'
+import { withRouter } from 'react-router-dom';
 
-export class MessageEntry extends Component{
+export class MessageEntry extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -10,15 +12,17 @@ export class MessageEntry extends Component{
     }
   }
 
-  // componentDidMount(){
-  //   const {id} = this.props.match.params
-  // }
+  componentDidMount() {
+    const { id } = this.props.match.params
+    this.props.getWhiteboard(id)
+  }
 
-  render(){
-    const {handleSubmit} = this.props
-    const {content} = this.state
+  render() {
+    const { handleSubmit, whiteboard } = this.props
+    const { content } = this.state
+    console.log('This is the MessageEntry whiteboardId', whiteboard)
 
-    return(
+    return (
       <form id="new-message-form" onSubmit={evt => handleSubmit(content, evt)}>
         <div className="input-group input-group-lg">
           <input
@@ -39,18 +43,21 @@ export class MessageEntry extends Component{
 
 const mapState = (state) => {
   return {
-    text: state.text,
-    userId: state.userId,
+    whiteboard: state.whiteboard,
+
   }
 }
 
 const mapDispatch = (dispatch) => {
   return {
-    handleSubmit (message, evt) {
+    getWhiteboard: (id) => {
+      dispatch(fetchRoom(id))
+    },
+    handleSubmit(message, evt) {
       evt.preventDefault()
       dispatch(addMessage(message))
     }
   }
 }
 
-export default connect(mapState, mapDispatch)(MessageEntry)
+export default withRouter(connect(mapState, mapDispatch)(MessageEntry))

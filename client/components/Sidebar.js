@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import Attendees from './Attendees'
 import { Chatbox } from './Chatbox'
 
 export class Sidebar extends Component {
@@ -13,7 +12,6 @@ export class Sidebar extends Component {
           <i alt="Brand" className="glyphicon glyphicon-comment">
           </i>
         </h3>
-        <Attendees />
         <Chatbox />
       </div>
     );
