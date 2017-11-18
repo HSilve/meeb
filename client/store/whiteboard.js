@@ -6,7 +6,7 @@ import socket from '../socket';
  * ACTION TYPES
  */
 const GET_ROOM = 'GET_ROOM'
-// const UPDATE_ROOM = 'UPDATE_ROOM'
+const UPDATE_ROOM = 'UPDATE_ROOM'
 // const REMOVE_ROOM = 'REMOVE_ROOM'
 
 /**
@@ -17,43 +17,41 @@ const GET_ROOM = 'GET_ROOM'
 /**
  * ACTION CREATORS
  */
-const getRoom = room => ({type: GET_ROOM, room})
-// const updateRoom = room => ({type: UPDATE_ROOM, room})
+const getRoom = room => ({ type: GET_ROOM, room })
+const updateRoom = room => ({ type: UPDATE_ROOM, room })
 // const removeRoom = () => ({type: REMOVE_ROOM})
 
- // THUNK CREATORS
+// THUNK CREATORS
 
 export const fetchRoom = (whiteboardId) =>
   dispatch =>
     axios.get(`/api/whiteboards/${whiteboardId}`)
-       .then(res => dispatch(getRoom(res.data)))
-       .catch(err => console.log(err))
+      .then(res => dispatch(getRoom(res.data)))
+      .catch(err => console.log(err))
 
- // export function modifyRoom (room) {
- //   return function thunk (dispatch) {
- //     return axios.put(`api/${room.id}`, room)
- //       .then(res => res.data)
- //       .then(updatedRoom => {
- //         const action = updateRoom(updatedRoom);
- //         dispatch(action);
- //         socket.emit('updated-room', updatedRoom);
- //       });
- //   };
- // }
+export const modifyRoom = (room) => dispatch => {
+  axios.put(`/api/whiteboards/${room.id}`, room)
+    .then(res => {
+      dispatch(updateRoom(res.data))
+      socket.emit('updated-room', res.data);
+    })
+    .catch(err => console.error(err));
+}
 
- // REDUCER
- export default function reducer (state = {}, action) {
 
-   switch (action.type) {
+// REDUCER
+export default function reducer(state = {}, action) {
 
-     case GET_ROOM:
-       return action.room;
+  switch (action.type) {
 
-    //  case UPDATE_ROOM:
-    //    return [...state, action.room];
+    case GET_ROOM:
+      return action.room;
 
-     default:
-       return state;
-   }
+    case UPDATE_ROOM:
+      return { ...state, ...action.room }
 
- }
+    default:
+      return state;
+  }
+
+}
