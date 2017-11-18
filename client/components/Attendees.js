@@ -1,15 +1,16 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { fetchAttendees } from '../store'
+import { fetchRoom } from '../store'
 
 export class Attendees extends Component {
   componentDidMount(){
-    this.props.getAttendees()
+    const {id} = this.props.match.params
+    this.props.getRoom(id)
   }
   render() {
     let names = ['Maria Betances', 'Blanca Sanchez', 'Evlis Henry', 'Erica Chai']
-    const {attendees} = this.props
-    console.log(attendees)
+    const {users} = this.props
+  
     return (
       // <div className="row">
         <div className="col s3" id="sidePanel">
@@ -34,14 +35,15 @@ export class Attendees extends Component {
 
 const mapState = (state) => {
   return {
-    attendees: state.attendees
+    whiteboard: state.whiteboard,
+    users: state.whiteboard.users
   }
 }
 
 const mapDispatch = (dispatch) => {
   return {
-    getAttendees: () => {
-      dispatch(fetchAttendees())
+    getRoom: (id) => {
+      dispatch(fetchRoom(id))
     }
   }
 }

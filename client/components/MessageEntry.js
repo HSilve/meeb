@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {addMessage} from '../store/messageEntry'
+import {fetchRoom} from '../store/whiteboard'
 
 export class MessageEntry extends Component{
   constructor(props) {
@@ -10,13 +11,15 @@ export class MessageEntry extends Component{
     }
   }
 
-  // componentDidMount(){
-  //   const {id} = this.props.match.params
-  // }
+  componentDidMount(){
+    const {id} = this.props.match.params
+    this.props.getWhiteboard(id)
+  }
 
   render(){
-    const {handleSubmit} = this.props
+    const {handleSubmit, whiteboard} = this.props
     const {content} = this.state
+    console.log('This is the MessageEntry whiteboardId', whiteboard.id)
 
     return(
       <form id="new-message-form" onSubmit={evt => handleSubmit(content, evt)}>
@@ -39,13 +42,16 @@ export class MessageEntry extends Component{
 
 const mapState = (state) => {
   return {
-    text: state.text,
-    userId: state.userId,
+    whiteboard: state.whiteboard,
+
   }
 }
 
 const mapDispatch = (dispatch) => {
   return {
+    getWhiteboard: (id) => {
+      dispatch(fetchRoom(id))
+    },
     handleSubmit (message, evt) {
       evt.preventDefault()
       dispatch(addMessage(message))
