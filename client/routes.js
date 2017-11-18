@@ -27,6 +27,7 @@ class Routes extends Component {
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
             <Route path="/action-panel" component={ActionPanel} />
+            <Route path="/whiteboards/:id" component={ConferenceRoom} />
             <Route component={ConferenceRoom} />
           </Switch>
         </Main>

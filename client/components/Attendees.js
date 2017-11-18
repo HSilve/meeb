@@ -3,13 +3,13 @@ import { connect } from 'react-redux'
 import { fetchAttendees } from '../store'
 
 export class Attendees extends Component {
-  componentDidMount(){
-    this.props.getAttendees()
-  }
+  // componentDidMount(){
+  //   this.props.getAttendees()
+  // }
   render() {
     let names = ['Maria Betances', 'Blanca Sanchez', 'Evlis Henry', 'Erica Chai']
-    const {attendees} = this.props
-    console.log(attendees)
+    // const {attendees} = this.props
+    // console.log(attendees)
     return (
       // <div className="row">
         <div className="col s3" id="sidePanel">

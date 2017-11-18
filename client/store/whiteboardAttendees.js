@@ -23,9 +23,9 @@ const removeAttendees = () => ({type: REMOVE_ATTENDEES})
 
  // THUNK CREATORS
 
- export function fetchAttendees () {
+ export function fetchAttendees (whiteboardId) {
    return function thunk (dispatch) {
-     return axios.get('/api/:whiteboardId')
+     return axios.get(`/api/whiteboards/${whiteboardId}`)
        .then(res => res.data)
        .then(attendees => {
          const action = getAttendees(attendees);
@@ -36,7 +36,7 @@ const removeAttendees = () => ({type: REMOVE_ATTENDEES})
 
  export function postAttendees (attendees) {
    return function thunk (dispatch) {
-     return axios.put('api/:whiteboardId', attendees)
+     return axios.put(`api/whiteboards/${attendees.whiteboardId}`, attendees)
        .then(res => res.data)
        .then(newAttendees => {
          const action = getAttendees(newAttendees);
