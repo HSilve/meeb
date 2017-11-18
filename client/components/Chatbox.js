@@ -5,10 +5,6 @@ import MessagesList from './MessagesList'
 import {fetchAttendees} from '../store/'
 
 export class Chatbox extends Component {
-  // componentDidMount(){
-  //   const {id} = this.props.match.params
-  //   this.props.getAttendees(id)
-  // }
   render(){
     console.log('Chatbox', this.props.match)
     return(
