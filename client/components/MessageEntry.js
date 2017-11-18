@@ -1,9 +1,17 @@
+<<<<<<< HEAD
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {addMessage} from '../store/messageEntry'
 import {fetchRoom} from '../store/whiteboard'
+=======
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { addMessage } from '../store/messageEntry'
+import { fetchRoom } from '../store/whiteboard'
+import { withRouter } from 'react-router-dom';
+>>>>>>> master
 
-export class MessageEntry extends Component{
+export class MessageEntry extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -12,26 +20,17 @@ export class MessageEntry extends Component{
     this.handleChange = this.handleChange.bind(this)
   }
 
-
-  componentDidMount(){
-    const {whiteboardId} = this.props
-    this.props.getRoom(whiteboardId)
+  componentDidMount() {
+    const { id } = this.props.match.params
+    this.props.getWhiteboard(id)
   }
 
-  handleChange(evt) {
-    const {value} = evt.target
-    this.setState({content: value})
-  }
+  render() {
+    const { handleSubmit, whiteboard } = this.props
+    const { content } = this.state
+    console.log('This is the MessageEntry whiteboardId', whiteboard)
 
-  render(){
-    const {handleSubmit, whiteboardId, messageEntry} = this.props
-    const {content} = this.state
-    console.log('this is my content', content)
     return (
-      <div>
-        {
-          <p>WhiteboardID: {whiteboardId}</p>
-        }
       <form id="new-message-form" onSubmit={evt => handleSubmit(content, evt)}>
         <div className="input-group input-group-lg">
           <input
@@ -55,21 +54,21 @@ export class MessageEntry extends Component{
 const mapState = (state, ownProps) => {
   console.log('messageENtry mapstate', state.messageEntry)
   return {
-    messageEntry: state.messageEntry,
-    whiteboardId: ownProps.whiteboardId,
+    whiteboard: state.whiteboard,
+
   }
 }
 
 const mapDispatch = (dispatch) => {
   return {
-    getRoom: (id) => {
+    getWhiteboard: (id) => {
       dispatch(fetchRoom(id))
     },
-    handleSubmit (message, evt) {
+    handleSubmit(message, evt) {
       evt.preventDefault()
       dispatch(addMessage(message))
     }
   }
 }
 
-export default connect(mapState, mapDispatch)(MessageEntry)
+export default withRouter(connect(mapState, mapDispatch)(MessageEntry))
