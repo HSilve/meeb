@@ -10,8 +10,8 @@ export class Chatbox extends Component {
     console.log('Chatbox', this.props.whiteboardId)
     return(
       <div>
-        <MessagesList whiteboardId={this.props.whiteboardId} />
-        <MessageEntry whiteboardId={this.props.whiteboardId} />
+        <MessagesList />
+        <MessageEntry />
       </div>
     )
   }
