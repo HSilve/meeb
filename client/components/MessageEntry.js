@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {addMessage} from '../store/MessageEntry'
-import {fetchAttendees} from '../store/whiteboardAttendees'
+import {addMessage} from '../store/messageEntry'
+import {fetchRoom} from '../store/whiteboard'
 
 export class MessageEntry extends Component{
   constructor(props) {
@@ -15,16 +15,8 @@ export class MessageEntry extends Component{
 
   componentDidMount(){
     const {whiteboardId} = this.props
-    this.props.getAttendees(whiteboardId)
-    console.log('MessageEntry', this.props.attendees)
+    this.props.getRoom(whiteboardId)
   }
-
-  // componentWillReceiveProps(nextProps){
-  //   if (this.props.whiteboard.match !== nextProps.whiteboard.match) {
-  //     this.props.getAttendees(nextProps.whiteboard.match)
-  //     console.log('this.state.attendees', this.state.attendees)
-  //   }
-  // }
 
   handleChange(evt) {
     const {value} = evt.target
@@ -32,21 +24,21 @@ export class MessageEntry extends Component{
   }
 
   render(){
-    const {handleSubmit} = this.props
+    const {handleSubmit, whiteboardId, messageEntry} = this.props
     const {content} = this.state
     console.log('this is my content', content)
     return (
       <div>
         {
-          // <p>whiteboard Id: {whiteboardId}</p>
+          <p>WhiteboardID: {whiteboardId}</p>
         }
       <form id="new-message-form" onSubmit={evt => handleSubmit(content, evt)}>
         <div className="input-group input-group-lg">
           <input
             className="form-control"
             type="text"
-            name="content"
-            value={content}
+            name="text"
+            value={messageEntry.text}
             onChange={this.handleChange}
             placeholder="Say something nice..."
           />
@@ -61,18 +53,17 @@ export class MessageEntry extends Component{
 }
 
 const mapState = (state, ownProps) => {
+  console.log('messageENtry mapstate', state.messageEntry)
   return {
-    text: state.text,
-    userId: state.userId,
-    attendees: state.attendees,
-    whiteboardId: ownProps.whiteboardId
+    messageEntry: state.messageEntry,
+    whiteboardId: ownProps.whiteboardId,
   }
 }
 
 const mapDispatch = (dispatch) => {
   return {
-    getAttendees: (id) => {
-      dispatch(fetchAttendees(id))
+    getRoom: (id) => {
+      dispatch(fetchRoom(id))
     },
     handleSubmit (message, evt) {
       evt.preventDefault()
