@@ -1,15 +1,8 @@
-<<<<<<< HEAD
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
-import {addMessage} from '../store/messageEntry'
-import {fetchRoom} from '../store/whiteboard'
-=======
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { addMessage } from '../store/messageEntry'
 import { fetchRoom } from '../store/whiteboard'
 import { withRouter } from 'react-router-dom';
->>>>>>> master
 
 export class MessageEntry extends Component {
   constructor(props) {

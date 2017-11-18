@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React from 'react'
 import { Sidebar, Whiteboard, ActionPanel } from './index'
 import {connect} from 'react-redux'
 
