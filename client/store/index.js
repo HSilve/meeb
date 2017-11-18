@@ -4,8 +4,9 @@ import thunkMiddleware from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import user from './user'
 import whiteboardAttendees from './whiteboardAttendees'
+import notes from './notes'
 
-const reducer = combineReducers({user, whiteboardAttendees})
+const reducer = combineReducers({user, notes, whiteboardAttendees})
 const middleware = composeWithDevTools(applyMiddleware(
   thunkMiddleware,
   createLogger({collapsed: true})
@@ -15,3 +16,4 @@ const store = createStore(reducer, middleware)
 export default store
 export * from './user'
 export * from './whiteboardAttendees'
+export * from './notes'

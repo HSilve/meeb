@@ -4,7 +4,7 @@ module.exports = router
 
 router.get('/', (req, res, next) => {
   Note.findAll()
-    .then(users => res.json(users))
+    .then(notes => res.json(notes))
     .catch(next)
 })
 
