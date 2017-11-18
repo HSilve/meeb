@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { BrowserRouter as Router } from 'react-router-dom'
+import { Router } from 'react-router-dom'
 import { Route, Switch } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import history from './history'
-import { Main, Login, Signup, UserHome, ActionPanel } from './components'
+import { Main, Login, Signup, UserHome, ActionPanel, ConferenceRoom } from './components'
 import { me } from './store'
-import ConferenceRoom from './components/conference-room'
 
 /**
  * COMPONENT

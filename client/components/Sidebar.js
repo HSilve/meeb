@@ -6,6 +6,8 @@ import { Chatbox } from './Chatbox'
 export class Sidebar extends Component {
 
   render() {
+    console.log('Sidebar', this.props)
+    console.log('Sidebar whiteboardId', this.props.whiteboardId)
     return (
       <div className="sidebar">
         <h3 href="#">
@@ -14,14 +16,18 @@ export class Sidebar extends Component {
           </i>
         </h3>
         <Attendees />
-        <Chatbox />
+        <Chatbox whiteboardId={this.props.whiteboardId}/>
       </div>
     );
   }
 }
 
 
-const mapState = null
+const mapState = (state, ownProps) => {
+  return {
+    whiteboardId: ownProps.whiteboardId
+  }
+}
 const mapDispatch = null
 
 export default connect(mapState, mapDispatch)(Sidebar)

@@ -5,20 +5,22 @@ import MessagesList from './MessagesList'
 import {fetchAttendees} from '../store/'
 
 export class Chatbox extends Component {
+
   render(){
-    console.log('Chatbox', this.props.match)
+    console.log('Chatbox', this.props.whiteboardId)
     return(
       <div>
-        <MessagesList />
-        <MessageEntry />
+        <MessagesList whiteboardId={this.props.whiteboardId} />
+        <MessageEntry whiteboardId={this.props.whiteboardId} />
       </div>
     )
   }
 }
 
-const mapState = (state) => {
+const mapState = (state, ownProps) => {
   return {
-    attendees: state.attendees
+    attendees: state.attendees,
+    whiteboardId: ownProps.whiteboardId
   }
 }
 const mapDispatch = (dispatch) => {

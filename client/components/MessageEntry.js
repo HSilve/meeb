@@ -14,11 +14,17 @@ export class MessageEntry extends Component{
 
 
   componentDidMount(){
-    console.log('this.props', this.props)
-    console.log('this.props.match', this.props.match)
-    // const {id} = this.props.match.params
-    // this.props.getAttendees(id)
+    const {whiteboardId} = this.props
+    this.props.getAttendees(whiteboardId)
+    console.log('MessageEntry', this.props.attendees)
   }
+
+  // componentWillReceiveProps(nextProps){
+  //   if (this.props.whiteboard.match !== nextProps.whiteboard.match) {
+  //     this.props.getAttendees(nextProps.whiteboard.match)
+  //     console.log('this.state.attendees', this.state.attendees)
+  //   }
+  // }
 
   handleChange(evt) {
     const {value} = evt.target
@@ -28,10 +34,12 @@ export class MessageEntry extends Component{
   render(){
     const {handleSubmit} = this.props
     const {content} = this.state
-    console.log('this.props.text', this.props.text)
-    console.log('this.state', content)
-    console.log('this.props', this.props)
+    console.log('this is my content', content)
     return (
+      <div>
+        {
+          // <p>whiteboard Id: {whiteboardId}</p>
+        }
       <form id="new-message-form" onSubmit={evt => handleSubmit(content, evt)}>
         <div className="input-group input-group-lg">
           <input
@@ -47,15 +55,17 @@ export class MessageEntry extends Component{
           </span>
         </div>
       </form>
+      </div>
     )
   }
 }
 
-const mapState = (state) => {
+const mapState = (state, ownProps) => {
   return {
     text: state.text,
     userId: state.userId,
-    attendees: state.attendees
+    attendees: state.attendees,
+    whiteboardId: ownProps.whiteboardId
   }
 }
 
