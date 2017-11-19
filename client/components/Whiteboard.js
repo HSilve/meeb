@@ -30,9 +30,10 @@ export class Whiteboard extends Component {
       <div id="whiteboard">
       {
         notes.map(note =>{
-          <div style = {this.randomPos}>
+          return (<div style = {this.randomPos}>
             {note.text}
             </div>
+          )
         } )
       }
       </div>
