@@ -46,4 +46,18 @@ body {
     font: 30%;
   }
 
+  .popup-box {
+    // display: none;
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    height: 285px;
+    background-color: rgb(237, 239, 244);
+    width: 300px;
+    border: 1px solid rgba(29, 49, 91, .3);
+    float: left;
+    height: 50%;
+    overflow-y: scroll;
+  }
+
 }

@@ -7,19 +7,23 @@ export class MessagesList extends Component {
   componentDidMount(){
     const { id } = this.props.match.params
     this.props.getMessages(id)
+    this.sortDate = this.sortDate.bind(this)
+  }
+
+// TO DO, sort messages based on dates!!!
+  sortDate(arr){
+    arr.sort((a, b) => {return new Date(b.createdAt) - new Date(a.createdAt)})
   }
 
   render () {
     const {messageEntry} = this.props
-    console.log('messageList from props', this.props)
-
+    console.log(messageEntry.allMessages)
     return (
       <div>
         {
           messageEntry.allMessages.map(message => {
             return (<div className="chip" key={message.id}>
               <span>{message.text}</span>
-
             </div>)
           })
         }

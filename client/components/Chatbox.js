@@ -6,9 +6,11 @@ import {fetchAttendees} from '../store/'
 
 export class Chatbox extends Component {
   render(){
-    console.log('Chatbox', this.props.whiteboardId)
     return(
-      <div>
+      <div className="popup-box">
+        <div className="popup-head">
+          Messages
+        </div>
         <MessagesList />
         <MessageEntry />
       </div>

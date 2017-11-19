@@ -39,7 +39,6 @@ export const addMessage = (message) => dispatch => {
     .then(res => res.data)
     .then(newMessage => {dispatch(postMessage(newMessage))
     socket.emit('new-message', newMessage)})
-    // .catch(err => console.error(`Could not create ${message}!`, err));
 };
 
 export const removeMessage = id => dispatch => {
@@ -56,14 +55,13 @@ export default function reducer (state = {allMessages: [], id: {}, singleMessage
 
     case GET_MESSAGES:
       return {...state, allMessages: action.messages}
-      // return Object.assign({}, state, {allMessages: action.messages})
 
     // case DELETE_MESSAGE:
     //   return state.filter(message => message.id !== action.id);
 
     case POST_MESSAGE:
       return {...state, allMessages: state.allMessages.concat(action.message), singleMessage: action.message}
-      // return Object.assign({}, state, {allMessages: state.allMessages.concat(action.message), singleMessage: action.message})
+
     default:
       return state;
   }

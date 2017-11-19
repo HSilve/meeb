@@ -8,7 +8,7 @@ export class MessageEntry extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      content: ''
+      text: ''
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -24,19 +24,18 @@ export class MessageEntry extends Component {
     const whiteboardId = this.props.whiteboard.id
     const {text} = message
     this.props.sendMessage({text, whiteboardId})
-    this.setState({content: evt.target.value})
-    document.getElementById('new-message-form').value = {}
+    this.setState({text: ''})
   }
 
   handleChange(evt){
     this.props.messageEntry.singleMessage[evt.target.name] = evt.target.value
-    this.setState({content: evt.target.value})
+    this.setState({text: evt.target.value})
   }
 
   render() {
-    console.log('MessageEntry console this.props', this.props)
-    const { handleSubmit, whiteboard, messageEntry } = this.props
-    const {singleMessage} = messageEntry
+    const { text } = this.state
+    const { messageEntry } = this.props
+    const { singleMessage } = messageEntry
     return (
       <form id="new-message-form" onSubmit={evt => this.handleSubmit(singleMessage, evt)}>
         <div className="input-group input-group-lg">
@@ -44,7 +43,7 @@ export class MessageEntry extends Component {
             className="form-control"
             type="text"
             name="text"
-            value={singleMessage.text}
+            value={text}
             onChange={this.handleChange}
             placeholder="Say something nice..."
           />
