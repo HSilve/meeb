@@ -3,32 +3,24 @@ import { connect } from 'react-redux'
 import { fetchRoom } from '../store'
 
 export class Attendees extends Component {
-  constructor(props) {
-    super(props)
-  }
-  componentWillMount() {
-    // const {id} = this.props.match.params
-    // this.props.getRoom(id)
-  }
   componentDidMount(){
-    // const {id} = this.props.match.params
-    // this.props.getRoom(id)
+    const {id} = this.props.match.params
+    this.props.getRoom(id)
   }
   render() {
-
-    let users = [];
-    if(this.props.users) {users = this.props.users}
+    let names = ['Maria Betances', 'Blanca Sanchez', 'Evlis Henry', 'Erica Chai']
+    const {users} = this.props
 
     return (
       // <div className="row">
         <div className="col s3" id="sidePanel">
           {
-            users.map(person => {
+            names.map(person => {
               return (
-              <div key={person} className="row">
+              <div className="row">
                 <div className='chip' >
                   <img src="https://vignette.wikia.nocookie.net/fantendo/images/3/3d/HC_Minion_Icon.png/revision/latest?cb=20140211171359" alt="Pic" />
-                  {person.name}
+                  {person}
                 </div>
               </div>
               )
@@ -41,7 +33,12 @@ export class Attendees extends Component {
   }
 }
 
-const mapState = (state) => ({users: state.whiteboard})
+const mapState = (state) => {
+  return {
+    whiteboard: state.whiteboard,
+    users: state.whiteboard.users
+  }
+}
 
 const mapDispatch = (dispatch) => {
   return {
@@ -52,6 +49,3 @@ const mapDispatch = (dispatch) => {
 }
 
 export default connect(mapState, mapDispatch)(Attendees)
-
-
-// let names = ['Maria Betances', 'Blanca Sanchez', 'Evlis Henry', 'Erica Chai']

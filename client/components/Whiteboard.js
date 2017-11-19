@@ -6,7 +6,8 @@ export class Whiteboard extends Component {
   constructor (props) {
     super(props)
     this.positions = []
-
+    this.clickAnImage = this.clickAnImage.bind(this);
+    this.clickALink = this.clickALink.bind(this);
   }
 
 //In getBoundingClientREact:
@@ -24,10 +25,7 @@ export class Whiteboard extends Component {
     let data = document.getElementById('whiteboard').getBoundingClientRect();
     let eNoteWidth = 270;
     let eNoteHeight = 100;
-    this.positions = this.generatePositionsArray(data.height, data.width, eNoteHeight, eNoteWidth, 0.5, data.left, data.top );
-    console.log('the positionis', this.positions)
-
-    console.log('bounding client', data )
+    this.positions = this.generatePositionsArray(data.height, data.width, eNoteHeight, eNoteWidth, data.left, data.top );
   }
 
     // Returns a random integer between min (included) and max (excluded)
@@ -37,7 +35,8 @@ export class Whiteboard extends Component {
     }
 
 // generate random positions
-    generatePositionsArray(boardHeight, boardWidth, safeHeight, safeWidth,  irregularity, leftBegin, topBegin) {
+    generatePositionsArray(boardHeight, boardWidth, safeHeight, safeWidth, leftBegin, topBegin) {
+      let irregularity = 0.5;
         // declarations
         var positionsArray = [];
         var r, c;
@@ -52,7 +51,7 @@ export class Whiteboard extends Component {
             for (c = 1; c <= columns; c += 1) {
                 // populate array with point object
                 positionsArray.push({
-                    x: Math.round(boardWidth * c / columns) + (this.getRandomInt(irregularity * -1, irregularity)) + leftBegin/4,
+                    x: Math.round(boardWidth * c / columns) + (this.getRandomInt(irregularity * -1, irregularity)) + (leftBegin / 4),
                     y: Math.round(boardHeight * r / rows) + (this.getRandomInt(irregularity * -1, irregularity))
                 });
             }
@@ -80,7 +79,6 @@ export class Whiteboard extends Component {
 // getRandomPosition(positions, true)
       getPosition() {
         let pos = this.getRandomPosition(true);
-        console.log('the position given', pos)
         return {
           style: {
             position: 'fixed',
@@ -108,7 +106,7 @@ export class Whiteboard extends Component {
             </div>
             <div>
               { note.image &&
-                <img className="image" src={note.image} />
+                <img onClick ={this.clickAnImage} className="image" src={note.image} />
               }
             </div>
             <div>
