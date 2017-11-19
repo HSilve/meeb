@@ -42,16 +42,16 @@ export class Whiteboard extends Component {
         var rows;
         var columns;
         // count the amount of rows and columns
-        rows = Math.floor(boardWidth / safeRadius);
-        columns = Math.floor(boardHeight / safeRadius);
+        rows = Math.floor(boardHeight / safeRadius);
+        columns = Math.floor(boardWidth / safeRadius);
         // loop through rows
         for (r = 1; r <= rows; r += 1) {
             // loop through columns
             for (c = 1; c <= columns; c += 1) {
                 // populate array with point object
                 positionsArray.push({
-                    x: Math.round(boardHeight * c / columns) + (this.getRandomInt(irregularity * -1, irregularity)) + leftBegin,
-                    y: Math.round(boardWidth * r / rows) + (this.getRandomInt(irregularity * -1, irregularity))+ topBegin
+                    x: Math.round(boardWidth * c / columns) + (this.getRandomInt(irregularity * -1, irregularity)) + leftBegin,
+                    y: Math.round(boardHeight * r / rows) + (this.getRandomInt(irregularity * -1, irregularity))+ topBegin
                 });
             }
         }
