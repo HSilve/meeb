@@ -15,6 +15,7 @@ router.get('/:id', (req, res, next) => {
 })
 
 router.post('/', (req, res, next) => {
+  console.log('Post Req.Body', req.body)
   Message.create(req.body)
     .then(message => res.json(message))
     .catch(next);

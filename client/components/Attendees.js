@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { fetchRoom } from '../store'
+import {withRouter} from 'react-router'
 
 export class Attendees extends Component {
   componentDidMount(){
@@ -36,7 +37,7 @@ export class Attendees extends Component {
 const mapState = (state) => {
   return {
     whiteboard: state.whiteboard,
-    users: state.whiteboard.users
+    users: state.attendees
   }
 }
 
@@ -48,4 +49,4 @@ const mapDispatch = (dispatch) => {
   }
 }
 
-export default connect(mapState, mapDispatch)(Attendees)
+export default withRouter(connect(mapState, mapDispatch)(Attendees))

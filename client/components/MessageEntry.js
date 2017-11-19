@@ -11,6 +11,7 @@ export class MessageEntry extends Component {
       content: ''
     }
     this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   componentDidMount() {
@@ -18,19 +19,31 @@ export class MessageEntry extends Component {
     this.props.getWhiteboard(id)
   }
 
-  render() {
-    const { handleSubmit, whiteboard } = this.props
-    const { content } = this.state
-    console.log('This is the MessageEntry whiteboardId', whiteboard)
+  handleSubmit(message, evt) {
+    evt.preventDefault()
+    const whiteboardId = this.props.whiteboard.id
+    const {text} = message
+    this.props.sendMessage({text, whiteboardId})
+    this.setState({content: evt.target.value})
+    document.getElementById('new-message-form').value = {}
+  }
 
+  handleChange(evt){
+    this.props.messageEntry.singleMessage[evt.target.name] = evt.target.value
+    this.setState({content: evt.target.value})
+  }
+
+  render() {
+    const { handleSubmit, whiteboard, messageEntry } = this.props
+    const {singleMessage} = messageEntry
     return (
-      <form id="new-message-form" onSubmit={evt => handleSubmit(content, evt)}>
+      <form id="new-message-form" onSubmit={evt => this.handleSubmit(singleMessage, evt)}>
         <div className="input-group input-group-lg">
           <input
             className="form-control"
             type="text"
             name="text"
-            value={messageEntry.text}
+            value={singleMessage.text}
             onChange={this.handleChange}
             placeholder="Say something nice..."
           />
@@ -39,16 +52,14 @@ export class MessageEntry extends Component {
           </span>
         </div>
       </form>
-      </div>
     )
   }
 }
 
-const mapState = (state, ownProps) => {
-  console.log('messageENtry mapstate', state.messageEntry)
+const mapState = (state) => {
   return {
     whiteboard: state.whiteboard,
-
+    messageEntry: state.messageEntry,
   }
 }
 
@@ -57,8 +68,7 @@ const mapDispatch = (dispatch) => {
     getWhiteboard: (id) => {
       dispatch(fetchRoom(id))
     },
-    handleSubmit(message, evt) {
-      evt.preventDefault()
+    sendMessage: (message) => {
       dispatch(addMessage(message))
     }
   }
