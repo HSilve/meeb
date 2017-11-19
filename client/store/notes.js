@@ -26,7 +26,6 @@ export const addNote = (note) =>
       .then(createdNote => dispatch(insertNote(createdNote)))
       .catch(err => console.log(err))
 
-
 export const deleteNote = note =>
   dispatch =>
     axios.delete(`/api/notes/${note.id}`)
