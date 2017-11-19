@@ -22,7 +22,7 @@ export class Whiteboard extends Component {
 
   componentDidMount () {
     let data = document.getElementById('whiteboard').getBoundingClientRect();
-    this.positions = this.generatePositionsArray(data.bottom, data.right,100, 1);
+    this.positions = this.generatePositionsArray(data.height, data.width,100, 1,data.left, data.top );
     console.log("the positionis", this.positions)
 
     console.log('bounding client', data )
@@ -35,23 +35,23 @@ export class Whiteboard extends Component {
     }
 
 // generate random positions
-    generatePositionsArray(maxX, maxY, safeRadius, irregularity) {
+    generatePositionsArray(boardHeight, boardWidth, safeRadius, irregularity, leftBegin, topBegin) {
         // declarations
         var positionsArray = [];
         var r, c;
         var rows;
         var columns;
         // count the amount of rows and columns
-        rows = Math.floor(maxY / safeRadius);
-        columns = Math.floor(maxX / safeRadius);
+        rows = Math.floor(boardWidth / safeRadius);
+        columns = Math.floor(boardHeight / safeRadius);
         // loop through rows
         for (r = 1; r <= rows; r += 1) {
             // loop through columns
             for (c = 1; c <= columns; c += 1) {
                 // populate array with point object
                 positionsArray.push({
-                    x: Math.round(maxX * c / columns) + this.getRandomInt(irregularity * -1, irregularity),
-                    y: Math.round(maxY * r / rows) + this.getRandomInt(irregularity * -1, irregularity)
+                    x: Math.round(boardHeight * c / columns) + leftBegin,
+                    y: Math.round(boardWidth * r / rows) +  topBegin
                 });
             }
         }
@@ -79,6 +79,7 @@ export class Whiteboard extends Component {
 // getRandomPosition(positions, true)
       getPosition() {
         let pos = this.getRandomPosition(true);
+        console.log("the position given", pos)
         return {
           style: {
             position: 'fixed',
@@ -97,9 +98,19 @@ export class Whiteboard extends Component {
       <div id="whiteboard">
       {
         data.map(note => {
-          return (<div key={note.id} style = {this.getPosition().style} >
-            {note.text}
+          return (
+            <div className="aNote" key={note.id} style = {this.getPosition().style} >
+              { note.text &&
+                note.text
+              }
+              { note.image &&
+                <img className="image" src={note.image} />
+              }
+              { note.link &&
+                <link type="text/css" href={note.link} />
+              }
             </div>
+
           )
         } )
       }
