@@ -2,7 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { addNote } from '../store'
-import history from '../history'
 
 class ActionPanel extends React.Component {
   constructor() {
@@ -14,7 +13,8 @@ class ActionPanel extends React.Component {
       linkToggle: false,
       drawToggle: false,
       file: [],
-      name: ''
+      name: '',
+      type: ''
     }
     this.handleFileUpload = this.handleFileUpload.bind(this)
   }
@@ -44,7 +44,6 @@ class ActionPanel extends React.Component {
   }
 
   render() {
-    console.log(history)
     return (
       <div className="fixed-action-btn">
         <button type="submit" onClick={() => this.toggle('expand')}>+</button>
@@ -71,7 +70,6 @@ class ActionPanel extends React.Component {
 }
 
 const mapState = state => {
-  console.log(state)
   return {
     user: state.user,
     whiteboard: state.whiteboard.id
