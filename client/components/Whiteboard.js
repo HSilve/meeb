@@ -1,26 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {fetchRoom} from '../store'
+import {fetchRoom, editNote} from '../store'
 
 export class Whiteboard extends Component {
   constructor (props) {
     super(props)
     this.positions = []
-    this.clickAnImage = this.clickAnImage.bind(this);
-    this.clickALink = this.clickALink.bind(this);
+
   }
 
 //In getBoundingClientREact:
 //x - left most margin of element
 //y- the bottom most margin of element
 //bottom - distance from top to bottom most margin
-  componentWillMount () {
-    // declaration
-    // this.positions = this.generatePositionsArray(2400, 1600, 40, 10);
-        // this.positions = this.generatePositionsArray(800, 800, 60, 1);
-    // this.positions = this.generatePositionsArray(800, 800, 40, 10);
-  }
-
   componentDidMount () {
     let data = document.getElementById('whiteboard').getBoundingClientRect();
     let eNoteWidth = 270;
@@ -34,7 +26,7 @@ export class Whiteboard extends Component {
       return Math.floor(Math.random() * (max - min)) + min;
     }
 
-// generate random positions
+    // generate random positions
     generatePositionsArray(boardHeight, boardWidth, safeHeight, safeWidth, leftBegin, topBegin) {
       let irregularity = 0.5;
         // declarations
@@ -76,17 +68,18 @@ export class Whiteboard extends Component {
         // return position
         return coordinates;
     }
-// getRandomPosition(positions, true)
-      getPosition() {
-        let pos = this.getRandomPosition(true);
-        return {
-          style: {
-            position: 'fixed',
-            left: pos.x,    // computed based on child and parent's height
-            top: pos.y   // computed based on child and parent's width
-          }
+    // getRandomPosition(positions, true)
+    getPosition(noteId) {
+      let pos = this.getRandomPosition(true);
+      this.props.editNote(noteId, {position: [pos.x, pos.y]})
+      return {
+        style: {
+          position: 'fixed',
+          left: pos.x,    // computed based on child and parent's height
+          top: pos.y   // computed based on child and parent's width
         }
       }
+    }
 
 
   render() {
@@ -97,26 +90,52 @@ export class Whiteboard extends Component {
       <div id="whiteboard">
       {
         data.map(note => {
-          return (
-            <div className="aNote" key={note.id} style = {this.getPosition().style} >
-            <div>
-              { note.text &&
-                note.text
-              }
-            </div>
-            <div>
-              { note.image &&
-                <img onClick ={this.clickAnImage} className="image" src={note.image} />
-              }
-            </div>
-            <div>
-              { note.link &&
-                <a type="text/css" href={note.link}>Go Here </a>
-              }
-            </div>
-            </div>
+          {
+          return   note.position ?
+             (
+                  <div className="aNote" key={note.id} style = {{position: "absolute",left: note.position[0], top:note.position[1] }} >
+                  <div>
+                    { note.text &&
+                      note.text
+                    }
+                  </div>
+                  <div>
+                    { note.image &&
+                      <img className="image" src={note.image} />
+                    }
+                  </div>
+                  <div>
+                    { note.link &&
+                      <a type="text/css" href={note.link}>Go Here </a>
+                    }
+                  </div>
+                  </div>
 
-          )
+                )
+
+            :
+              (
+                  <div className="aNote" key={note.id} style = {this.getPosition(note.id).style} >
+                  <div>
+                    { note.text &&
+                      note.text
+                    }
+                  </div>
+                  <div>
+                    { note.image &&
+                      <img className="image" src={note.image} />
+                    }
+                  </div>
+                  <div>
+                    { note.link &&
+                      <a type="text/css" href={note.link}>Go Here </a>
+                    }
+                  </div>
+                  </div>
+
+                )
+              }
+
         } )
       }
       </div>
@@ -126,7 +145,7 @@ export class Whiteboard extends Component {
 
 const mapStateToProps = (state) => ({notes: state.whiteboard.notes})
 
-const mapDispatchToProps = {fetchRoom}
+const mapDispatchToProps = {fetchRoom, editNote}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Whiteboard);
 
