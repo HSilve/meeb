@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import {fetchRoom} from '../store'
 
 export class Whiteboard extends Component {
   constructor (props) {
@@ -7,20 +8,24 @@ export class Whiteboard extends Component {
     this.positions = []
 
   }
+
+//In getBoundingClientREact:
+//x - left most margin of element
+//y- the bottom most margin of element
+//bottom - distance from top to bottom most margin
   componentWillMount () {
-    // declarations
-
+    // declaration
     // this.positions = this.generatePositionsArray(2400, 1600, 40, 10);
-        this.positions = this.generatePositionsArray(800, 800, 60, 1);
-
+        // this.positions = this.generatePositionsArray(800, 800, 60, 1);
     // this.positions = this.generatePositionsArray(800, 800, 40, 10);
-
   }
 
   componentDidMount () {
-    // declarations
     let data = document.getElementById('whiteboard').getBoundingClientRect();
-    console.log("bounding client", data )
+    this.positions = this.generatePositionsArray(data.bottom, data.right,100, 1);
+    console.log("the positionis", this.positions)
+
+    console.log('bounding client', data )
   }
 
     // Returns a random integer between min (included) and max (excluded)
@@ -76,7 +81,7 @@ export class Whiteboard extends Component {
         let pos = this.getRandomPosition(true);
         return {
           style: {
-            position: 'absolute',
+            position: 'fixed',
             left: pos.x,    // computed based on child and parent's height
             top: pos.y   // computed based on child and parent's width
           }
@@ -87,7 +92,6 @@ export class Whiteboard extends Component {
   render() {
     let data = [];
     if (this.props.notes) {data = this.props.notes}
-    console.log("the state notes", this.props.notes)
 
     return (
       <div id="whiteboard">
@@ -106,7 +110,7 @@ export class Whiteboard extends Component {
 
 const mapStateToProps = (state) => ({notes: state.whiteboard.notes})
 
-const mapDispatchToProps = null
+const mapDispatchToProps = {fetchRoom}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Whiteboard);
 
