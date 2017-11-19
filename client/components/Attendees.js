@@ -1,13 +1,16 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
 
 export class Attendees extends Component {
   render() {
-    console.log('Attendees this.props', this.props)
+    const { whiteboard } = this.props
+    const { users }  = whiteboard
     return (
       <div>
-        Maria Betances
+        <p>Host: {whiteboard.host}</p>
+        {
+          whiteboard.users && users.map(user => {return <div key={user.id}>{user.name}</div>})
+        }
       </div>
     )
   }
@@ -17,4 +20,4 @@ const mapState = ({whiteboard, users}) => ({whiteboard, users})
 
 const mapDispatch = null
 
-export default withRouter(connect(mapState, mapDispatch)(Attendees));
+export default connect(mapState, mapDispatch)(Attendees)

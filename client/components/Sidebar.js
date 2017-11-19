@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router'
 import { Chatbox } from './Chatbox'
 import { Attendees } from './Attendees'
-import { withRouter } from 'react-router-dom'
 import { fetchRoom } from '../store/whiteboard'
 
 export class Sidebar extends Component {
@@ -12,7 +12,6 @@ export class Sidebar extends Component {
   }
 
   render() {
-      console.log('Sidebar this.props', this.props)
     return (
       <div className="sidebar">
         <h5 href="#">
@@ -20,7 +19,7 @@ export class Sidebar extends Component {
           <i alt="Brand" className="glyphicon glyphicon-comment">
           </i>
         </h5>
-        <Attendees {...this.props} /> //TO DO
+        <Attendees {...this.props} /> {/*TO DO*/}
         <Chatbox />
       </div>
     );
@@ -30,7 +29,7 @@ export class Sidebar extends Component {
 const mapState = (state) => {
   return {
     whiteboard: state.whiteboard,
-    users: state.users
+    users: state.whiteboard.users
   }
 }
 

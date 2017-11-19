@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchMessages } from '../store/messageEntry'
-import { withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router'
 
 export class MessagesList extends Component {
   componentDidMount(){
