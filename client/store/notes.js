@@ -21,11 +21,11 @@ export const fetchNotes = whiteboardId =>
       .catch(err => console.log(err))
 
 export const addNote = (note) =>
-  dispatch =>
+  dispatch => {
     axios.post(`/api/notes`, { note })
       .then(createdNote => dispatch(insertNote(createdNote)))
       .catch(err => console.log(err))
-
+    }
 
 export const deleteNote = note =>
   dispatch =>
