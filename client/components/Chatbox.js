@@ -5,7 +5,6 @@ import MessagesList from './MessagesList'
 import {fetchAttendees} from '../store/'
 
 export class Chatbox extends Component {
-
   render(){
     console.log('Chatbox', this.props.whiteboardId)
     return(

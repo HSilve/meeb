@@ -34,6 +34,7 @@ export class MessageEntry extends Component {
   }
 
   render() {
+    console.log('MessageEntry console this.props', this.props)
     const { handleSubmit, whiteboard, messageEntry } = this.props
     const {singleMessage} = messageEntry
     return (

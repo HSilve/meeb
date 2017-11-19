@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {fetchMessages} from '../store/messageEntry'
-import {withRouter} from 'react-router-dom'
+import { fetchMessages } from '../store/messageEntry'
+import { withRouter } from 'react-router-dom'
 
 export class MessagesList extends Component {
   componentDidMount(){
@@ -11,7 +11,7 @@ export class MessagesList extends Component {
 
   render () {
     const {messageEntry} = this.props
-    console.log('messageEntry from props', messageEntry)
+    console.log('messageList from props', this.props)
 
     return (
       <div>
@@ -28,12 +28,12 @@ export class MessagesList extends Component {
   }
 }
 
-const mapStateToProps = ({whiteboard, messageEntry}) => ({whiteboard, messageEntry})
+const mapState = ({whiteboard, messageEntry}) => ({whiteboard, messageEntry})
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatch = (dispatch) => ({
   getMessages: (id) => {
     dispatch(fetchMessages(id))
   }
 })
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MessagesList));
+export default withRouter(connect(mapState, mapDispatch)(MessagesList));

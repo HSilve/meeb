@@ -4,7 +4,8 @@ import { Router } from 'react-router-dom'
 import { Route, Switch } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import history from './history'
-import { Main, Login, Signup, UserHome, ActionPanel, ConferenceRoom } from './components'
+import { Main, Login, Signup, UserHome,
+  ActionPanel, ConferenceRoom } from './components'
 import { me } from './store'
 
 /**
@@ -28,7 +29,6 @@ class Routes extends Component {
             <Route path="/action-panel" component={ActionPanel} />
             <Route path="/whiteboards/:id" component={ConferenceRoom} />
             <Route component={ConferenceRoom} />
-
           </Switch>
         </Main>
       </Router>
