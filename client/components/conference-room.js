@@ -1,8 +1,9 @@
 import React from 'react'
 import { Sidebar, Whiteboard, ActionPanel } from './index'
+import {connect} from 'react-redux'
 
 
-export default function ConferenceRoom() {
+export function ConferenceRoom() {
   return (
     <div id="main-space">
       <Sidebar />
@@ -11,3 +12,7 @@ export default function ConferenceRoom() {
     </div>
   )
 }
+
+const mapState = null
+
+export default connect(mapState)(ConferenceRoom)
