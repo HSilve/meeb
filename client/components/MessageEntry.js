@@ -20,7 +20,7 @@ export class MessageEntry extends Component {
   render() {
     const { handleSubmit, whiteboard } = this.props
     const { content } = this.state
-    console.log('This is the MessageEntry whiteboardId', whiteboard)
+
 
     return (
       <form id="new-message-form" onSubmit={evt => handleSubmit(content, evt)}>

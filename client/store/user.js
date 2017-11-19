@@ -10,13 +10,13 @@ const REMOVE_USER = 'REMOVE_USER'
 /**
  * INITIAL STATE
  */
-const defaultUser = {}
+const defaultUser = { name: 'Blanca', id: 1 }
 
 /**
  * ACTION CREATORS
  */
-const getUser = user => ({type: GET_USER, user})
-const removeUser = () => ({type: REMOVE_USER})
+const getUser = user => ({ type: GET_USER, user })
+const removeUser = () => ({ type: REMOVE_USER })
 
 /**
  * THUNK CREATORS
@@ -36,7 +36,7 @@ export const auth = (email, password, method) =>
         history.push('/home')
       })
       .catch(error =>
-        dispatch(getUser({error})))
+        dispatch(getUser({ error })))
 
 export const logout = () =>
   dispatch =>

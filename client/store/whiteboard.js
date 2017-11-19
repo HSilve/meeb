@@ -5,6 +5,7 @@ import socket from '../socket';
 /**
  * ACTION TYPES
  */
+const CREATE_ROOM = 'CREATE_ROOM'
 const GET_ROOM = 'GET_ROOM'
 const UPDATE_ROOM = 'UPDATE_ROOM'
 // const REMOVE_ROOM = 'REMOVE_ROOM'
@@ -17,11 +18,22 @@ const UPDATE_ROOM = 'UPDATE_ROOM'
 /**
  * ACTION CREATORS
  */
+const createRoom = user => ({ type: CREATE_ROOM, user })
 const getRoom = room => ({ type: GET_ROOM, room })
 const updateRoom = room => ({ type: UPDATE_ROOM, room })
 // const removeRoom = () => ({type: REMOVE_ROOM})
 
 // THUNK CREATORS
+
+export const newRoom = user => dispatch => {
+  axios.post('/api/whiteboards', { host: user.name, userId: user.id })
+    .then(res => {
+      dispatch(createRoom(res.data))
+      history.push(`/whiteboards/${res.data.id}`);
+    }
+    )
+    .catch(err => console.error('Could not create room!', err));
+};
 
 export const fetchRoom = (whiteboardId) =>
   dispatch =>
@@ -40,15 +52,22 @@ export const modifyRoom = (room) => dispatch => {
 
 
 // REDUCER
-export default function reducer(state = {}, action) {
+export default function reducer(state = [], action) {
 
   switch (action.type) {
 
+    case CREATE_ROOM:
+      return [...state, action.room]
+
     case GET_ROOM:
-      return action.room;
+      return state.map(room => (
+        action.room.id === room.id ? action.room : room
+      ));
 
     case UPDATE_ROOM:
-      return { ...state, ...action.room }
+      return state.map(room => (
+        action.room.id === room.id ? action.room : room
+      ));
 
     default:
       return state;

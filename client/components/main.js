@@ -16,9 +16,10 @@ const Main = (props) => {
   return (
     <div>
       <nav>
-        <Link to="/action-panel">Action Panel</Link>
+        <Link to="/homepage">Home</Link>
+        <Link to="/homepage">Logout</Link>
       </nav>
-      <hr />
+
       {children}
     </div>
   )

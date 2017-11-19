@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Router } from 'react-router'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, Redirect } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import history from './history'
-import { Main, Login, Signup, UserHome, ActionPanel } from './components'
+import { Main, Login, Signup, UserHome, ActionPanel, Homepage } from './components'
 import { me } from './store'
 import ConferenceRoom from './components/conference-room'
+
 
 /**
  * COMPONENT
@@ -28,6 +29,8 @@ class Routes extends Component {
             <Route path="/signup" component={Signup} />
             <Route path="/action-panel" component={ActionPanel} />
             <Route path="/whiteboards/:id" component={ConferenceRoom} />
+            <Route path="/homepage" component={Homepage} />
+            <Redirect to="/homepage" />
           </Switch>
         </Main>
       </Router>
