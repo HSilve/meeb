@@ -22,8 +22,10 @@ export class Whiteboard extends Component {
 
   componentDidMount () {
     let data = document.getElementById('whiteboard').getBoundingClientRect();
-    this.positions = this.generatePositionsArray(data.height, data.width,100, 1,data.left, data.top );
-    console.log("the positionis", this.positions)
+    let eNoteWidth = 270;
+    let eNoteHeight = 100;
+    this.positions = this.generatePositionsArray(data.height, data.width, eNoteHeight, eNoteWidth, 0.5, data.left, data.top );
+    console.log('the positionis', this.positions)
 
     console.log('bounding client', data )
   }
@@ -35,23 +37,23 @@ export class Whiteboard extends Component {
     }
 
 // generate random positions
-    generatePositionsArray(boardHeight, boardWidth, safeRadius, irregularity, leftBegin, topBegin) {
+    generatePositionsArray(boardHeight, boardWidth, safeHeight, safeWidth,  irregularity, leftBegin, topBegin) {
         // declarations
         var positionsArray = [];
         var r, c;
         var rows;
         var columns;
         // count the amount of rows and columns
-        rows = Math.floor(boardHeight / safeRadius);
-        columns = Math.floor(boardWidth / safeRadius);
+        rows = Math.floor(boardHeight / safeHeight);
+        columns = Math.floor(boardWidth / safeWidth);
         // loop through rows
         for (r = 1; r <= rows; r += 1) {
             // loop through columns
             for (c = 1; c <= columns; c += 1) {
                 // populate array with point object
                 positionsArray.push({
-                    x: Math.round(boardWidth * c / columns) + (this.getRandomInt(irregularity * -1, irregularity)) + leftBegin,
-                    y: Math.round(boardHeight * r / rows) + (this.getRandomInt(irregularity * -1, irregularity))+ topBegin
+                    x: Math.round(boardWidth * c / columns) + (this.getRandomInt(irregularity * -1, irregularity)) + leftBegin/4,
+                    y: Math.round(boardHeight * r / rows) + (this.getRandomInt(irregularity * -1, irregularity))
                 });
             }
         }
@@ -70,7 +72,6 @@ export class Whiteboard extends Component {
         // check if remove taken
         if (removeTaken) {
             // remove element from array
-            // this.positions = this.positions.splice(randomIndex, 1)
             this.positions = [...this.positions.slice(0, randomIndex), ...this.positions.slice(randomIndex + 1)]
         }
         // return position
@@ -79,7 +80,7 @@ export class Whiteboard extends Component {
 // getRandomPosition(positions, true)
       getPosition() {
         let pos = this.getRandomPosition(true);
-        console.log("the position given", pos)
+        console.log('the position given', pos)
         return {
           style: {
             position: 'fixed',
@@ -100,15 +101,21 @@ export class Whiteboard extends Component {
         data.map(note => {
           return (
             <div className="aNote" key={note.id} style = {this.getPosition().style} >
+            <div>
               { note.text &&
                 note.text
               }
+            </div>
+            <div>
               { note.image &&
                 <img className="image" src={note.image} />
               }
+            </div>
+            <div>
               { note.link &&
-                <link type="text/css" href={note.link} />
+                <a type="text/css" href={note.link}>Go Here </a>
               }
+            </div>
             </div>
 
           )
