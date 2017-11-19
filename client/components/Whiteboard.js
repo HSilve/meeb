@@ -85,16 +85,14 @@ export class Whiteboard extends Component {
 
 
   render() {
-    let notes = [
-      {id: 1, text: 'The Best Idea In The World', highlighted: true, link: 'http://www.github.com', userId: 6, whiteboardId: 1, position: []},
-     {id: 2, text: 'Just about the worst Idea Ever', userId: 1, whiteboardId: 1, position: []},
-     {id: 3, text: "I'm just a lone note", userId: 2, whiteboardId: 2, position: []},
-    {id: 4, text: 'I wanna be a branch off the best idea', image: 'http://completecarnivore.com/wp-content/uploads/2016/07/short-rib-location.jpg', userId: 4, whiteboardId: 1, position: []}
-    ]
+    let data = [];
+    if (this.props.notes) {data = this.props.notes}
+    console.log("the state notes", this.props.notes)
+
     return (
       <div id="whiteboard">
       {
-        notes.map(note => {
+        data.map(note => {
           return (<div key={note.id} style = {this.getPosition().style} >
             {note.text}
             </div>
@@ -106,11 +104,9 @@ export class Whiteboard extends Component {
   }
 }
 
-const mapStateToProps = null
-//  {
-//   return {notes: state.whiteboard.notes}
-// }
+const mapStateToProps = (state) => ({notes: state.whiteboard.notes})
 
 const mapDispatchToProps = null
 
 export default connect(mapStateToProps, mapDispatchToProps)(Whiteboard);
+

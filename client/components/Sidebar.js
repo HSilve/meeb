@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Chatbox } from './Chatbox'
-import {Attendees} from './Attendees'
+// import {Attendees} from './Attendees'
 
 export class Sidebar extends Component {
 
@@ -10,7 +10,7 @@ export class Sidebar extends Component {
       <div className="sidebar">
         <h3 href="#">
           <div>Attendees</div>
-          < Attendees />
+          {/* < Attendees /> */}
           <i alt="Brand" className="glyphicon glyphicon-comment">
           </i>
         </h3>
