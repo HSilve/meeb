@@ -40,9 +40,17 @@ body {
 
   #whiteboard {
     width: 70vw;
-    background-color: green;
+    height: 80vh;
   }
   .aUser {
     font: 30%;
   }
+
+  .aNote {
+    background-color: orange;
+    .image {
+      width: 40px;
+    }
+  }
 }
+

@@ -9,8 +9,8 @@ export class Sidebar extends Component {
       <div className="sidebar">
         <h3 href="#">
           <div>Attendees</div>
-          <i alt="Brand" className="glyphicon glyphicon-comment">
-          </i>
+          {/* <i alt="Brand" className="glyphicon glyphicon-comment">
+          </i> */}
         </h3>
         <Chatbox />
       </div>

@@ -10,7 +10,7 @@ export class Attendees extends Component {
   render() {
     let names = ['Maria Betances', 'Blanca Sanchez', 'Evlis Henry', 'Erica Chai']
     const {users} = this.props
-  
+
     return (
       // <div className="row">
         <div className="col s3" id="sidePanel">
