@@ -26,23 +26,24 @@ router.post('/', (req, res, next) => {
   const s3 = new AWS.S3()
 
   s3.putObject({
+    ACL: 'public-read',
     Bucket: 'meeb-whiteboard',
     Key: req.body.note.imageName,
     Body: new Buffer((req.body.note.file).split(',')[1], 'base64'),
     ContentType: req.body.note.fileType,
-    ACL: 'public-read'
   }, (err) => {
-      if (err) console.log(err);
-      console.log('File uploaded to S3');
+      if (err) console.log(err)
+      else {
+        console.log('File uploaded to S3')
+        req.body.note.image = `https://s3.amazonaws.com/meeb-whiteboard/${req.body.note.imageName}`
+
+        Note.create(req.body.note)
+          .then(note => {
+            res.json(note)
+          })
+          .catch(next);
+      }
   })
-
-  req.body.note.image = `https://s3.amazonaws.com/meeb-whiteboard/${req.body.note.imageName}`
-
-  Note.create(req.body.note)
-    .then(note => {
-      res.json(note)
-    })
-    .catch(next);
 })
 
 router.put('/:id', (req, res, next) => {

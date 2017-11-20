@@ -91,7 +91,7 @@ export class Whiteboard extends Component {
       {
         data.map(note => {
           {
-          return   note.position ?
+          return note.position ?
              (
                   <div className="aNote" key={note.id} style = {{position: "absolute",left: note.position[0], top:note.position[1] }} >
                   <div>
@@ -148,4 +148,3 @@ const mapStateToProps = (state) => ({notes: state.whiteboard.notes})
 const mapDispatchToProps = {fetchRoom, editNote}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Whiteboard);
-

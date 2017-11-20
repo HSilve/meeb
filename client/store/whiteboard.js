@@ -7,6 +7,7 @@ import socket from '../socket';
  */
 const GET_ROOM = 'GET_ROOM'
 const UPDATE_ROOM = 'UPDATE_ROOM'
+const UPDATE_NOTE_IN_BOARD = 'UPDATE_NOTE_IN_BOARD'
 // const REMOVE_ROOM = 'REMOVE_ROOM'
 
 /**
@@ -19,6 +20,7 @@ const UPDATE_ROOM = 'UPDATE_ROOM'
  */
 const getRoom = room => ({ type: GET_ROOM, room })
 const updateRoom = room => ({ type: UPDATE_ROOM, room })
+export const updateNoteInBoard = note => ({ type: UPDATE_NOTE_IN_BOARD, note})
 // const removeRoom = () => ({type: REMOVE_ROOM})
 
 // THUNK CREATORS
@@ -49,6 +51,9 @@ export default function reducer(state = {}, action) {
 
     case UPDATE_ROOM:
       return { ...state, ...action.room }
+
+    case UPDATE_NOTE_IN_BOARD:
+      return Object.assign({}, state, { notes: state.notes.concat(action.note) })
 
     default:
       return state;
