@@ -69,7 +69,9 @@ body {
     width: 19vw;
     bottom: 0px;
     left: 0px;
-    font: 50%
+    font: 10%;
+    transition: all .4s ease-in-out;
+
   }
 
   .card {
@@ -86,5 +88,12 @@ body {
     height: 40px;
   }
 
-}
+  .chat-header {
+    background: #293239;
+  	border-radius: 5px 5px 0 0;
+  	color: #fff;
+  	cursor: pointer;
+  	padding: 10px 10px;
+  }
 
+}

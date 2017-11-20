@@ -3,7 +3,7 @@ const { Message } = require('../db/models')
 module.exports = router
 
 router.get('/', (req, res, next) => {
-  Message.findAll({ include: [{ all: true}] })
+  Message.findAll({ include: [{ all: true}], order: [['createdAt', 'ASC']] })
     .then(users => res.json(users))
     .catch(next)
 })
@@ -17,7 +17,10 @@ router.get('/:id', (req, res, next) => {
 router.post('/', (req, res, next) => {
   console.log('Post Req.Body', req.body)
   Message.create(req.body)
-    .then(message => res.json(message))
+    .then(message => {
+      Message.findById(message.id, {include: [{all: true}]})
+      .then(foundMessage => res.json(foundMessage))
+    })
     .catch(next);
 })
 

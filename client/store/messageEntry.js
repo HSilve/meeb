@@ -36,11 +36,12 @@ export const fetchMessages = () =>
 
 export const addMessage = (message) => dispatch => {
   axios.post(`/api/message`, message)
-    // .then(res => res.data)
-    // .then(newMessage => {
-    dispatch(postMessage(message))
-    socket.emit('new-message', message)
-};
+    .then(res => res.data)
+    .then(newMessage => {
+    dispatch(postMessage(newMessage))
+    socket.emit('new-message', newMessage)
+  })
+}
 
 
 export const removeMessage = id => dispatch => {
