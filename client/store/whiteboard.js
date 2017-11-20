@@ -28,7 +28,7 @@ const updateRoom = room => ({ type: UPDATE_ROOM, room })
 // THUNK CREATORS
 
 export const getRooms = user => dispatch => {
-  axios.get(`/api/whiteboards/${user.id}`)
+  axios.get(`/api/whiteboards/myRooms/${user.id}`)
     .then(res => {
       dispatch(findAllRooms(res.data))
     })
