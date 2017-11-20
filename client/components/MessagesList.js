@@ -5,17 +5,17 @@ import { withRouter } from 'react-router'
 
 export class MessagesList extends Component {
   componentDidMount(){
-    this.props.getMessages()
+    const {id} = this.props.match.params
+    this.props.getMessages(id)
   }
 
   render () {
     const { messageEntry } = this.props
+    console.log('message', messageEntry.allMessages)
     return (
       <div id="live-chat">
         {
-          messageEntry.allMessages &&  messageEntry.allMessages.filter(message =>
-            message.whiteboard.id === Number(this.props.match.params.id)
-          ).map(message => {
+          messageEntry.allMessages.length ? messageEntry.allMessages.map(message => {
             return (<div className="blob" id="chat-message" key={message.id}>
               <span className="chip">
                 <img src={message.user.image} />
@@ -23,7 +23,7 @@ export class MessagesList extends Component {
               <span><b>{message.user.name}</b></span>
               <div>{message.text}</div>
             </div>)
-          })
+          }) : null
         }
       </div>
     );
@@ -33,8 +33,8 @@ export class MessagesList extends Component {
 const mapState = ({whiteboard, messageEntry}) => ({whiteboard, messageEntry})
 
 const mapDispatch = (dispatch) => ({
-  getMessages: () => {
-    dispatch(fetchMessages())
+  getMessages: (id) => {
+    dispatch(fetchMessages(id))
   }
 })
 

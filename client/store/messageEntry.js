@@ -26,9 +26,9 @@ export function postMessage(message) {
 
 // THUNK CREATORS
 
-export const fetchMessages = () =>
+export const fetchMessages = (id) =>
   dispatch =>
-    axios.get(`/api/message`)
+    axios.get(`/api/message/${id}`)
       .then(res =>
         dispatch(getMessages(res.data)))
       .catch(err => console.log(err))
