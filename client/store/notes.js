@@ -32,12 +32,12 @@ export const addNote = (note) =>
       .catch(err => console.log(err))
     }
 
-export const deleteNote = note =>
+export const deleteNote = id =>
   dispatch =>
-    axios.delete(`/api/notes/${note.id}`)
+    axios.delete(`/api/notes/${id}`)
       .then(_ => {
-        dispatch(removeNote(note.id))
-        socket.emit('delete-note', note.id)
+        dispatch(removeNote(id))
+        socket.emit('delete-note', id)
       })
       .catch(err => console.log(err))
 
@@ -57,7 +57,7 @@ export default function (state = defaultNotes, action) {
     case INSERT_NOTE:
       return state.concat(action.note)
     case REMOVE_NOTE:
-      return state.filter(note => note.id !== action.noteId)
+      return state.filter(note => note.id != action.noteId)
     case UPDATE_NOTE:
       return state.filter(note => note.id !== action.note.id).concat(action.note)
     default:
