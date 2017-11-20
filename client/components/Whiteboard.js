@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchRoom, editNote, fetchNotes } from '../store'
+import { fetchRoom, editNote, fetchNotes, deleteNote} from '../store'
+import history from 'history'
 
 export class Whiteboard extends Component {
   constructor (props) {
@@ -19,6 +20,8 @@ export class Whiteboard extends Component {
     this.onMouseDown = this.onMouseDown.bind(this)
     this.onMouseUp = this.onMouseUp.bind(this)
     this.onMouseMove = this.onMouseMove.bind(this)
+    this.handleDelete = this.handleDelete.bind(this);
+
   }
 
 //In getBoundingClientREact:
@@ -140,6 +143,11 @@ export class Whiteboard extends Component {
     evt.stopPropagation()
     evt.preventDefault()
   }
+    }
+    handleDelete(evt) {
+      evt.preventDefault();
+      this.props.deleteNote(evt.target.value);
+    }
 
 
   render() {
@@ -166,6 +174,7 @@ export class Whiteboard extends Component {
                     onMouseDown={this.onMouseDown}
                     ref={ref => this.notes[note.id] = ref} >
 
+                  <button value={note.id} onClick={this.handleDelete}>x</button>
                     { note.text &&
                       <div className="card-content">
                         {note.text}
@@ -193,7 +202,7 @@ export class Whiteboard extends Component {
             :
               (
                   <div className="card" key={note.id} style = {this.getPosition(note.id).style} >
-
+                    <button value={note.id} onClick={this.handleDelete}>x</button>
                     { note.text &&
                       <div className="card-content">
                         {note.text}
@@ -227,6 +236,6 @@ export class Whiteboard extends Component {
 
 const mapStateToProps = (state) => ({ notes: state.notes })
 
-const mapDispatchToProps = {fetchRoom, editNote, fetchNotes}
+const mapDispatchToProps = {fetchRoom, editNote, fetchNotes, deleteNote}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Whiteboard);
