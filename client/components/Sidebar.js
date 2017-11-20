@@ -12,7 +12,7 @@ export class Sidebar extends Component {
   }
 
   render() {
-    console.log('sidebar this.props', this.props)
+    
     return (
       <div className="sidebar">
         <h5 href="#">
