@@ -9,7 +9,7 @@ export class Attendees extends Component {
       <div>
         <p>Host: {whiteboard.host}</p>
         {
-          whiteboard.users && users.map(user => {return <div key={user.id}>{user.name}</div>})
+          whiteboard.users && users.map(user => {return <div className="chip" key={user.id}>{user.name}</div>})
         }
       </div>
     )

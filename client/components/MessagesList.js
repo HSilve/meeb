@@ -22,7 +22,7 @@ export class MessagesList extends Component {
       <div>
         {
           messageEntry.allMessages.map(message => {
-            return (<div className="chip" key={message.id}>
+            return (<div className="blob" key={message.id}>
               <span>{message.text}</span>
             </div>)
           })
