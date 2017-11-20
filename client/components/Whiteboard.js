@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchRoom, editNote, fetchNotes } from '../store'
+import { fetchRoom, editNote, fetchNotes, deleteNote } from '../store'
 import history from 'history'
 
 export class Whiteboard extends Component {
@@ -9,6 +9,7 @@ export class Whiteboard extends Component {
     this.positions = []
     this.clickImage = this.clickImage.bind(this);
     this.removePosition = this.removePosition.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
 
   }
 
@@ -97,6 +98,10 @@ export class Whiteboard extends Component {
     evt.preventDefault();
 
   }
+  handleDelete(evt) {
+    evt.preventDefault();
+    this.props.deleteNote(evt.target.value);
+  }
 
 
   render() {
@@ -116,7 +121,7 @@ export class Whiteboard extends Component {
               return note.position ?
                 (
                   <div className="card" key={note.id} style={{ position: 'absolute', left: note.position[0], top: note.position[1] }} >
-
+                    <button value={note.id} onClick={this.handleDelete}>x</button>
                     {note.text &&
                       <div className="card-content">
                         {note.text}
@@ -144,7 +149,7 @@ export class Whiteboard extends Component {
                 :
                 (
                   <div className="card" key={note.id} style={this.getPosition(note.id).style} >
-
+                    <button value={note.id} onClick={this.handleDelete}>x</button>
                     {note.text &&
                       <div className="card-content">
                         {note.text}
@@ -178,6 +183,6 @@ export class Whiteboard extends Component {
 
 const mapStateToProps = (state) => ({ notes: state.notes })
 
-const mapDispatchToProps = { fetchRoom, editNote, fetchNotes }
+const mapDispatchToProps = { fetchRoom, editNote, fetchNotes, deleteNote }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Whiteboard);

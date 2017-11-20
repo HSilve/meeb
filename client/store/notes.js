@@ -1,4 +1,5 @@
 import axios from 'axios'
+import socket from '../socket';
 import { addNoteToBoard } from './whiteboard'
 
 const GET_NOTES = 'GET_NOTES'
@@ -7,10 +8,10 @@ const REMOVE_NOTE = 'REMOVE_NOTE'
 const UPDATE_NOTE = 'UPDATE_NOTE'
 const defaultNotes = []
 
-const getNotes = notes => ({ type: GET_NOTES, notes })
-const insertNote = note => ({ type: INSERT_NOTE, note })
-const removeNote = noteId => ({ type: REMOVE_NOTE, noteId })
-const updateNote = note => ({ type: UPDATE_NOTE, note })
+export const getNotes = notes => ({ type: GET_NOTES, notes })
+export const insertNote = note => ({ type: INSERT_NOTE, note })
+export const removeNote = noteId => ({ type: REMOVE_NOTE, noteId })
+export const updateNote = note => ({ type: UPDATE_NOTE, note })
 
 // takes in whiteboardId and returns all notes in the selected whiteboard
 export const fetchNotes = whiteboardId =>
@@ -26,14 +27,18 @@ export const addNote = (note) =>
     axios.post(`/api/notes`, { note })
       .then(createdNote => {
         dispatch(insertNote(createdNote.data))
+        socket.emit('new-note', createdNote.data)
       })
       .catch(err => console.log(err))
     }
 
-export const deleteNote = note =>
+export const deleteNote = id =>
   dispatch =>
-    axios.delete(`/api/notes/${note.id}`)
-      .then(_ => dispatch(removeNote(note.id)))
+    axios.delete(`/api/notes/${id}`)
+      .then(_ => {
+        dispatch(removeNote(id))
+        socket.emit('delete-note', id)
+      })
       .catch(err => console.log(err))
 
 export const editNote = (id, data) =>
@@ -41,6 +46,7 @@ export const editNote = (id, data) =>
     axios.put(`/api/notes/${id}`, data)
       .then(updatedNote => {
         dispatch(updateNote(updatedNote.data))
+        socket.emit('edit-note', updatedNote.data)
       })
       .catch(err => console.log(err))
 
@@ -51,7 +57,7 @@ export default function (state = defaultNotes, action) {
     case INSERT_NOTE:
       return state.concat(action.note)
     case REMOVE_NOTE:
-      return state.filter(note => note.id !== action.noteId)
+      return state.filter(note => note.id != action.noteId)
     case UPDATE_NOTE:
       return state.filter(note => note.id !== action.note.id).concat(action.note)
     default:

@@ -26,6 +26,27 @@ module.exports = (io) => {
       console.log('broadcast done')
     })
 
+    socket.on('new-note', note => {
+      console.log('new-note', note)
+      socket.broadcast.emit('new-note', note);
+      console.log('broadcast done')
+
+    })
+    socket.on('edit-note', (id, data) => {
+      console.log('edit-note', data)
+      socket.broadcast.emit('edit-note', id, data);
+      console.log('broadcast done')
+
+
+    })
+    socket.on('delete-note', id =>  {
+      console.log('delete-note')
+      socket.broadcast.emit('delete-note', id);
+      console.log('broadcast done')
+
+
+    })
+
     socket.on('disconnect', () => {
       // sockets.delete(socket.id)
       console.log(`Connection ${socket.id} has left the building`)
