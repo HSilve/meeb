@@ -1,12 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {fetchRoom, editNote} from '../store'
+import ReactDOM from 'react-dom'
 
 export class Whiteboard extends Component {
   constructor (props) {
     super(props)
     this.positions = []
-
+    this.notes = {}
+    this.state = {
+      dragging: false,
+      rel: null,
+      pos: {x: 0, y: 0},
+      selectedNote: 0
+    }
+    this.onMouseDown = this.onMouseDown.bind(this)
+    this.onMouseUp = this.onMouseUp.bind(this)
+    this.onMouseMove = this.onMouseMove.bind(this)
   }
 
 //In getBoundingClientREact:
@@ -81,6 +91,42 @@ export class Whiteboard extends Component {
       }
     }
 
+  onMouseDown(evt) {
+    if (evt.button !== 0) return
+    // var computedStyle = window.getComputedStyle(ReactDOM.findDOMNode(this))
+    // pos = { top: parseInt(computedStyle.top), left: parseInt(computedStyle.left) }
+    var pos = this.notes[this.state.selectedNote].getBoundingClientRect()
+    console.log(this.notes[this.state.selectedNote].getBoundingClientRect())
+    this.setState({
+      dragging: true,
+      rel: {
+        x: evt.pageX - pos.left,
+        y: evt.pageY - pos.top
+      }
+    })
+    evt.stopPropagation()
+    evt.preventDefault()
+  }
+
+  onMouseUp(e) {
+    this.setState({dragging: false})
+    e.stopPropagation()
+    e.preventDefault()
+  }
+
+  onMouseMove(e) {
+    console.log('enter')
+    if (!this.state.dragging) return
+    this.setState({
+      pos: {
+        x: e.pageX - this.state.rel.x,
+        y: e.pageY - this.state.rel.y
+      }
+    })
+    console.log(this.state.pos)
+    e.stopPropagation()
+    e.preventDefault()
+  }
 
   render() {
     let data = [];
@@ -93,7 +139,12 @@ export class Whiteboard extends Component {
           {
           return note.position ?
              (
-                  <div className="aNote" key={note.id} style = {{position: "absolute",left: note.position[0], top:note.position[1] }} >
+                  <div className="aNote"
+                    key={note.id}
+                    style = {{position: "absolute",left: this.state.pos.x + 'px', top:this.state.pos.y + 'px', cursor:'pointer' }}
+                    onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt)}}
+                    onMouseMove={this.onMouseMove}
+                    ref={ref => this.notes[note.id] = ref}>
                   <div>
                     { note.text &&
                       note.text
