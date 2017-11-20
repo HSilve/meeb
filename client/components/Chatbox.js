@@ -7,11 +7,11 @@ import {fetchAttendees} from '../store/'
 export class Chatbox extends Component {
   render(){
     return(
-      <div className="popup-box">
-        <div className="popup-head">
+      <div className="chat-box">
           Messages
-        </div>
+         <div className="popup-box">
         <MessagesList />
+        </div>
         <MessageEntry />
       </div>
     )

@@ -47,16 +47,19 @@ body {
 
   .popup-box {
     // display: none;
-    position: fixed;
+    // position: fixed;
+
+    // height: 285px;
+    height: 40vh;
+    float: left;
+    overflow-y: scroll;
+  }
+  .chat-box {
+    background-color: rgb(237, 239, 244);
+    border: 1px solid rgba(29, 49, 91, .3);
+    width: 19vw;
     bottom: 0px;
     left: 0px;
-    height: 285px;
-    background-color: rgb(237, 239, 244);
-    width: 300px;
-    border: 1px solid rgba(29, 49, 91, .3);
-    float: left;
-    height: 50%;
-    overflow-y: scroll;
   }
 
   .card {
