@@ -17,7 +17,6 @@ body {
 
   nav {
     height: 10vh;
-    background-color: blue;
   }
 
   form div {
@@ -59,12 +58,19 @@ body {
     height: 50%;
     overflow-y: scroll;
   }
-  
-  .aNote {
-    background-color: orange;
-    .image {
-      width: 40px;
+
+  .card {
+    width: 250px;
+    height: 150px;
+    .card-image {
+      width: 60px;
     }
+  }
+  .blob {
+    background-color:rgb(164, 173, 190);
+    border-radius: 15px;
+    margin:2px;
+    height: 40px;
   }
 
 }
