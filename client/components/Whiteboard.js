@@ -11,7 +11,8 @@ export class Whiteboard extends Component {
     this.state = {
       dragging: false,
       rel: null,
-      pos: {x: 0, y: 0},
+      pos: {x: this.state && this.notes[this.state.selectedNote].position[0] || 0,
+        y: this.state && this.notes[this.state.selectedNote].position[1] || 0},
       selectedNote: 0
     }
     this.onMouseDown = this.onMouseDown.bind(this)
@@ -131,7 +132,7 @@ export class Whiteboard extends Component {
   render() {
     let data = [];
     if (this.props.notes) {data = this.props.notes}
-
+    console.log(this.notes)
     return (
       <div id="whiteboard">
       {
@@ -141,10 +142,12 @@ export class Whiteboard extends Component {
              (
                   <div className="aNote"
                     key={note.id}
-                    style = {{position: "absolute",left: this.state.pos.x + 'px', top:this.state.pos.y + 'px', cursor:'pointer' }}
-                    onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt)}}
-                    onMouseMove={this.onMouseMove}
-                    ref={ref => this.notes[note.id] = ref}>
+                    style = {{position: "absolute",left:note.position[0], top:note.position[1], cursor:'pointer' }}
+                    // onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt)}}
+                    // onMouseUp={this.onMouseUp}
+                    // onMouseMove={this.onMouseMove}
+                    // ref={ref => this.notes[note.id] = ref}
+                    >
                   <div>
                     { note.text &&
                       note.text
