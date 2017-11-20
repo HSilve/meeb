@@ -19,7 +19,9 @@ export class Whiteboard extends Component {
     let data = document.getElementById('whiteboard').getBoundingClientRect();
     let eNoteWidth = 270;
     let eNoteHeight = 150;
-    this.positions = this.generatePositionsArray(data.height, data.width, eNoteHeight, eNoteWidth, data.left, data.top );
+    // this.positions = this.generatePositionsArray(data.height, data.width, eNoteHeight, eNoteWidth, data.left, data.top );
+    this.positions = this.generatePositionsArray(4000, 4000, eNoteHeight, eNoteWidth, data.left, data.top );
+
   }
 
     // Returns a random integer between min (included) and max (excluded)
