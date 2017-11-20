@@ -2,14 +2,16 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { addMessage } from '../store/messageEntry'
 import { fetchRoom } from '../store/whiteboard'
-import { withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router';
 
 export class MessageEntry extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      content: ''
+      text: ''
     }
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   componentDidMount() {
@@ -17,19 +19,32 @@ export class MessageEntry extends Component {
     this.props.getWhiteboard(id)
   }
 
+  handleSubmit(message, evt) {
+    evt.preventDefault()
+    const whiteboardId = this.props.match.params.id
+    const { text } = message
+    this.props.sendMessage({ text, whiteboardId })
+    this.setState({ text: '' })
+  }
+
+  handleChange(evt) {
+    this.props.messageEntry.singleMessage[evt.target.name] = evt.target.value
+    this.setState({ text: evt.target.value })
+  }
+
   render() {
-    const { handleSubmit, whiteboard } = this.props
-    const { content } = this.state
-
-
+    const { text } = this.state
+    const { messageEntry } = this.props
+    const { singleMessage } = messageEntry
     return (
-      <form id="new-message-form" onSubmit={evt => handleSubmit(content, evt)}>
+      <form id="new-message-form" onSubmit={evt => this.handleSubmit(singleMessage, evt)}>
         <div className="input-group input-group-lg">
           <input
             className="form-control"
             type="text"
-            name="content"
-            value={content}
+            name="text"
+            value={text}
+            onChange={this.handleChange}
             placeholder="Say something nice..."
           />
           <span className="input-group-btn">
@@ -44,7 +59,7 @@ export class MessageEntry extends Component {
 const mapState = (state) => {
   return {
     whiteboard: state.whiteboard,
-
+    messageEntry: state.messageEntry,
   }
 }
 
@@ -53,8 +68,7 @@ const mapDispatch = (dispatch) => {
     getWhiteboard: (id) => {
       dispatch(fetchRoom(id))
     },
-    handleSubmit(message, evt) {
-      evt.preventDefault()
+    sendMessage: (message) => {
       dispatch(addMessage(message))
     }
   }

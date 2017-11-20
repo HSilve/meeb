@@ -36,8 +36,9 @@ export const fetchMessages = () =>
 
 export const addMessage = (message) => dispatch => {
   axios.post(`/api/message`, message)
-    .then(res => dispatch(postMessage(res.data)))
-    .catch(err => console.error(`Could not create ${message}!`, err));
+    .then(res => res.data)
+    .then(newMessage => {dispatch(postMessage(newMessage))
+    socket.emit('new-message', newMessage)})
 };
 
 export const removeMessage = id => dispatch => {
@@ -48,18 +49,18 @@ export const removeMessage = id => dispatch => {
 
 
 // REDUCER
-export default function reducer (state = [], action) {
+export default function reducer (state = {allMessages: [], id: {}, singleMessage: {}}, action) {
 
   switch (action.type) {
 
     case GET_MESSAGES:
-      return action.messages;
+      return {...state, allMessages: action.messages}
 
-    case DELETE_MESSAGE:
-      return state.filter(message => message.id !== action.id);
+    // case DELETE_MESSAGE:
+    //   return state.filter(message => message.id !== action.id);
 
     case POST_MESSAGE:
-      return [...state, action.message]
+      return {...state, allMessages: state.allMessages.concat(action.message), singleMessage: action.message}
 
     default:
       return state;

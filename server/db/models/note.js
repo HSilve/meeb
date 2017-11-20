@@ -17,7 +17,7 @@ const Note = db.define('note', {
   },
   position: {
     type: Sequelize.ARRAY(Sequelize.INTEGER),
-    defaultValue: [100, 100]
+    allowNull: true
   },
   highlighted: {
     type: Sequelize.BOOLEAN,
