@@ -20,7 +20,7 @@ const UPDATE_ROOM = 'UPDATE_ROOM'
  * ACTION CREATORS
  */
 const findAllRooms = rooms => ({ type: FIND_ALL_ROOMS, rooms })
-const createRoom = user => ({ type: CREATE_ROOM, user })
+const createRoom = room => ({ type: CREATE_ROOM, room })
 const getRoom = room => ({ type: GET_ROOM, room })
 const updateRoom = room => ({ type: UPDATE_ROOM, room })
 // const removeRoom = () => ({type: REMOVE_ROOM})
