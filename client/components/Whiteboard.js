@@ -22,7 +22,7 @@ export class Whiteboard extends Component {
     let eNoteWidth = 270;
     let eNoteHeight = 150;
     // this.positions = this.generatePositionsArray(data.height, data.width, eNoteHeight, eNoteWidth, data.left, data.top );
-    this.positions = this.generatePositionsArray(4000, 4000, eNoteHeight, eNoteWidth, data.left, data.top );
+    this.positions = this.generatePositionsArray(1000, 1000, eNoteHeight, eNoteWidth, data.left, data.top );
 
   }
 
