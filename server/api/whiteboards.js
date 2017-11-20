@@ -1,9 +1,21 @@
 const router = require('express').Router()
-const { Whiteboard, Message } = require('../db/models')
+const { Whiteboard, Message, User } = require('../db/models')
 module.exports = router
 
 router.get('/', (req, res, next) => {
   Whiteboard.findAll({ include: [{ all: true, nested: true }] })
+    .then(whiteboards => res.json(whiteboards))
+    .catch(next)
+})
+router.get('/:id', (req, res, next) => {
+  Whiteboard.findAll({
+    include: [{
+      model: User,
+      through: {
+        where: { userId: req.params.id }
+      }
+    }]
+  })
     .then(whiteboards => res.json(whiteboards))
     .catch(next)
 })

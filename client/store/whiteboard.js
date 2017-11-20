@@ -5,6 +5,7 @@ import socket from '../socket';
 /**
  * ACTION TYPES
  */
+const FIND_ALL_ROOMS = 'FIND_ALL_ROOMS'
 const CREATE_ROOM = 'CREATE_ROOM'
 const GET_ROOM = 'GET_ROOM'
 const UPDATE_ROOM = 'UPDATE_ROOM'
@@ -18,6 +19,7 @@ const UPDATE_ROOM = 'UPDATE_ROOM'
 /**
  * ACTION CREATORS
  */
+const findAllRooms = rooms => ({ type: FIND_ALL_ROOMS, rooms })
 const createRoom = user => ({ type: CREATE_ROOM, user })
 const getRoom = room => ({ type: GET_ROOM, room })
 const updateRoom = room => ({ type: UPDATE_ROOM, room })
@@ -25,13 +27,20 @@ const updateRoom = room => ({ type: UPDATE_ROOM, room })
 
 // THUNK CREATORS
 
+export const getRooms = user => dispatch => {
+  axios.get(`/api/whiteboards/${user.id}`)
+    .then(res => {
+      dispatch(findAllRooms(res.data))
+    })
+    .catch(err => console.error('Could not find rooms!', err));
+}
+
 export const newRoom = user => dispatch => {
   axios.post('/api/whiteboards', { host: user.name, userId: user.id })
     .then(res => {
       dispatch(createRoom(res.data))
       history.push(`/whiteboards/${res.data.id}`);
-    }
-    )
+    })
     .catch(err => console.error('Could not create room!', err));
 };
 
@@ -55,6 +64,9 @@ export const modifyRoom = (room) => dispatch => {
 export default function reducer(state = [], action) {
 
   switch (action.type) {
+
+    case FIND_ALL_ROOMS:
+      return action.rooms
 
     case CREATE_ROOM:
       return [...state, action.room]
