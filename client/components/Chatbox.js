@@ -6,7 +6,7 @@ import {fetchAttendees} from '../store/'
 
 export class Chatbox extends Component {
   render(){
-    console.log('this.props', this.props)
+
     return(
       <div className="chat-box">
         <div className="chat-header">
