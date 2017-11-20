@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {fetchRoom, editNote} from '../store'
+import { fetchRoom, editNote, fetchNotes } from '../store'
+import history from 'history'
 
 export class Whiteboard extends Component {
   constructor (props) {
@@ -16,6 +17,7 @@ export class Whiteboard extends Component {
 //y- the bottom most margin of element
 //bottom - distance from top to bottom most margin
   componentDidMount () {
+    this.props.fetchNotes(this.props.whiteboardId)
     let data = document.getElementById('whiteboard').getBoundingClientRect();
     let eNoteWidth = 270;
     let eNoteHeight = 150;
@@ -99,15 +101,19 @@ export class Whiteboard extends Component {
 
   render() {
     let data = [];
-    if (this.props.notes) {data = this.props.notes}
+    if (this.props.notes) {
+      data = this.props.notes
+      data.map(note => {
+        note.position && this.removePosition(note.position)
+      })
+    }
 
     return (
       <div id="whiteboard">
       {
-        data.map(note => {
+        data && data.map(note => {
           {
-            note.position && this.removePosition(note.position)
-          return   note.position ?
+            return   note.position ?
              (
                   <div className="card" key={note.id} style = {{position: 'absolute', left: note.position[0], top: note.position[1] }} >
 
@@ -170,11 +176,8 @@ export class Whiteboard extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({notes: state.whiteboard.notes})
+const mapStateToProps = (state) => ({ notes: state.notes })
 
-const mapDispatchToProps = {fetchRoom, editNote}
+const mapDispatchToProps = {fetchRoom, editNote, fetchNotes}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Whiteboard);
-
-
-

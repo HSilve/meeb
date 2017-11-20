@@ -17,37 +17,53 @@ router.get('/:id', (req, res, next) => {
 })
 
 router.post('/', (req, res, next) => {
-  AWS.config.update(
-    {
-      accessKeyId: AWS_ACCESS_KEY_ID,
-      secretAccessKey: SECRET_ACCESS_KEY,
-    }
-  )
-  const s3 = new AWS.S3()
+  console.log(req.body.note)
+  console.log(req.body.note.file.length)
+  if (req.body.note.file.length !== 0) {
+    AWS.config.update(
+      {
+        accessKeyId: AWS_ACCESS_KEY_ID,
+        secretAccessKey: SECRET_ACCESS_KEY,
+      }
+    )
+    const s3 = new AWS.S3()
 
-  s3.putObject({
-    Bucket: 'meeb-whiteboard',
-    Key: req.body.note.imageName,
-    Body: new Buffer((req.body.note.file).split(',')[1], 'base64'),
-    ContentType: req.body.note.fileType,
-    ACL: 'public-read'
-  }, (err) => {
-      if (err) console.log(err);
-      console.log('File uploaded to S3');
-  })
+    s3.putObject({
+      ACL: 'public-read',
+      Bucket: 'meeb-whiteboard',
+      Key: req.body.note.imageName,
+      Body: new Buffer((req.body.note.file).split(',')[1], 'base64'),
+      ContentType: req.body.note.fileType,
+    }, (err) => {
+        if (err) console.log(err)
+        else {
+          console.log('File uploaded to S3')
+          req.body.note.image = `https://s3.amazonaws.com/meeb-whiteboard/${req.body.note.imageName}`
 
-  req.body.note.image = `https://s3.amazonaws.com/meeb-whiteboard/${req.body.note.imageName}`
-
-  Note.create(req.body.note)
+          Note.create(req.body.note)
+            .then(note => {
+              res.json(note)
+            })
+            .catch(next);
+        }
+    })
+  }
+  else {
+    Note.create(req.body.note)
     .then(note => {
       res.json(note)
     })
     .catch(next);
+  }
 })
 
 router.put('/:id', (req, res, next) => {
   Note.findById(req.params.id)
-    .then(note => res.json(note.update(req.body)))
+    .then(note => note.update(req.body))
+    .then(_ => {
+      Note.findById(req.params.id)
+      .then(updatedNote => res.json(updatedNote))
+    })
     .catch(next);
 })
 

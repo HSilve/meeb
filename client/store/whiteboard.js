@@ -19,6 +19,7 @@ const UPDATE_ROOM = 'UPDATE_ROOM'
  */
 const getRoom = room => ({ type: GET_ROOM, room })
 const updateRoom = room => ({ type: UPDATE_ROOM, room })
+export const addNoteToBoard = note => ({ type: ADD_NOTE_TO_BOARD, note})
 // const removeRoom = () => ({type: REMOVE_ROOM})
 
 // THUNK CREATORS
