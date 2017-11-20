@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { addMessage } from '../store/messageEntry'
-import { fetchRoom } from '../store/whiteboard'
+import { fetchRoom } from '../store/'
 import { withRouter } from 'react-router'
 import { me } from '../store/user'
 
