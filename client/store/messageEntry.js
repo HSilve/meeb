@@ -20,7 +20,7 @@ export function deleteMessage(id) {
 }
 
 export function postMessage(message) {
-  const action = { type: POST_MESSAGE, message };
+  const action = { type: POST_MESSAGE, message, stack: new Error().stack };
   return action;
 }
 
@@ -36,11 +36,12 @@ export const fetchMessages = () =>
 
 export const addMessage = (message) => dispatch => {
   axios.post(`/api/message`, message)
-    .then(res => res.data)
-    .then(newMessage => {
-      dispatch(postMessage(newMessage))
-    socket.emit('new-message', newMessage)})
+    // .then(res => res.data)
+    // .then(newMessage => {
+    dispatch(postMessage(message))
+    socket.emit('new-message', message)
 };
+
 
 export const removeMessage = id => dispatch => {
   dispatch(deleteMessage(id));
@@ -50,7 +51,7 @@ export const removeMessage = id => dispatch => {
 
 
 // REDUCER
-export default function reducer (state = {allMessages: [], id: {}, singleMessage: {}}, action) {
+export default function reducer (state = {allMessages: [], id: {}}, action) {
 
   switch (action.type) {
 
@@ -61,7 +62,7 @@ export default function reducer (state = {allMessages: [], id: {}, singleMessage
     //   return state.filter(message => message.id !== action.id);
 
     case POST_MESSAGE:
-      return {...state, allMessages: state.allMessages.concat(action.message), singleMessage: action.message}
+      return {...state, allMessages: state.allMessages.concat(action.message)}
 
     default:
       return state;
