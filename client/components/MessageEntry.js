@@ -28,7 +28,7 @@ export class MessageEntry extends Component {
   }
 
   handleChange(evt) {
-    this.props.messageEntry.singleMessage[evt.target.name] = evt.target.value
+
     this.setState({ text: evt.target.value })
   }
 
