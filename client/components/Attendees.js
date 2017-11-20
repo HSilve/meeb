@@ -1,23 +1,36 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router'
 
 export class Attendees extends Component {
   render() {
-    const { whiteboard } = this.props
-    const { users }  = whiteboard
+    //getting whiteboard id
+    const whiteboardId = this.props.match.params.id
+    //finding the whiteboard in array of whiteboard returned from state
+    const foundWhiteboard = this.props.whiteboard.find((whiteboard) => {
+      return whiteboardId == whiteboard.id
+    })
+    //getting users from that found whiteboard
+    const { users } = foundWhiteboard
+    console.log('FOUND---', foundWhiteboard)
     return (
       <div>
-        <p>Host: {whiteboard.host}</p>
+        <p>Host: {foundWhiteboard.host}</p>
         {
-          whiteboard.users && users.map(user => {return <div key={user.id}>{user.name}</div>})
+          users.map(user => { return <div key={user.id}>{user.name}</div> })
         }
       </div>
     )
   }
 }
 
-const mapState = ({whiteboard, users}) => ({whiteboard, users})
+const mapState = state => {
+  return {
+    whiteboard: state.whiteboard,
+    user: state.user
+  }
+}
 
 const mapDispatch = null
 
-export default connect(mapState, mapDispatch)(Attendees)
+export default withRouter(connect(mapState, mapDispatch)(Attendees))

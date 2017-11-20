@@ -10,7 +10,7 @@ router.get('/', (req, res, next) => {
 router.get('/myRooms/:id', (req, res, next) => {
   User.findById(req.params.id)
     .then(user => {
-      return user.getWhiteboards()
+      return user.getWhiteboards({ include: [{ all: true, nested: true }] })
     })
     .then(whiteboards => res.json(whiteboards))
     .catch(next)
@@ -35,14 +35,14 @@ router.post('/', (req, res, next) => {
     Whiteboard.create({
       host: req.body.host,
       userId: req.body.userId
-    }
-    )])
+    })])
     .then(result => {
       const user = result[0]
       createdWhiteboard = result[1]
       return createdWhiteboard.addUser(user)
     })
-    .then(response => res.json(createdWhiteboard))
+    .then(response => Whiteboard.findById(createdWhiteboard.id, { include: [{ all: true, nested: true }] }))
+    .then(found => res.json(found))
     .catch(next)
 })
 

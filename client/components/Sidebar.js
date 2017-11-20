@@ -6,7 +6,7 @@ import { Attendees } from './Attendees'
 import { fetchRoom } from '../store/whiteboard'
 
 export class Sidebar extends Component {
-  componentDidMount(){
+  componentDidMount() {
     const { id } = this.props.match.params
     this.props.getWhiteboard(id)
   }
@@ -26,6 +26,7 @@ export class Sidebar extends Component {
   }
 }
 
+// we can do all of this from attendees
 const mapState = (state) => {
   return {
     whiteboard: state.whiteboard,
