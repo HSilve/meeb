@@ -5,13 +5,16 @@ const socket = io(window.location.origin)
 
 socket.on('connect', () => {
   console.log('Connected!')
-
-  socket.on('new-message', message => {
-    console.log('front end new message', message)
-    store.dispatch(postMessage(message));
-    console.log('after dispatch')
-  });
-
 })
+
+socket.on('disconnect', () =>
+  console.log('server did disconnect.')
+)
+
+socket.on('new-message', message => {
+  console.log('front end new message', message)
+  store.dispatch(postMessage(message));
+  console.log('after dispatch')
+});
 
 export default socket

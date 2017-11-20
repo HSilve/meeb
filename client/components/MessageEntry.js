@@ -19,25 +19,23 @@ export class MessageEntry extends Component {
     this.props.getWhiteboard(id)
   }
 
-  handleSubmit(message, evt) {
+  handleSubmit = (evt) => {
     evt.preventDefault()
     const whiteboardId = this.props.whiteboard.id
-    const {text} = message
+    const {text} = this.state
     this.props.sendMessage({text, whiteboardId})
     this.setState({text: ''})
   }
 
   handleChange(evt){
-    this.props.messageEntry.singleMessage[evt.target.name] = evt.target.value
     this.setState({text: evt.target.value})
   }
 
   render() {
     const { text } = this.state
     const { messageEntry } = this.props
-    const { singleMessage } = messageEntry
     return (
-      <form id="new-message-form" onSubmit={evt => this.handleSubmit(singleMessage, evt)}>
+      <form id="new-message-form" onSubmit={this.handleSubmit}>
         <div className="input-group input-group-lg">
           <input
             className="form-control"

@@ -17,11 +17,11 @@ export class MessagesList extends Component {
 
   render () {
     const {messageEntry} = this.props
-    console.log(messageEntry.allMessages)
+    console.log('user', messageEntry.allMessages.user)
     return (
       <div>
         {
-          messageEntry.allMessages.map(message => {
+          messageEntry.allMessages && messageEntry.allMessages.map(message => {
             return (<div className="blob" key={message.id}>
               <span>{message.text}</span>
             </div>)
