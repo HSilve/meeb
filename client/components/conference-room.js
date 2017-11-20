@@ -3,11 +3,13 @@ import { Sidebar, Whiteboard, ActionPanel } from './index'
 import {connect} from 'react-redux'
 
 
-export function ConferenceRoom() {
+export function ConferenceRoom(props) {
+  console.log(props)
   return (
     <div id="main-space">
+
       <Sidebar />
-      <Whiteboard />
+      <Whiteboard whiteboardId={props.match.params.id} />
       <ActionPanel />
     </div>
   )

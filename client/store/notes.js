@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { updateNoteInBoard } from './whiteboard'
+import { addNoteToBoard } from './whiteboard'
 
 const GET_NOTES = 'GET_NOTES'
 const INSERT_NOTE = 'ADD_NOTE'
@@ -17,7 +17,7 @@ export const fetchNotes = whiteboardId =>
   dispatch =>
     axios.get(`/api/whiteboards/${whiteboardId}`)
       .then(whiteboard => {
-        dispatch(getNotes(whiteboard.data))
+        dispatch(getNotes(whiteboard.data.notes))
       })
       .catch(err => console.log(err))
 
@@ -25,7 +25,6 @@ export const addNote = (note) =>
   dispatch => {
     axios.post(`/api/notes`, { note })
       .then(createdNote => {
-        dispatch(updateNoteInBoard(createdNote.data))
         dispatch(insertNote(createdNote.data))
       })
       .catch(err => console.log(err))

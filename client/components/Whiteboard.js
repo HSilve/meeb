@@ -1,23 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {fetchRoom, editNote} from '../store'
-import ReactDOM from 'react-dom'
+import { fetchRoom, editNote, fetchNotes } from '../store'
+import history from 'history'
 
 export class Whiteboard extends Component {
   constructor (props) {
     super(props)
     this.positions = []
-    this.notes = {}
-    this.state = {
-      dragging: false,
-      rel: null,
-      pos: {x: this.state && this.notes[this.state.selectedNote].position[0] || 0,
-        y: this.state && this.notes[this.state.selectedNote].position[1] || 0},
-      selectedNote: 0
-    }
-    this.onMouseDown = this.onMouseDown.bind(this)
-    this.onMouseUp = this.onMouseUp.bind(this)
-    this.onMouseMove = this.onMouseMove.bind(this)
     this.clickImage = this.clickImage.bind(this);
     this.removePosition = this.removePosition.bind(this);
 
@@ -28,6 +17,7 @@ export class Whiteboard extends Component {
 //y- the bottom most margin of element
 //bottom - distance from top to bottom most margin
   componentDidMount () {
+    this.props.fetchNotes(this.props.whiteboardId)
     let data = document.getElementById('whiteboard').getBoundingClientRect();
     let eNoteWidth = 270;
     let eNoteHeight = 150;
@@ -95,42 +85,6 @@ export class Whiteboard extends Component {
       }
     }
 
-  onMouseDown(evt) {
-    if (evt.button !== 0) return
-    // var computedStyle = window.getComputedStyle(ReactDOM.findDOMNode(this))
-    // pos = { top: parseInt(computedStyle.top), left: parseInt(computedStyle.left) }
-    var pos = this.notes[this.state.selectedNote].getBoundingClientRect()
-    console.log(this.notes[this.state.selectedNote].getBoundingClientRect())
-    this.setState({
-      dragging: true,
-      rel: {
-        x: evt.pageX - pos.left,
-        y: evt.pageY - pos.top
-      }
-    })
-    evt.stopPropagation()
-    evt.preventDefault()
-  }
-
-  onMouseUp(e) {
-    this.setState({dragging: false})
-    e.stopPropagation()
-    e.preventDefault()
-  }
-
-  onMouseMove(e) {
-    console.log('enter')
-    if (!this.state.dragging) return
-    this.setState({
-      pos: {
-        x: e.pageX - this.state.rel.x,
-        y: e.pageY - this.state.rel.y
-      }
-    })
-    console.log(this.state.pos)
-    e.stopPropagation()
-    e.preventDefault()
-  }
     removePosition(takenPosition) {
       this.positions = this.positions.filter(aPosition =>
         (aPosition[0] != takenPosition[0]) && (aPosition[1] != takenPosition[1])
@@ -146,11 +100,11 @@ export class Whiteboard extends Component {
   render() {
     let data = [];
     if (this.props.notes) {data = this.props.notes}
-    console.log(this.notes)
+
     return (
       <div id="whiteboard">
       {
-        data.map(note => {
+        data && data.map(note => {
           {
 
             note.position && this.removePosition(note.position)
@@ -217,8 +171,8 @@ export class Whiteboard extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({notes: state.whiteboard.notes})
+const mapStateToProps = (state) => ({ notes: state.notes })
 
-const mapDispatchToProps = {fetchRoom, editNote}
+const mapDispatchToProps = {fetchRoom, editNote, fetchNotes}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Whiteboard);
