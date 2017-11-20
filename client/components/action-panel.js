@@ -46,14 +46,14 @@ class ActionPanel extends React.Component {
 
   render() {
     return (
-      <div className="fixed-action-btn">
-        <button type="submit" onClick={() => this.toggle('expand')}>+</button>
+      <div className="fixed-action-btn horizontal click-to-toggle">
+        <button className="btn-floating btn-large" type="submit" onClick={() => this.toggle('expand')}>+</button>
         {this.state.expandToggle &&
           <span>
-            <div onClick={() => this.toggle('text')}>Text</div>
-            <div onClick={() => this.toggle('image')}>Image</div>
-            <div onClick={() => this.toggle('link')}>Link</div>
-            <div>Draw</div>
+            <div className="btn-floating" onClick={() => this.toggle('text')}>Text</div>
+            <div className="btn-floating" onClick={() => this.toggle('image')}>Image</div>
+            <div className="btn-floating" onClick={() => this.toggle('link')}>Link</div>
+            <div className="btn-floating">Draw</div>
             <form onSubmit={(evt) => { evt.preventDefault(); this.props.handleSubmit(evt, this.state.file, this.state.name, this.state.type, this.props.user.id, this.props.match.params.id) }} >
               {(this.state.textToggle || this.state.linkToggle) && <input name="text" type="text" />}
               {this.state.imageToggle &&

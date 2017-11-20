@@ -6,6 +6,8 @@ export class Whiteboard extends Component {
   constructor (props) {
     super(props)
     this.positions = []
+    this.clickImage = this.clickImage.bind(this);
+    this.removePosition = this.removePosition.bind(this);
 
   }
 
@@ -16,7 +18,7 @@ export class Whiteboard extends Component {
   componentDidMount () {
     let data = document.getElementById('whiteboard').getBoundingClientRect();
     let eNoteWidth = 270;
-    let eNoteHeight = 100;
+    let eNoteHeight = 150;
     this.positions = this.generatePositionsArray(data.height, data.width, eNoteHeight, eNoteWidth, data.left, data.top );
   }
 
@@ -81,6 +83,17 @@ export class Whiteboard extends Component {
       }
     }
 
+    removePosition(takenPosition) {
+      this.positions = this.positions.filter(aPosition =>
+        (aPosition[0] != takenPosition[0]) && (aPosition[1] != takenPosition[1])
+      )
+    }
+
+    clickImage (evt) {
+      evt.preventDefault();
+
+    }
+
 
   render() {
     let data = [];
@@ -91,46 +104,58 @@ export class Whiteboard extends Component {
       {
         data.map(note => {
           {
+            note.position && this.removePosition(note.position)
           return   note.position ?
              (
-                  <div className="aNote" key={note.id} style = {{position: "absolute",left: note.position[0], top:note.position[1] }} >
-                  <div>
+                  <div className="card" key={note.id} style = {{position: 'absolute', left: note.position[0], top: note.position[1] }} >
+
                     { note.text &&
-                      note.text
+                      <div className="card-content">
+                        {note.text}
+                      </div>
                     }
-                  </div>
-                  <div>
+
+
                     { note.image &&
-                      <img className="image" src={note.image} />
+                      <div className="card-image">
+                        <img onClick={this.clickImage} src={note.image} />
+                        </div>
                     }
-                  </div>
-                  <div>
+
+
                     { note.link &&
-                      <a type="text/css" href={note.link}>Go Here </a>
+                      <div className="card-action">
+                        <a type="text/css" href={note.link}>Go Here </a>
+                      </div>
                     }
-                  </div>
+
                   </div>
 
                 )
 
             :
               (
-                  <div className="aNote" key={note.id} style = {this.getPosition(note.id).style} >
-                  <div>
+                  <div className="card" key={note.id} style = {this.getPosition(note.id).style} >
+
                     { note.text &&
-                      note.text
+                      <div className="card-content">
+                        {note.text}
+                      </div>
                     }
-                  </div>
-                  <div>
+
+
                     { note.image &&
-                      <img className="image" src={note.image} />
+                      <div className="card-image">
+                        <img onClick={this.clickImage} className="image" src={note.image} />
+                      </div>
                     }
-                  </div>
-                  <div>
+
+
                     { note.link &&
-                      <a type="text/css" href={note.link}>Go Here </a>
+                      <div className="card-action">
+                        <a type="text/css" href={note.link}>Go Here </a>
+                      </div>
                     }
-                  </div>
                   </div>
 
                 )
@@ -148,4 +173,6 @@ const mapStateToProps = (state) => ({notes: state.whiteboard.notes})
 const mapDispatchToProps = {fetchRoom, editNote}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Whiteboard);
+
+
 

@@ -17,7 +17,7 @@ export class Attendees extends Component {
       <div>
         <p>Host: {foundWhiteboard.host}</p>
         {
-          users.map(user => { return <div key={user.id}>{user.name}</div> })
+          this.props.whiteboard.users && users.map(user => { return <div className="chip" key={user.id}>{user.name}</div> })
         }
       </div>
     )
