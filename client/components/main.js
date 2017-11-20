@@ -16,12 +16,10 @@ const Main = (props) => {
   return (
     <div>
       <nav>
-      <Link to="/Home">Home</Link>
-        <Link to="/Profile">Profile</Link>
-        <Link to="/login">Login</Link>
-        <Link to="/rooms">Rooms</Link>
+        <Link to="/homepage">Home</Link>
+        <Link to="/homepage">Logout</Link>
       </nav>
-      <hr />
+
       {children}
     </div>
   )

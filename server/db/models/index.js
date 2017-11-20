@@ -17,6 +17,7 @@ Drawing.hasMany(Stroke);
 Drawing.belongsTo(User);
 Note.belongsTo(User);
 Whiteboard.belongsToMany(User, { through: 'attendees' });
+User.belongsToMany(Whiteboard, { through: 'attendees' });
 Whiteboard.belongsTo(User);
 Whiteboard.hasMany(Note);
 Whiteboard.hasMany(Drawing);
