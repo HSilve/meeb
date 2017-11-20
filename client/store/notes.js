@@ -1,4 +1,5 @@
 import axios from 'axios'
+import socket from '../socket';
 import { addNoteToBoard } from './whiteboard'
 
 const GET_NOTES = 'GET_NOTES'
@@ -26,6 +27,7 @@ export const addNote = (note) =>
     axios.post(`/api/notes`, { note })
       .then(createdNote => {
         dispatch(insertNote(createdNote.data))
+        socket.emit('new-note', note)
       })
       .catch(err => console.log(err))
     }
@@ -33,7 +35,10 @@ export const addNote = (note) =>
 export const deleteNote = note =>
   dispatch =>
     axios.delete(`/api/notes/${note.id}`)
-      .then(_ => dispatch(removeNote(note.id)))
+      .then(_ => {
+        dispatch(removeNote(note.id))
+        socket.emit('delete-note', note.id)
+      })
       .catch(err => console.log(err))
 
 export const editNote = (id, data) =>
@@ -41,6 +46,7 @@ export const editNote = (id, data) =>
     axios.put(`/api/notes/${id}`, data)
       .then(updatedNote => {
         dispatch(updateNote(updatedNote.data))
+        socket.emit('edit-note', id, data)
       })
       .catch(err => console.log(err))
 
