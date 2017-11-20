@@ -8,6 +8,7 @@ import { newRoom, getRooms } from '../store/whiteboard'
 export class Homepage extends Component {
 
   componentDidMount() {
+    console.log("USER---", this.props.user)
     this.props.getAllRooms(this.props.user);
   }
 

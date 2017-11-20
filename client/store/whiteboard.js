@@ -7,8 +7,6 @@ import socket from '../socket';
  */
 const FIND_ALL_ROOMS = 'FIND_ALL_ROOMS'
 const CREATE_ROOM = 'CREATE_ROOM'
-const GET_ROOM = 'GET_ROOM'
-const UPDATE_ROOM = 'UPDATE_ROOM'
 // const REMOVE_ROOM = 'REMOVE_ROOM'
 
 /**
@@ -21,8 +19,6 @@ const UPDATE_ROOM = 'UPDATE_ROOM'
  */
 const findAllRooms = rooms => ({ type: FIND_ALL_ROOMS, rooms })
 const createRoom = room => ({ type: CREATE_ROOM, room })
-const getRoom = room => ({ type: GET_ROOM, room })
-const updateRoom = room => ({ type: UPDATE_ROOM, room })
 // const removeRoom = () => ({type: REMOVE_ROOM})
 
 // THUNK CREATORS
@@ -44,20 +40,6 @@ export const newRoom = user => dispatch => {
     .catch(err => console.error('Could not create room!', err));
 };
 
-export const fetchRoom = (whiteboardId) =>
-  dispatch =>
-    axios.get(`/api/whiteboards/${whiteboardId}`)
-      .then(res => dispatch(getRoom(res.data)))
-      .catch(err => console.log(err))
-
-export const modifyRoom = (room) => dispatch => {
-  axios.put(`/api/whiteboards/${room.id}`, room)
-    .then(res => {
-      dispatch(updateRoom(res.data))
-      socket.emit('updated-room', res.data);
-    })
-    .catch(err => console.error(err));
-}
 
 
 // REDUCER
@@ -70,16 +52,6 @@ export default function reducer(state = [], action) {
 
     case CREATE_ROOM:
       return [...state, action.room]
-
-    case GET_ROOM:
-      return state.map(room => (
-        action.room.id === room.id ? action.room : room
-      ));
-
-    case UPDATE_ROOM:
-      return state.map(room => (
-        action.room.id === room.id ? action.room : room
-      ));
 
     default:
       return state;

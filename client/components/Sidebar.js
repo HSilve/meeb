@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 import { Chatbox } from './Chatbox'
 import { Attendees } from './Attendees'
-import { fetchRoom } from '../store/whiteboard'
+import { fetchRoom } from '../store'
 
 export class Sidebar extends Component {
   componentDidMount() {
