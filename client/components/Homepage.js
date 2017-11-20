@@ -4,12 +4,13 @@ import { withRouter, NavLink } from 'react-router-dom'
 import { newRoom, getRooms } from '../store/whiteboard'
 
 
-
 export class Homepage extends Component {
 
-  componentDidMount() {
-    console.log("USER---", this.props.user)
-    this.props.getAllRooms(this.props.user);
+  componentWillReceiveProps(nextProps) {
+
+    if (this.props.user !== nextProps.user) {
+      this.props.getAllRooms(nextProps.user)
+    }
   }
 
   render() {
@@ -36,6 +37,7 @@ export class Homepage extends Component {
 }
 
 const mapState = (state) => {
+  console.log("STATE", state)
   return {
     user: state.user,
     allRooms: state.whiteboard
