@@ -17,7 +17,6 @@ body {
 
   nav {
     height: 10vh;
-    background-color: blue;
   }
 
   form div {
@@ -48,23 +47,33 @@ body {
 
   .popup-box {
     // display: none;
-    position: fixed;
-    bottom: 0px;
-    left: 0px;
-    height: 285px;
-    background-color: rgb(237, 239, 244);
-    width: 300px;
-    border: 1px solid rgba(29, 49, 91, .3);
+    // position: fixed;
+
+    // height: 285px;
+    height: 40vh;
     float: left;
-    height: 50%;
     overflow-y: scroll;
   }
-  
-  .aNote {
-    background-color: orange;
-    .image {
-      width: 40px;
+  .chat-box {
+    background-color: rgb(237, 239, 244);
+    border: 1px solid rgba(29, 49, 91, .3);
+    width: 19vw;
+    bottom: 0px;
+    left: 0px;
+  }
+
+  .card {
+    width: 250px;
+    height: 150px;
+    .card-image {
+      width: 60px;
     }
+  }
+  .blob {
+    background-color:rgb(164, 173, 190);
+    border-radius: 15px;
+    margin:2px;
+    height: 40px;
   }
 
 }
