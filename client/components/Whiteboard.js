@@ -101,16 +101,19 @@ export class Whiteboard extends Component {
 
   render() {
     let data = [];
-    if (this.props.notes) {data = this.props.notes}
-    console.log(data)
+    if (this.props.notes) {
+      data = this.props.notes
+      data.map(note => {
+        note.position && this.removePosition(note.position)
+      })
+    }
+
     return (
       <div id="whiteboard">
       {
         data && data.map(note => {
           {
-
-            note.position && this.removePosition(note.position)
-          return   note.position ?
+            return   note.position ?
              (
                   <div className="card" key={note.id} style = {{position: 'absolute', left: note.position[0], top: note.position[1] }} >
 
