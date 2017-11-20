@@ -48,7 +48,11 @@ router.post('/', (req, res, next) => {
 
 router.put('/:id', (req, res, next) => {
   Note.findById(req.params.id)
-    .then(note => res.json(note.update(req.body)))
+    .then(note => note.update(req.body))
+    .then(_ => {
+      Note.findById(req.params.id)
+      .then(updatedNote => res.json(updatedNote))
+    })
     .catch(next);
 })
 

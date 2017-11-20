@@ -39,7 +39,9 @@ export const deleteNote = note =>
 export const editNote = (id, data) =>
   dispatch =>
     axios.put(`/api/notes/${id}`, data)
-      .then(updatedNote => dispatch(updateNote(updatedNote)))
+      .then(updatedNote => {
+        dispatch(updateNote(updatedNote.data))
+      })
       .catch(err => console.log(err))
 
 export default function (state = defaultNotes, action) {

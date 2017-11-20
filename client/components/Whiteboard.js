@@ -100,7 +100,7 @@ export class Whiteboard extends Component {
   render() {
     let data = [];
     if (this.props.notes) {data = this.props.notes}
-
+    console.log(data)
     return (
       <div id="whiteboard">
       {
