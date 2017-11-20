@@ -15,6 +15,7 @@ export class MessagesList extends Component {
     return (
       <div id="live-chat">
         {
+<<<<<<< HEAD
           messageEntry.allMessages &&  messageEntry.allMessages.map(message => {
             console.log('inside .map', message.user)
             return (<div className="blob" id="chat-message" key={message.id}>
@@ -22,6 +23,11 @@ export class MessagesList extends Component {
                   <img src={message.user.image} /></span> }
                 <span><b>{message.user.name}</b></span>
               <div>{message.text}</div>
+=======
+          messageEntry.allMessages && messageEntry.allMessages.map(message => {
+            return (<div key={message.id} className="blob" key={message.id}>
+              <span>{message.text}</span>
+>>>>>>> origin/master
             </div>)
           })
         }
