@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { addNote } from '../store'
+import { withRouter } from 'react-router';
 
 class ActionPanel extends React.Component {
   constructor() {
@@ -47,20 +48,20 @@ class ActionPanel extends React.Component {
     return (
       <div className="fixed-action-btn horizontal click-to-toggle">
         <button className="btn-floating btn-large" type="submit" onClick={() => this.toggle('expand')}>+</button>
-        { this.state.expandToggle &&
-           <span>
-             <div className="btn-floating" onClick={() => this.toggle('text')}>Text</div>
-             <div className="btn-floating" onClick={() => this.toggle('image')}>Image</div>
-             <div className="btn-floating" onClick={() => this.toggle('link')}>Link</div>
-             <div className="btn-floating">Draw</div>
-            <form onSubmit={(evt) => {evt.preventDefault(); this.props.handleSubmit(evt, this.state.file, this.state.name, this.state.type, this.props.user.id, this.props.whiteboard )} } >
-            { (this.state.textToggle || this.state.linkToggle) && <input name="text" type="text" /> }
-            { this.state.imageToggle &&
-              <div>
-                <input name="file" type="file" onChange={this.handleFileUpload} />
-              </div>
-            }
-            <button type="submit">Insert</button>
+        {this.state.expandToggle &&
+          <span>
+            <div className="btn-floating" onClick={() => this.toggle('text')}>Text</div>
+            <div className="btn-floating" onClick={() => this.toggle('image')}>Image</div>
+            <div className="btn-floating" onClick={() => this.toggle('link')}>Link</div>
+            <div className="btn-floating">Draw</div>
+            <form onSubmit={(evt) => { evt.preventDefault(); this.props.handleSubmit(evt, this.state.file, this.state.name, this.state.type, this.props.user.id, this.props.match.params.id) }} >
+              {(this.state.textToggle || this.state.linkToggle) && <input name="text" type="text" />}
+              {this.state.imageToggle &&
+                <div>
+                  <input name="file" type="file" onChange={this.handleFileUpload} />
+                </div>
+              }
+              <button type="submit">Insert</button>
             </form>
           </span>
         }
@@ -72,13 +73,12 @@ class ActionPanel extends React.Component {
 const mapState = state => {
   return {
     user: state.user,
-    whiteboard: state.whiteboard.id
   }
 }
 
 const mapDispatch = dispatch => {
   return {
-    handleSubmit (evt, file, imageName, fileType, userId, whiteboardId) {
+    handleSubmit(evt, file, imageName, fileType, userId, whiteboardId) {
       evt.preventDefault()
       whiteboardId = whiteboardId.toString()
       userId = userId.toString()
@@ -91,4 +91,4 @@ const mapDispatch = dispatch => {
   }
 }
 
-export default connect(mapState, mapDispatch)(ActionPanel)
+export default withRouter(connect(mapState, mapDispatch)(ActionPanel))

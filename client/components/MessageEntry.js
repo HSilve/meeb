@@ -1,9 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { addMessage } from '../store/messageEntry'
+<<<<<<< HEAD
 import { fetchRoom } from '../store/whiteboard'
 import { withRouter } from 'react-router'
 import { me } from '../store/user'
+=======
+import { fetchRoom } from '../store'
+import { withRouter } from 'react-router';
+>>>>>>> origin/master
 
 export class MessageEntry extends Component {
   constructor(props) {
@@ -23,15 +28,23 @@ export class MessageEntry extends Component {
 
   handleSubmit = (evt) => {
     evt.preventDefault()
+<<<<<<< HEAD
     const whiteboardId = this.props.whiteboard.id
     const {text} = this.state
     const userId = this.props.user.id
     this.props.sendMessage({text, whiteboardId, userId})
     this.setState({text: ''})
+=======
+    const whiteboardId = this.props.match.params.id
+    const text = this.state.text
+    this.props.sendMessage({ text, whiteboardId })
+    this.setState({ text: '' })
+>>>>>>> origin/master
   }
 
-  handleChange(evt){
-    this.setState({text: evt.target.value})
+  handleChange(evt) {
+
+    this.setState({ text: evt.target.value })
   }
 
   render() {
