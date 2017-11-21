@@ -11,13 +11,13 @@ import { logout } from '../store'
  *  rendered out by the component's `children`.
  */
 const Main = (props) => {
-  const { children } = props
+  const { children, handleClick } = props
 
   return (
     <div>
       <nav>
         <Link to="/homepage">Home</Link>
-        <Link to="/homepage">Logout</Link>
+        <a href="#" onClick={handleClick}>Logout</a>
       </nav>
       <hr />
       {children}
