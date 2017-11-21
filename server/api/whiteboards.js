@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { Whiteboard, Message, User } = require('../db/models')
+const { Whiteboard, Message, User, Attendees} = require('../db/models')
 module.exports = router
 
 router.get('/', (req, res, next) => {
@@ -54,7 +54,7 @@ router.post('/', (req, res, next) => {
   })
   .then(room => {
     req.body.attendees.forEach(attendee => {
-      room.addUser(attendee)
+      room.addUser(attendee.id)
     })
     return room;
   })

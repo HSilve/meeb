@@ -10,7 +10,7 @@
  * Now that you've got the main idea, check it out in practice below!
  */
 const db = require('../server/db')
-const {User, Message, Note, Whiteboard} = require('../server/db/models')
+const {User, Message, Note, Whiteboard, Attendees} = require('../server/db/models')
 
 async function seed () {
   await db.sync({force: true})
@@ -45,6 +45,17 @@ async function seed () {
     Note.create({text: 'Just about the worst Idea Ever', userId: 1, whiteboardId: 1 }),
     Note.create({text: "I'm just a lone note", userId: 2, whiteboardId: 2 }),
     Note.create({text: 'I wanna be a branch off the best idea', image: 'http://completecarnivore.com/wp-content/uploads/2016/07/short-rib-location.jpg', userId: 4, whiteboardId: 1 })
+  ])
+  await Promise.all([
+    Attendees.create({userId: 2, whiteboardId: 1}),
+    Attendees.create({userId: 3, whiteboardId: 1}),
+    Attendees.create({userId: 4, whiteboardId: 1}),
+    Attendees.create({userId: 5, whiteboardId: 1}),
+    Attendees.create({userId: 6, whiteboardId: 1}),
+    Attendees.create({userId: 1, whiteboardId: 2}),
+    Attendees.create({userId: 5, whiteboardId: 2}),
+    Attendees.create({userId: 3, whiteboardId: 2}),
+    Attendees.create({userId: 4, whiteboardId: 2})
   ])
 
   // Wowzers! We can even `await` on the right-hand side of the assignment operator
