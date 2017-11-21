@@ -61,12 +61,12 @@ router.post('/', (req, res, next) => {
       req.body.attendees.forEach(attendee => {
         room.addUser(attendee.id)
       })
-      room.addUser(req.body.userId);
+
+      room.addUser(req.body.userId)
       return room;
     })
-    .then(board => {
-      res.json(board)
-    })
+    .then(board => res.json(board))
+
     .catch(next)
 })
 
