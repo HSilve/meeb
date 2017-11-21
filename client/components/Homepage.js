@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { withRouter, NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { newRoom, getRooms } from '../store/whiteboard'
+import { withRouter } from 'react-router'
 
 
-export class Homepage extends Component {
+class Homepage extends Component {
 
   componentDidMount() {
     if (this.props.user.id) {

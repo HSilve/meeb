@@ -37,6 +37,7 @@ class MessageEntry extends Component {
   render() {
     const { text } = this.state
     const { messageEntry } = this.props
+    console.log('messageEntry', this.props)
     return (
       <form id="new-message-form" onSubmit={this.handleSubmit}>
         <div className="input-group input-group-lg">
