@@ -5,27 +5,25 @@ import { withRouter } from 'react-router'
 
 export class MessagesList extends Component {
   componentDidMount(){
-    const { id } = this.props.match.params
+    const {id} = this.props.match.params
     this.props.getMessages(id)
-    this.sortDate = this.sortDate.bind(this)
-  }
-
-// TO DO, sort messages based on dates!!!
-  sortDate(arr){
-    arr.sort((a, b) => {return new Date(b.createdAt) - new Date(a.createdAt)})
   }
 
   render () {
-    const {messageEntry} = this.props
-    console.log('user', messageEntry.allMessages.user)
+    const { messageEntry } = this.props
+    console.log('message', messageEntry.allMessages)
     return (
-      <div>
+      <div id="live-chat">
         {
-          messageEntry.allMessages && messageEntry.allMessages.map(message => {
-            return (<div key={message.id} className="blob" key={message.id}>
-              <span>{message.text}</span>
+          messageEntry.allMessages.length ? messageEntry.allMessages.map(message => {
+            return (<div className="blob" id="chat-message" key={message.id}>
+              <span className="chip">
+                <img src={message.user.image} />
+              </span>
+              <span><b>{message.user.name}</b></span>
+              <div>{message.text}</div>
             </div>)
-          })
+          }) : null
         }
       </div>
     );

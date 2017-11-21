@@ -5,8 +5,8 @@ import socket from '../socket';
 /**
  * ACTION TYPES
  */
-const GET_ROOM = 'GET_ROOM'
-const UPDATE_ROOM = 'UPDATE_ROOM'
+const FIND_ALL_ROOMS = 'FIND_ALL_ROOMS'
+const CREATE_ROOM = 'CREATE_ROOM'
 // const REMOVE_ROOM = 'REMOVE_ROOM'
 
 /**
@@ -17,39 +17,41 @@ const UPDATE_ROOM = 'UPDATE_ROOM'
 /**
  * ACTION CREATORS
  */
-const getRoom = room => ({ type: GET_ROOM, room })
-const updateRoom = room => ({ type: UPDATE_ROOM, room })
-export const addNoteToBoard = note => ({ type: ADD_NOTE_TO_BOARD, note})
+const findAllRooms = rooms => ({ type: FIND_ALL_ROOMS, rooms })
+const createRoom = room => ({ type: CREATE_ROOM, room })
 // const removeRoom = () => ({type: REMOVE_ROOM})
 
 // THUNK CREATORS
 
-export const fetchRoom = (whiteboardId) =>
-  dispatch =>
-    axios.get(`/api/whiteboards/${whiteboardId}`)
-      .then(res => dispatch(getRoom(res.data)))
-      .catch(err => console.log(err))
-
-export const modifyRoom = (room) => dispatch => {
-  axios.put(`/api/whiteboards/${room.id}`, room)
+export const getRooms = user => dispatch => {
+  axios.get(`/api/whiteboards/myRooms/${user.id}`)
     .then(res => {
-      dispatch(updateRoom(res.data))
-      socket.emit('updated-room', res.data);
+      dispatch(findAllRooms(res.data))
     })
-    .catch(err => console.error(err));
+    .catch(err => console.error('Could not find rooms!', err));
 }
+
+export const newRoom = user => dispatch => {
+  axios.post('/api/whiteboards', { host: user.name, userId: user.id })
+    .then(res => {
+      dispatch(createRoom(res.data))
+      history.push(`/whiteboards/${res.data.id}`);
+    })
+    .catch(err => console.error('Could not create room!', err));
+};
+
 
 
 // REDUCER
-export default function reducer(state = {}, action) {
+export default function reducer(state = [], action) {
 
   switch (action.type) {
 
-    case GET_ROOM:
-      return action.room;
+    case FIND_ALL_ROOMS:
+      return action.rooms
 
-    case UPDATE_ROOM:
-      return { ...state, ...action.room }
+    case CREATE_ROOM:
+      return [...state, action.room]
 
     default:
       return state;

@@ -1,4 +1,4 @@
-import {createStore, combineReducers, applyMiddleware} from 'redux'
+import { createStore, combineReducers, applyMiddleware } from 'redux'
 import createLogger from 'redux-logger'
 import thunkMiddleware from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
@@ -6,11 +6,12 @@ import user from './user'
 import whiteboard from './whiteboard'
 import notes from './notes'
 import messageEntry from './messageEntry'
+import singleWhiteboard from './singleWhiteboard'
 
-const reducer = combineReducers({user, notes, whiteboard, messageEntry})
+const reducer = combineReducers({ user, notes, whiteboard, messageEntry, singleWhiteboard })
 const middleware = composeWithDevTools(applyMiddleware(
   thunkMiddleware,
-  createLogger({collapsed: true})
+  createLogger({ collapsed: true })
 ))
 const store = createStore(reducer, middleware)
 
@@ -19,3 +20,4 @@ export * from './user'
 export * from './whiteboard'
 export * from './notes'
 export * from './messageEntry'
+export * from './singleWhiteboard'
