@@ -1,13 +1,12 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import MessageEntry from './MessageEntry'
 import MessagesList from './MessagesList'
-import {fetchAttendees} from '../store/'
+import { withRouter } from 'react-router'
 
-export class Chatbox extends Component {
+class Chatbox extends Component {
   render(){
-
-    return(
+    return (
       <div className="chat-box">
         <div className="chat-header">
           Messages
@@ -21,18 +20,7 @@ export class Chatbox extends Component {
   }
 }
 
-const mapState = (state, ownProps) => {
-  return {
-    attendees: state.attendees,
-    whiteboardId: ownProps.whiteboardId
-  }
-}
-const mapDispatch = (dispatch) => {
-  return {
-    getAttendees: (id) => {
-      dispatch(fetchAttendees(id))
-    },
-  }
-}
+const mapState = null
+const mapDispatch = null
 
-export default connect(mapState, mapDispatch)(Chatbox)
+export default withRouter(connect(mapState, mapDispatch)(Chatbox))

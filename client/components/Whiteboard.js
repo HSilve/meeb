@@ -2,8 +2,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchRoom, editNote, fetchNotes, deleteNote} from '../store'
+import { withRouter } from 'react-router'
 
-export class Whiteboard extends Component {
+class Whiteboard extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -28,7 +29,8 @@ export class Whiteboard extends Component {
   //y- the bottom most margin of element
   //bottom - distance from top to bottom most margin
   componentDidMount() {
-    this.props.fetchNotes(this.props.whiteboardId)
+    console.log('Whiteboard notes', this.props.match.params.id)
+    this.props.fetchNotes(this.props.match.params.id)
     let data = document.getElementById('whiteboard').getBoundingClientRect();
     let eNoteWidth = 270;
     let eNoteHeight = 150;
@@ -254,4 +256,4 @@ const mapStateToProps = (state) => ({ notes: state.notes })
 
 const mapDispatchToProps = { fetchRoom, editNote, fetchNotes, deleteNote }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Whiteboard);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Whiteboard));
