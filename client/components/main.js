@@ -11,16 +11,26 @@ import { logout } from '../store'
  *  rendered out by the component's `children`.
  */
 const Main = (props) => {
-  const { children } = props
+  const { children, isLoggedIn, handleClick } = props
 
   return (
     <div>
       <nav>
-        <Link to="/homepage">Home</Link>
-        <Link to="/homepage">Logout</Link>
+        { isLoggedIn ?
+          <span>
+            <Link to="/homepage">Your Profile</Link>
+            <a href="#" onClick={handleClick}>Logout</a>
+          </span>
+          :
+          <span>
+            <Link to="/login">Login</Link>
+            <Link to="/signup">Signup</Link>
+          </span>
+        }
       </nav>
-
-      {children}
+      <div className="children">
+        {children}
+      </div>
     </div>
   )
 }

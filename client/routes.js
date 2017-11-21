@@ -5,7 +5,7 @@ import { Route, Switch, Redirect } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import history from './history'
 import {
-  Main, Login, Signup, UserHome,
+  Main, Login, Signup, Home,
   ActionPanel, ConferenceRoom, Homepage
 } from './components'
 import { me } from './store'
@@ -29,10 +29,16 @@ class Routes extends Component {
             {/* Routes placed here are available to all visitors */}
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
-            <Route path="/action-panel" component={ActionPanel} />
-            <Route path="/whiteboards/:id" component={ConferenceRoom} />
-            <Route path="/homepage" component={Homepage} />
-            <Redirect to="/homepage" />
+            {
+              isLoggedIn &&
+              <Switch>
+                {/* Routes placed here are available to all visitors */}
+                <Route exact path="/home" component={Home} />
+                <Route path="/whiteboards/:id" component={ConferenceRoom} />
+                <Route exact path="/homepage" component={Homepage} />
+                <Redirect to="/homepage" />
+              </Switch>
+            }
           </Switch>
         </Main>
       </Router>
