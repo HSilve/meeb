@@ -4,10 +4,7 @@ import { Router } from 'react-router-dom'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import history from './history'
-import {
-  Main, Login, Signup, Home,
-  ActionPanel, ConferenceRoom, Homepage
-} from './components'
+import { Main, Login, Signup, Home, ConferenceRoom, Homepage, NewSessionForm } from './components'
 import { me } from './store'
 
 
@@ -25,9 +22,10 @@ class Routes extends Component {
     return (
       <Router history={history}>
         <Main>
-          <Switch>
+          <Switch id="switchSpace">
             {/* Routes placed here are available to all visitors */}
             <Route path="/login" component={Login} />
+            <Route path="/ns" component={NewSessionForm} />
             <Route path="/signup" component={Signup} />
             {
               isLoggedIn &&

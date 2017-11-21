@@ -6,6 +6,10 @@ const Whiteboard = db.define('whiteboard', {
     type: Sequelize.STRING,
     allowNull: false
   },
+  name: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
   date: {
     type: Sequelize.DATEONLY
   }

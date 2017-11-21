@@ -5,7 +5,7 @@ import { fetchRoom } from '../store'
 import { withRouter } from 'react-router'
 import { me } from '../store/user'
 
-export class MessageEntry extends Component {
+class MessageEntry extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -18,7 +18,6 @@ export class MessageEntry extends Component {
   componentDidMount() {
     const { id } = this.props.match.params
     this.props.getWhiteboard(id)
-
   }
 
   handleSubmit = (evt) => {
@@ -38,7 +37,7 @@ export class MessageEntry extends Component {
   render() {
     const { text } = this.state
     const { messageEntry } = this.props
-
+    console.log('messageEntry', this.props)
     return (
       <form id="new-message-form" onSubmit={this.handleSubmit}>
         <div className="input-group input-group-lg">
