@@ -23,10 +23,8 @@ export class Homepage extends Component {
   render() {
     return (
       <div>
-        <h3>Time to put your thinking cap on!</h3>
-
+        <h2>Welcome, {this.props.user.name}</h2>
         <button onClick={() => this.props.createRoom(this.props.user)}>New Session</button>
-
         <h5>Hosted</h5>
         {
           this.props.allRooms.filter(room => {
