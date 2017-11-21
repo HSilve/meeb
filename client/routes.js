@@ -6,7 +6,8 @@ import PropTypes from 'prop-types'
 import history from './history'
 import {
   Main, Login, Signup, UserHome,
-  ActionPanel, ConferenceRoom, Homepage
+  ActionPanel, ConferenceRoom, Homepage,
+  NewSessionForm
 } from './components'
 import { me } from './store'
 
@@ -25,9 +26,10 @@ class Routes extends Component {
     return (
       <Router history={history}>
         <Main>
-          <Switch>
+          <Switch id="switchSpace">
             {/* Routes placed here are available to all visitors */}
             <Route path="/login" component={Login} />
+            <Route path="/ns" component={NewSessionForm} />
             <Route path="/signup" component={Signup} />
             <Route path="/action-panel" component={ActionPanel} />
             <Route path="/whiteboards/:id" component={ConferenceRoom} />

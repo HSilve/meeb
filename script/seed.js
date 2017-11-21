@@ -27,8 +27,8 @@ async function seed () {
     User.create({email: 'Evlis@email.com', password: '456', name: 'Evlis Henry'})
   ])
   await Promise.all([
-    Whiteboard.create({host: "No one at all", userId: 1}),
-    Whiteboard.create({host: "FullStack", userId: 2})
+    Whiteboard.create({name: 'Best Dog Treats', host: 'Cody', userId: 1}),
+    Whiteboard.create({name: 'FullStack', host: 'Murphy', userId: 2})
 
   ])
 
@@ -41,7 +41,7 @@ async function seed () {
     Message.create({text: 'Hey, do not forget about me', userId: 2, whiteboardId: 1 })
   ])
   await Promise.all([
-    Note.create({text: 'The Best Idea In The World', highlighted: true, link: "http://www.github.com", userId: 6, whiteboardId: 1}),
+    Note.create({text: 'The Best Idea In The World', highlighted: true, link: 'http://www.github.com', userId: 6, whiteboardId: 1}),
     Note.create({text: 'Just about the worst Idea Ever', userId: 1, whiteboardId: 1 }),
     Note.create({text: "I'm just a lone note", userId: 2, whiteboardId: 2 }),
     Note.create({text: 'I wanna be a branch off the best idea', image: 'http://completecarnivore.com/wp-content/uploads/2016/07/short-rib-location.jpg', userId: 4, whiteboardId: 1 })

@@ -28,22 +28,38 @@ router.put('/:whiteboardId', (req, res, next) => {
     .catch(next)
 })
 
+// router.post('/', (req, res, next) => {
+//   let createdWhiteboard = null;
+//   Promise.all([
+//     User.findById(req.body.userId),
+//     Whiteboard.create({
+//       host: req.body.host,
+//       userId: req.body.userId
+//     })])
+//     .then(result => {
+//       const user = result[0]
+//       createdWhiteboard = result[1]
+//       return createdWhiteboard.addUser(user)
+//     })
+//     .then(response => Whiteboard.findById(createdWhiteboard.id, { include: [{ all: true, nested: true }] }))
+//     .then(found => res.json(found))
+//     .catch(next)
+// })
+
 router.post('/', (req, res, next) => {
-  let createdWhiteboard = null;
-  Promise.all([
-    User.findById(req.body.userId),
-    Whiteboard.create({
-      host: req.body.host,
-      userId: req.body.userId
-    })])
-    .then(result => {
-      const user = result[0]
-      createdWhiteboard = result[1]
-      return createdWhiteboard.addUser(user)
+  Whiteboard.create({
+    name: req.body.name,
+    host: req.body.host,
+    userId: req.body.userId
+  })
+  .then(room => {
+    req.body.attendees.forEach(attendee => {
+      room.addUser(attendee)
     })
-    .then(response => Whiteboard.findById(createdWhiteboard.id, { include: [{ all: true, nested: true }] }))
-    .then(found => res.json(found))
-    .catch(next)
+    return room;
+  })
+  .then( board => res.json(board))
+  .catch(next)
 })
 
 router.delete('/:whiteboardId', (req, res, next) => {
