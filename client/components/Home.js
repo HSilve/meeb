@@ -7,7 +7,9 @@ const Home = (props) => {
 
   return (
     <div>
-      <h1>HOME</h1>
+      <div className="children">
+        <h1>HOME</h1>
+      </div>
     </div>
   )
 }

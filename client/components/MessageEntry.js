@@ -61,7 +61,7 @@ export class MessageEntry extends Component {
 
 const mapState = (state) => {
   return {
-    whiteboard: state.whiteboard,
+    whiteboard: state.singleWhiteboard,
     messageEntry: state.messageEntry,
     user: state.user,
   }

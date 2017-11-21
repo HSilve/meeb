@@ -32,7 +32,6 @@ class Routes extends Component {
             {
               isLoggedIn &&
               <Switch>
-                {/* Routes placed here are available to all visitors */}
                 <Route exact path="/home" component={Home} />
                 <Route path="/whiteboards/:id" component={ConferenceRoom} />
                 <Route exact path="/homepage" component={Homepage} />
