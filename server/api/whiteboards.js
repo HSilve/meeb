@@ -10,9 +10,14 @@ router.get('/', (req, res, next) => {
 router.get('/myRooms/:id', (req, res, next) => {
   User.findById(req.params.id)
     .then(user => {
+      //get all where the user is an attendee
       return user.getWhiteboards({ include: [{ all: true, nested: true }] })
     })
-    .then(whiteboards => res.json(whiteboards))
+    .then(whiteboards => {
+      console.log("WHITEBOARDS--", whiteboards)
+      res.json(whiteboards)
+    })
+
     .catch(next)
 })
 router.get('/:whiteboardId', (req, res, next) => {
@@ -56,10 +61,12 @@ router.post('/', (req, res, next) => {
       req.body.attendees.forEach(attendee => {
         room.addUser(attendee.id)
       })
+
       room.addUser(req.body.userId)
       return room;
     })
     .then(board => res.json(board))
+
     .catch(next)
 })
 
