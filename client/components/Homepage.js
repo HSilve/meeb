@@ -27,7 +27,7 @@ export class Homepage extends Component {
 
         <button onClick={() => this.props.createRoom(this.props.user)}>New Session</button>
 
-        <h5>You've hosted</h5>
+        <h5>Hosted</h5>
         {
           this.props.allRooms.filter(room => {
             return room.host === this.props.user.name
@@ -39,7 +39,7 @@ export class Homepage extends Component {
               )
             })
         }
-        <h5>You've attended</h5>
+        <h5>Attended</h5>
         {
           this.props.allRooms.filter(room => {
             return room.host !== this.props.user.name
