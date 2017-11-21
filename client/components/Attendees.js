@@ -2,10 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 
-
-export class Attendees extends Component {
+class Attendees extends Component {
   render() {
-
     const foundWhiteboard = this.props.whiteboard
     const { users } = foundWhiteboard
     return (

@@ -1,15 +1,15 @@
 import React from 'react'
 import { Sidebar, Whiteboard, ActionPanel } from './index'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router'
 
 
-export function ConferenceRoom(props) {
-  console.log(props)
+export function ConferenceRoom() {
   return (
     <div id="main-space">
 
       <Sidebar />
-      <Whiteboard whiteboardId={props.match.params.id} />
+      <Whiteboard />
       <ActionPanel />
     </div>
   )
@@ -17,4 +17,4 @@ export function ConferenceRoom(props) {
 
 const mapState = null
 
-export default connect(mapState)(ConferenceRoom)
+export default withRouter(connect(mapState)(ConferenceRoom))
