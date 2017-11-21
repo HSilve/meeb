@@ -12,7 +12,6 @@ export class Sidebar extends Component {
   }
 
   render() {
-    console.log('attendees', this.props)
     return (
       <div className="sidebar">
         <h5 href="#">
