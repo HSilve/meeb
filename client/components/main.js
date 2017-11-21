@@ -19,7 +19,7 @@ const Main = (props) => {
         <Link to="/homepage">Home</Link>
         <Link to="/homepage">Logout</Link>
       </nav>
-
+      <hr />
       {children}
     </div>
   )

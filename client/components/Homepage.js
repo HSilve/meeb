@@ -25,7 +25,8 @@ class Homepage extends Component {
     return (
       <div>
         <h2>Welcome, {this.props.user.name}</h2>
-        <button onClick={() => this.props.createRoom(this.props.user)}>New Session</button>
+        {/* <button onClick={() => this.props.createRoom(this.props.user)}>New Session</button> */}
+        <NavLink to='/ns'>Show Form </NavLink>
         <h5>Hosted</h5>
         {
           this.props.allRooms.filter(room => {
