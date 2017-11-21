@@ -28,7 +28,7 @@ export class Homepage extends Component {
         <h5>Hosted</h5>
         {
           this.props.allRooms.filter(room => {
-            return room.host === this.props.user.name
+            return room.userId === this.props.user.id
           })
             .map(result => {
               return (<div key={result.id}>
@@ -40,7 +40,7 @@ export class Homepage extends Component {
         <h5>Attended</h5>
         {
           this.props.allRooms.filter(room => {
-            return room.host !== this.props.user.name
+            return room.userId !== this.props.user.id
           })
             .map(result => {
               return (<div key={result.id}>
