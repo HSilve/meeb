@@ -1,14 +1,24 @@
+/* eslint-disable no-lone-blocks */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchRoom, editNote, fetchNotes, deleteNote } from '../store'
-import history from 'history'
+import { fetchRoom, editNote, fetchNotes, deleteNote} from '../store'
 
 export class Whiteboard extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      dragging: false,
+      rel: null,
+      pos: {x: null, y: null},
+      selectedNote: 0
+    }
+
     this.positions = []
     this.clickImage = this.clickImage.bind(this);
     this.removePosition = this.removePosition.bind(this);
+    this.onMouseDown = this.onMouseDown.bind(this)
+    this.onMouseUp = this.onMouseUp.bind(this)
+    this.onMouseMove = this.onMouseMove.bind(this)
     this.handleDelete = this.handleDelete.bind(this);
 
   }
@@ -24,11 +34,20 @@ export class Whiteboard extends Component {
     let eNoteHeight = 150;
     // this.positions = this.generatePositionsArray(data.height, data.width, eNoteHeight, eNoteWidth, data.left, data.top );
     this.positions = this.generatePositionsArray(4000, 4000, eNoteHeight, eNoteWidth, data.left, data.top);
-
   }
 
-  // Returns a random integer between min (included) and max (excluded)
-  // Using Math.round() will give you a non-uniform distribution!
+  componentDidUpdate(props, state) {
+    if (this.state.dragging && !state.dragging) {
+      document.addEventListener('mousemove', this.onMouseMove)
+      document.addEventListener('mouseup', this.onMouseUp)
+    } else if (!this.state.dragging && state.dragging) {
+      document.removeEventListener('mousemove', this.onMouseMove)
+      document.removeEventListener('mouseup', this.onMouseUp)
+    }
+  }
+
+    // Returns a random integer between min (included) and max (excluded)
+    // Using Math.round() will give you a non-uniform distribution!
   getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
   }
@@ -94,10 +113,53 @@ export class Whiteboard extends Component {
     )
   }
 
-  clickImage(evt) {
+  clickImage (evt) {
     evt.preventDefault();
-
   }
+
+  //when user clicks mouse down, dragging state is set to true and new relative position
+  //is calculated, the position is set to null
+  onMouseDown(evt) {
+    if (evt.button !== 0) return
+
+    var pos = evt.target.getBoundingClientRect()
+    this.setState({
+      dragging: true,
+      rel: {
+        x: evt.pageX - pos.left,
+        y: evt.pageY - pos.top
+      },
+      pos: {
+        x: null,
+        y: null
+      }
+    })
+    evt.stopPropagation()
+    evt.preventDefault()
+  }
+
+  //once mouse is released, the new position of note is updated in db
+  //and dragging is set to false
+  onMouseUp(evt) {
+    this.props.editNote(this.state.selectedNote, {position: [this.state.pos.x, this.state.pos.y]})
+    evt.stopPropagation()
+    evt.preventDefault()
+    this.setState({dragging: false})
+  }
+
+  //when state.pos is set to anything but null, the top and left of card is set to state.pos instead of note.position[0] & note.position[1]
+  onMouseMove(evt) {
+    if (!this.state.dragging) return
+    this.setState({
+      pos: {
+        x: evt.pageX - this.state.rel.x,
+        y: evt.pageY - this.state.rel.y
+      }
+    })
+    evt.stopPropagation()
+    evt.preventDefault()
+  }
+
   handleDelete(evt) {
     evt.preventDefault();
     this.props.deleteNote(evt.target.value);
@@ -115,14 +177,21 @@ export class Whiteboard extends Component {
 
     return (
       <div id="whiteboard">
-        {
-          data && data.map(note => {
-            {
-              return note.position ?
-                (
-                  <div className="card" key={note.id} style={{ position: 'absolute', left: note.position[0], top: note.position[1] }} >
-                    <button value={note.id} onClick={this.handleDelete}>x</button>
-                    {note.text &&
+      {
+        data && data.map(note => {
+          {
+            return   note.position ?
+             (
+                  <div
+                    className="card"
+                    key={note.id}
+                    style = {{position: 'absolute', left: this.state.selectedNote === note.id && this.state.pos.x || note.position[0], top: this.state.selectedNote === note.id && this.state.pos.y || note.position[1], cursor: 'pointer' }}
+                    onMouseMove={this.onMouseMove}
+                    onMouseUp={this.onMouseUp}
+                    onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt)}} >
+
+                  <button value={note.id} onClick={this.handleDelete}>x</button>
+                    { note.text &&
                       <div className="card-content">
                         {note.text}
                       </div>
