@@ -6,6 +6,13 @@ import { newRoom, getRooms } from '../store/whiteboard'
 
 export class Homepage extends Component {
 
+  componentDidMount() {
+    if (this.props.user.id) {
+      this.props.getAllRooms(this.props.user)
+    }
+
+  }
+
   componentWillReceiveProps(nextProps) {
 
     if (this.props.user !== nextProps.user) {
@@ -16,20 +23,31 @@ export class Homepage extends Component {
   render() {
     return (
       <div>
-        <h4>Time to put your thinking cap on!</h4>
-        <h5>Create a new session</h5>
+        <h2>Welcome, {this.props.user.name}</h2>
         <button onClick={() => this.props.createRoom(this.props.user)}>New Session</button>
-        <h5>Return to a session</h5>
+        <h5>Hosted</h5>
         {
-          this.props.allRooms.map(room => {
-            return (
-              <li key={room.id}>
-                <NavLink to={`/whiteboards/${room.id}`}>
-                  {room.host}
-                </NavLink>
-              </li>
-            )
+          this.props.allRooms.filter(room => {
+            return room.userId === this.props.user.id
           })
+            .map(result => {
+              return (<div key={result.id}>
+                <NavLink to={`/whiteboards/${result.id}`}>{result.host}</NavLink>
+              </div>
+              )
+            })
+        }
+        <h5>Attended</h5>
+        {
+          this.props.allRooms.filter(room => {
+            return room.userId !== this.props.user.id
+          })
+            .map(result => {
+              return (<div key={result.id}>
+                <NavLink to={`/whiteboards/${result.id}`}>{result.host}</NavLink>
+              </div>
+              )
+            })
         }
       </div>
     )
@@ -37,7 +55,7 @@ export class Homepage extends Component {
 }
 
 const mapState = (state) => {
-  console.log("STATE", state)
+
   return {
     user: state.user,
     allRooms: state.whiteboard
