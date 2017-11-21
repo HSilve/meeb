@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { Whiteboard, Message, User, Attendees} = require('../db/models')
+const { Whiteboard, Message, User, Attendees } = require('../db/models')
 module.exports = router
 
 router.get('/', (req, res, next) => {
@@ -52,14 +52,15 @@ router.post('/', (req, res, next) => {
     host: req.body.host,
     userId: req.body.userId
   })
-  .then(room => {
-    req.body.attendees.forEach(attendee => {
-      room.addUser(attendee.id)
+    .then(room => {
+      req.body.attendees.forEach(attendee => {
+        room.addUser(attendee.id)
+      })
+      room.addUser(req.body.userId)
+      return room;
     })
-    return room;
-  })
-  .then( board => res.json(board))
-  .catch(next)
+    .then(board => res.json(board))
+    .catch(next)
 })
 
 router.delete('/:whiteboardId', (req, res, next) => {
