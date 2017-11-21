@@ -1,16 +1,18 @@
+/* eslint-disable no-lone-blocks */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchRoom, editNote, fetchNotes, deleteNote} from '../store'
-import history from 'history'
 
 export class Whiteboard extends Component {
   constructor (props) {
     super(props)
     console.log(this.props)
+    this.notes = {}
+    this.arrayOfPositions = []
     this.state = {
       dragging: false,
       rel: null,
-      pos: {x: 0, y: 0},
+      pos: {x: null, y: null},
       selectedNote: 0
     }
 
@@ -36,6 +38,16 @@ export class Whiteboard extends Component {
     // this.positions = this.generatePositionsArray(data.height, data.width, eNoteHeight, eNoteWidth, data.left, data.top );
     this.positions = this.generatePositionsArray(4000, 4000, eNoteHeight, eNoteWidth, data.left, data.top );
 
+  }
+
+  componentDidUpdate(props, state) {
+    if (this.state.dragging && !state.dragging) {
+      document.addEventListener('mousemove', this.onMouseMove)
+      document.addEventListener('mouseup', this.onMouseUp)
+    } else if (!this.state.dragging && state.dragging) {
+      document.removeEventListener('mousemove', this.onMouseMove)
+      document.removeEventListener('mouseup', this.onMouseUp)
+    }
   }
 
     // Returns a random integer between min (included) and max (excluded)
@@ -109,29 +121,39 @@ export class Whiteboard extends Component {
     evt.preventDefault();
   }
 
+  //when user clicks mouse down, dragging state is set to true and new relative position
+  //is calculated, the position is set to null
   onMouseDown(evt) {
     if (evt.button !== 0) return
-    var pos = this.notes[this.state.selectedNote].getBoundingClientRect()
-    console.log(this.notes[this.state.selectedNote].getBoundingClientRect())
+
+    var pos = evt.target.getBoundingClientRect()
+    // console.log(this.notes[this.state.selectedNote].getBoundingClientRect())
     this.setState({
       dragging: true,
       rel: {
         x: evt.pageX - pos.left,
         y: evt.pageY - pos.top
+      },
+      pos: {
+        x: null,
+        y: null
       }
     })
     evt.stopPropagation()
     evt.preventDefault()
   }
 
+  //once mouse is released, the new position of note is updated in db
+  //and dragging is set to false
   onMouseUp(evt) {
-    this.setState({dragging: false})
+    this.props.editNote(this.state.selectedNote, {position: [this.state.pos.x, this.state.pos.y]})
     evt.stopPropagation()
     evt.preventDefault()
+    this.setState({dragging: false})
   }
 
+  //when state.pos is set to anything but null, the top and left of card is set to state.pos instead of note.position[0] & note.position[1]
   onMouseMove(evt) {
-    console.log('enter')
     if (!this.state.dragging) return
     this.setState({
       pos: {
@@ -139,15 +161,14 @@ export class Whiteboard extends Component {
         y: evt.pageY - this.state.rel.y
       }
     })
-    console.log(this.state.pos)
     evt.stopPropagation()
     evt.preventDefault()
   }
-    }
-    handleDelete(evt) {
-      evt.preventDefault();
-      this.props.deleteNote(evt.target.value);
-    }
+
+  handleDelete(evt) {
+    evt.preventDefault();
+    this.props.deleteNote(evt.target.value);
+  }
 
 
   render() {
@@ -166,12 +187,13 @@ export class Whiteboard extends Component {
           {
             return   note.position ?
              (
-                  <div className="card"
+                  <div
+                    className="card"
                     key={note.id}
-                    style = {{position: 'absolute', left: note.position[0], top: note.position[1], cursor: 'pointer' }}
+                    style = {{position: 'absolute', left: this.state.selectedNote === note.id && this.state.pos.x || note.position[0], top: this.state.selectedNote === note.id && this.state.pos.y || note.position[1], cursor: 'pointer' }}
                     onMouseMove={this.onMouseMove}
                     onMouseUp={this.onMouseUp}
-                    onMouseDown={this.onMouseDown}
+                    onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt)}}
                     ref={ref => this.notes[note.id] = ref} >
 
                   <button value={note.id} onClick={this.handleDelete}>x</button>
