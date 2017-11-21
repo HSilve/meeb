@@ -6,12 +6,9 @@ import { fetchRoom, editNote, fetchNotes, deleteNote} from '../store'
 export class Whiteboard extends Component {
   constructor (props) {
     super(props)
-    console.log(this.props)
-    this.notes = {}
-    this.arrayOfPositions = []
     this.state = {
       dragging: false,
-      rel: null,
+      rel: null, 
       pos: {x: null, y: null},
       selectedNote: 0
     }
@@ -127,7 +124,6 @@ export class Whiteboard extends Component {
     if (evt.button !== 0) return
 
     var pos = evt.target.getBoundingClientRect()
-    // console.log(this.notes[this.state.selectedNote].getBoundingClientRect())
     this.setState({
       dragging: true,
       rel: {
@@ -193,8 +189,7 @@ export class Whiteboard extends Component {
                     style = {{position: 'absolute', left: this.state.selectedNote === note.id && this.state.pos.x || note.position[0], top: this.state.selectedNote === note.id && this.state.pos.y || note.position[1], cursor: 'pointer' }}
                     onMouseMove={this.onMouseMove}
                     onMouseUp={this.onMouseUp}
-                    onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt)}}
-                    ref={ref => this.notes[note.id] = ref} >
+                    onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt)}} >
 
                   <button value={note.id} onClick={this.handleDelete}>x</button>
                     { note.text &&
