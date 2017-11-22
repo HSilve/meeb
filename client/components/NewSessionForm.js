@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {newRoom, addNote} from '../store';
 import axios from 'axios';
-import {Typeahead} from 'react-bootstrap-typeahead';
+import { Typeahead } from 'react-bootstrap-typeahead';
 
 export class NewSessionForm extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       roomName: '',
@@ -40,7 +40,7 @@ export class NewSessionForm extends Component {
 
   }
 
-  componentDidMount () {
+  componentDidMount() {
     axios.get('/api/users')
       .then(res => res.data)
       .then(users => {
@@ -48,11 +48,11 @@ export class NewSessionForm extends Component {
       });
   }
   changeName(evt) {
-        evt.preventDefault();
-        this.setState({roomName: evt.target.value})
+    evt.preventDefault();
+    this.setState({ roomName: evt.target.value })
   }
 
-  handleSubmit (evt) {
+  handleSubmit(evt) {
     evt.preventDefault();
     this.props.newRoom(this.state.roomName, this.props.user, this.state.selected, evt.target.date.value, evt.target.time.value, {file: this.state.file, imageName: this.state.name, fileType: this.state.type, link: evt.target.noteLink.value, text: evt.target.noteText.value}
     )
@@ -72,7 +72,7 @@ export class NewSessionForm extends Component {
     }
   }
 
-  render () {
+  render() {
     return (
       <div className="row">
       <form className="col s4 push-s3" id="formBox" onSubmit={this.handleSubmit}>
