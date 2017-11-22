@@ -1,29 +1,30 @@
-import React, {Component} from 'react';
-import { connect } from 'react-redux';
-import {newRoom} from '../store';
-import axios from 'axios';
-import {Typeahead} from 'react-bootstrap-typeahead';
+import React from 'react';
+import {Login, Signup} from './index';
 
-export class LoginSignup extends Component {
-  constructor (props) {
-    super(props);
-  }
-  render () {
+
+export default function LoginSignup () {
+    $(document).ready(function(){
+      $('ul.tabs').tabs();
+    });
+
     return (
-      <div class="row">
-      <div class="col s12">
-        <ul class="tabs">
-          <li class="tab col s3"><a href="#test1">Test 1</a></li>
-          <li class="tab col s3"><a class="active" href="#test2">Test 2</a></li>
-        </ul>
-      </div>
-      <div id="test1" class="col s12">Test 1</div>
-      <div id="test2" class="col s12">Test 2</div>
+      <div className="row">
+        <br />
+        <div className="col s7 push-s3">
+          <ul className="tabs">
+            <li className="tab col s3"><a className="active" href="#test1">Login</a></li>
+            <li className="tab col s3"><a  href="#test2">Signup</a></li>
+          </ul>
+        </div>
+        <div className= "row col s6 push-s3">
+        <div id="test1" className="">
+          <Login />
+        </div>
+        <div id="test2" className="">
+          <Signup />
+        </div>
+        </div>
     </div>
     )
-  }
 }
-const mapState = null
-const mapDispatch = null
 
-export default connect(mapState, mapDispatch)(LoginSignup);
