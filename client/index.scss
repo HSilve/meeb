@@ -16,7 +16,7 @@ body {
   }
 
   nav {
-    height: 60px;;
+    // height: 60px;
     // position: fixed;
     z-index: 1;
   }
@@ -100,7 +100,8 @@ body {
     width: 90vw;
     height: 50vh;
     background-color: pink;
-    margin: 0 auto
+    margin: 0 auto;
+    margin-bottom: 20%
   }
 
   // .home-whiteboard {

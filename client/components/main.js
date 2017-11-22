@@ -16,17 +16,20 @@ const Main = (props) => {
   return (
     <div>
       <nav>
+        <div className="nav-wrapper">
+        <Link to="/home" className="brand-logo"><img className="icon" src="/favicon.ico" /></Link>
         { isLoggedIn ?
-          <span>
-            <Link to="/homepage">Your Profile</Link>
-            <a href="#" onClick={handleClick}>Logout</a>
-          </span>
+          <ul id="nav-mobile" className="right hide-on-med-and-down">
+            <li><Link to="/homepage">Your Profile</Link></li>
+            <li><a href="#" onClick={handleClick}>Logout</a></li>
+          </ul>
           :
-          <span>
-            <Link to="/login">Login</Link>
-            <Link to="/signup">Signup</Link>
-          </span>
+          <ul id="nav-mobile" className="right hide-on-med-and-down">
+            <li><Link to="/login">Login</Link></li>
+            <li><Link to="/signup">Signup</Link></li>
+          </ul>
         }
+        </div>
       </nav>
       {children}
     </div>

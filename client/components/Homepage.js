@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { newRoom, getRooms } from '../store/whiteboard'
 import { withRouter } from 'react-router'
+import { NewSessionForm } from './index'
 
 
 class Homepage extends Component {
@@ -26,7 +27,8 @@ class Homepage extends Component {
       <div>
         <h2>Welcome, {this.props.user.name}</h2>
         {/* <button onClick={() => this.props.createRoom(this.props.user)}>New Session</button> */}
-        <NavLink to='/ns'>Show Form </NavLink>
+        {/* <NavLink to='/ns'>Show Form </NavLink> */}
+        <NewSessionForm />
         <h5>Hosted</h5>
         {
           this.props.allRooms.filter(room => {

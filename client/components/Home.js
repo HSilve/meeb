@@ -1,5 +1,6 @@
 /* eslint-disable complexity */
 import React, { Component } from 'react'
+import ReactPlayer from 'react-player'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { ActionPanel } from './index'
@@ -25,7 +26,7 @@ export class Home extends Component {
 
   handleSubmit(evt) {
     evt.preventDefault()
-    this.notePositions[++this.noteId] = [500, 250]
+    this.notePositions[++this.noteId] = [680, 450]
     this.props.createNote({ id: this.noteId, text: evt.target.text.value, position: this.notePositions[this.noteId] })
   }
 
@@ -67,18 +68,19 @@ export class Home extends Component {
     const yVal = evt.pageY - this.state.rel.y
 
     let xLimit, yLimit = 0
-    if (xVal > 450) xLimit = 450
-    if (xVal < 10) xLimit = 10
+    if (xVal > 1265) xLimit = 1265
+    if (xVal < 85) xLimit = 85
 
-    if (yVal > 650) yLimit = 650
-    if (yVal < 200) yLimit = 200
+    if (yVal > 630) yLimit = 630
+    if (yVal < 335) yLimit = 335
 
     this.setState({
       pos: {
-        x: (xVal > 450 || xVal < 10) ? xLimit : xVal,
-        y: (yVal > 650 || yVal < 200)  ? yLimit : yVal
+        x: (xVal > 1265 || xVal < 85) ? xLimit : xVal,
+        y: (yVal > 630 || yVal < 335)  ? yLimit : yVal
       }
     })
+    console.log(this.state.pos)
     evt.stopPropagation()
     evt.preventDefault()
   }
@@ -87,53 +89,68 @@ export class Home extends Component {
     const { whiteboard, notes, handleRemove } = this.props
     return (
       <div className="home-whiteboard">
+        <ReactPlayer
+          url="https://www.youtube.com/watch?v=BD1c3XqT4lY"
+          playing muted loop
+          style={{margin: '0 auto', marginTop: '5vh'}}
+          width="1500px"
+          height="650px"
+          preload
+          />
+
+        <div className="home-info">
+          <div className="details">
+            <h5>IdeaStorm, brewing your ideas</h5>
+            <p>IdeaStorm is a real-time collaborative tool that facilitates team brainstorming</p>
+            <p>We have many features available</p>
+
+            <p>Give It A Try Below!</p>
+          </div>
+        </div>
         <div className="children">
-          <h1>HOME</h1>
           <div id="mini-whiteboard">
-            { notes && notes.map(note => { return (
-              <div
-                className="card"
-                key={note.id}
-                style = {{position: 'absolute', left: this.state.selectedNote === note.id && this.state.pos.x || this.notePositions[note.id][0], top: this.state.selectedNote === note.id && this.state.pos.y || this.notePositions[note.id][1], cursor: 'pointer' }}
-                onMouseMove={this.onMouseMove}
-                onMouseUp={this.onMouseUp}
-                onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt)}} >
+              { notes && notes.map(note => { return (
+                <div
+                  className="card"
+                  key={note.id}
+                  style = {{position: 'absolute', left: this.state.selectedNote === note.id && this.state.pos.x || this.notePositions[note.id][0], top: this.state.selectedNote === note.id && this.state.pos.y || this.notePositions[note.id][1], cursor: 'pointer' }}
+                  onMouseMove={this.onMouseMove}
+                  onMouseUp={this.onMouseUp}
+                  onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt)}} >
 
-              <button value={note.id} onClick={() => handleRemove(note.id)}>x</button>
+                <button value={note.id} onClick={() => handleRemove(note.id)}>x</button>
 
-                { note.text &&
-                  <div className="card-content">
-                    {note.text}
-                  </div>
-                }
-                {note.image &&
-                  <div className="card-image">
-                    <img onClick={this.clickImage} src={note.image} />
-                  </div>
-                }
-                {note.link &&
-                  <div className="card-action">
-                    <a type="text/css" href={note.link}>Go Here </a>
-                  </div>
-                }
-
-              </div>
-            )
-          }
-        )}
+                  { note.text &&
+                    <div className="card-content">
+                      {note.text}
+                    </div>
+                  }
+                  {note.image &&
+                    <div className="card-image">
+                      <img onClick={this.clickImage} src={note.image} />
+                    </div>
+                  }
+                  {note.link &&
+                    <div className="card-action">
+                      <a type="text/css" href={note.link}>Go Here </a>
+                    </div>
+                  }
+                </div>
+              )
+            }
+          )}
+          <div className="fixed-action-btn horizontal click-to-toggle">
+            <button className="btn-floating btn-large" type="submit" onClick={() => this.setState({ expandToggle: !this.state.expandToggle })}>+</button>
+            { this.state.expandToggle &&
+              <form onSubmit={ this.handleSubmit }>
+                <input name="text" type="text" />
+                <button type="submit">Insert</button>
+              </form>
+            }
+          </div>
+          </div>
+          </div>
         </div>
-        </div>
-
-        <div className="fixed-action-btn horizontal click-to-toggle">
-          <button className="btn-floating btn-large" type="submit" onClick={() => this.setState({ expandToggle: !this.state.expandToggle })}>+</button>
-          { this.state.expandToggle &&
-            <form onSubmit={ this.handleSubmit }>
-              <input name="text" type="text" />
-              <button type="submit">Insert</button>
-            </form>
-          }
-        </div>
-      </div>
     )
   }
 }
