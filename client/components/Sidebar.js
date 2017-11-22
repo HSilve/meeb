@@ -3,18 +3,13 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 import Chatbox from './Chatbox'
 import Attendees from './Attendees'
-import { fetchRoom } from '../store'
 
-export class Sidebar extends Component {
+class Sidebar extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      show: true
+      show: false
     }
-  }
-  componentDidMount() {
-    const { id } = this.props.match.params
-    this.props.getWhiteboard(id)
   }
 
   render() {
@@ -24,7 +19,7 @@ export class Sidebar extends Component {
         <button onClick={() => this.setState({ show: !show })}>-</button>
           {
             show ?
-            <div>
+            <span>
               <h5 href="#">
               <div>Attendees</div>
               <i alt="Brand" className="glyphicon glyphicon-comment">
@@ -32,27 +27,15 @@ export class Sidebar extends Component {
               </h5>
               <Attendees />
               <Chatbox />
-            </div> : null
+            </span> : null
           }
       </div>
     );
   }
 }
 
-// we can do all of this from attendees
-const mapState = (state) => {
-  return {
-    whiteboard: state.singleWhiteboard,
-    users: state.whiteboard.users
-  }
-}
+const mapState = null
 
-const mapDispatch = (dispatch) => {
-  return {
-    getWhiteboard: (id) => {
-      dispatch(fetchRoom(id))
-    }
-  }
-}
+const mapDispatch = null
 
 export default withRouter(connect(mapState, mapDispatch)(Sidebar))
