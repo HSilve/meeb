@@ -53,21 +53,25 @@ export class NewSessionForm extends Component {
 
   handleSubmit (evt) {
     evt.preventDefault();
-    this.props.newRoom(this.state.roomName, this.props.user, this.state.selected)
+    this.props.newRoom(this.state.roomName, this.props.user, this.state.selected, evt.target.date.value)
     let reader = new FileReader();
     let imageFile = evt.target.file
-    reader.readAsDataURL(evt.target.file)
-    reader.onloadend = () => {
-      this.setState({
-        file: reader.result,
-        name: imageFile.name,
-        type: imageFile.type
-      })
-    }
-    this.props.addNote({
+    // reader.readAsDataURL(evt.target.file)
+    // reader.onloadend = () => {
+    //   this.setState({
+    //     file: reader.result,
+    //     name: imageFile.name,
+    //     type: imageFile.type
+    //   })
+    // }
+    // this.props.addNote({
+    //   file: reader.result, image: imageFile.name, fileType: imageFile.type, text: evt.target.noteText.value, link: evt.target.noteLink.value, whiteboardId: this.props.match.params.id.toString(), userId: this.props.user.id,
+    //   position:[50, 50]
+    // })
+    console.log("the new note ", ({
       file: reader.result, image: imageFile.name, fileType: imageFile.type, text: evt.target.noteText.value, link: evt.target.noteLink.value, whiteboardId: this.props.match.params.id.toString(), userId: this.props.user.id,
       position:[50, 50]
-    })
+    }))
   }
 
   render () {
