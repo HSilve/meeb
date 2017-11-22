@@ -54,7 +54,7 @@ export class NewSessionForm extends Component {
 
   handleSubmit (evt) {
     evt.preventDefault();
-    this.props.newRoom(this.state.roomName, this.props.user, this.state.selected, evt.target.date.value, {file: this.state.file, imageName: this.state.name, fileType: this.state.type, link: evt.target.noteLink.value, text: evt.target.noteText.value}
+    this.props.newRoom(this.state.roomName, this.props.user, this.state.selected, evt.target.date.value, evt.target.time.value, {file: this.state.file, imageName: this.state.name, fileType: this.state.type, link: evt.target.noteLink.value, text: evt.target.noteText.value}
     )
   }
 

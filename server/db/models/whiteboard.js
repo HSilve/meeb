@@ -12,7 +12,16 @@ const Whiteboard = db.define('whiteboard', {
   },
   date: {
     type: Sequelize.DATEONLY
+  },
+  startTime: {
+    type: Sequelize.TIME,
+    allowNull: false
+  },
+  endTime: {
+    type: Sequelize.TIME,
+    allowNull: true
   }
+
 })
 
 module.exports = Whiteboard
