@@ -65,7 +65,7 @@ class Whiteboard extends Component {
   //once mouse is released, the new position of note is updated in db
   //and dragging is set to false
   onMouseUp(evt) {
-    this.props.editNote(this.state.selectedNote, {position: [this.state.pos.x, this.state.pos.y]})
+    if (this.state.pos.x !== null && !this.state.pos.y !== null) this.props.editNote(this.state.selectedNote, {position: [this.state.pos.x, this.state.pos.y]})
     evt.stopPropagation()
     evt.preventDefault()
     this.setState({dragging: false})
@@ -103,7 +103,7 @@ class Whiteboard extends Component {
         <rect
            width="300" height="250"
         style = {{fill: 'green', stroke: 'black', strokeWidth: 5, opacity: 0.5}} />
-        <text x="4" y="50" font-family="Verdana" font-size="35" fill="blue">Idea Basket</text>
+        <text x="4" y="50" fontFamily="Verdana" fontSize="35" fill="blue">Idea Basket</text>
       </g>
       </svg>
       {
