@@ -14,6 +14,7 @@ export class NewSessionForm extends Component {
     };
     this.changeName = this.changeName.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleFileUpload = this.handleFileUpload.bind(this);
   }
   componentWillMount() {
     $('.datepicker').pickadate({
@@ -53,25 +54,22 @@ export class NewSessionForm extends Component {
 
   handleSubmit (evt) {
     evt.preventDefault();
-    this.props.newRoom(this.state.roomName, this.props.user, this.state.selected, evt.target.date.value)
+    this.props.newRoom(this.state.roomName, this.props.user, this.state.selected, evt.target.date.value, {file: this.state.file, imageName: this.state.name, fileType: this.state.type, link: evt.target.noteLink.value, text: evt.target.noteText.value}
+    )
+  }
+
+  handleFileUpload(evt) {
+    evt.preventDefault();
     let reader = new FileReader();
-    let imageFile = evt.target.file
-    // reader.readAsDataURL(evt.target.file)
-    // reader.onloadend = () => {
-    //   this.setState({
-    //     file: reader.result,
-    //     name: imageFile.name,
-    //     type: imageFile.type
-    //   })
-    // }
-    // this.props.addNote({
-    //   file: reader.result, image: imageFile.name, fileType: imageFile.type, text: evt.target.noteText.value, link: evt.target.noteLink.value, whiteboardId: this.props.match.params.id.toString(), userId: this.props.user.id,
-    //   position:[50, 50]
-    // })
-    console.log("the new note ", ({
-      file: reader.result, image: imageFile.name, fileType: imageFile.type, text: evt.target.noteText.value, link: evt.target.noteLink.value, whiteboardId: this.props.match.params.id.toString(), userId: this.props.user.id,
-      position:[50, 50]
-    }))
+    let imageFile = evt.target.files[0];
+    reader.readAsDataURL(evt.target.files[0]);
+    reader.onloadend = () => {
+      this.setState({
+        file: reader.result,
+        name: imageFile.name,
+        type: imageFile.type
+      })
+    }
   }
 
   render () {
@@ -95,11 +93,11 @@ export class NewSessionForm extends Component {
             </tr>
             <tr>
               <th><label>Image</label></th>
-              <td><input name="file" type="file" /></td>
+              <td><input name="file" type="file" onChange={this.handleFileUpload}/></td>
             </tr>
             <tr>
               <th><label>Link:</label></th>
-              <td><input type="text" name="noteLink" /></td>
+              <td><input type="link" name="noteLink" /></td>
             </tr>
           </tbody>
           </table>
