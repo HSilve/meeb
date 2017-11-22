@@ -18,8 +18,8 @@ Attendees.afterBulkCreate(group => {
       .then(userData => {
         sendmail({
           from: 'IdeaStorm@stormail.com',
-          // to: userData.dataValues.email,
-          to: 'henryb735@gmail.com',
+          to: userData.dataValues.email,
+          // to: 'henryb735@gmail.com',
           subject: 'test sendmail',
           html: 'Mail of test sendmail',
         }, function(err, reply) {
