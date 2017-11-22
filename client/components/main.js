@@ -30,6 +30,8 @@ const Main = (props) => {
           </ul>
         }
         </div>
+        <Link to="/homepage">Home</Link>
+        <a href="#" onClick={handleClick}>Logout</a>
       </nav>
       {children}
     </div>

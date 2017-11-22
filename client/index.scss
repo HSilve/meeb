@@ -21,11 +21,6 @@ body {
     z-index: 1;
   }
 
-  form div {
-    // margin: 1em;
-    // display: inline-block;
-  }
-
   .sidebar {
     margin-top: 10vh;
     position: fixed;
@@ -44,11 +39,19 @@ body {
     // height: 70vh;
   }
 
+  #basket {
+    float:right;
+    position: fixed;
+    right: 0;
+    top: 70;
+
+  }
+
   #whiteboard {
-    width: 70vw;
-    height: 80vh;
-    overflow-y: scroll;
-    overflow-x: scroll;
+    // width: 70vw;
+    // height: 80vh;
+    width: 100vw;
+    overflow: scroll;
   }
   .aUser {
     font: 30%;
@@ -57,7 +60,6 @@ body {
   .popup-box {
     // display: none;
     // position: fixed;
-
     // height: 285px;
     height: 40vh;
     float: left;
@@ -76,7 +78,7 @@ body {
 
   .card {
     width: 250px;
-    height: 150px;
+    // height: 150px;
     .card-image {
       width: 60px;
     }
