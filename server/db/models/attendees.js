@@ -12,16 +12,14 @@ const Attendees = db.define('attendees', {
 })
 
 Attendees.afterBulkCreate(group => {
-  console.log("Im creating this thinbg")
     group.forEach(pair => {
       User.findById(pair.userId)
       .then(userData => {
         sendmail({
           from: 'IdeaStorm@stormail.com',
           to: userData.dataValues.email,
-          // to: 'henryb735@gmail.com',
-          subject: 'test sendmail',
-          html: 'Mail of test sendmail',
+          subject: 'An Invite',
+          html: "you've been invited to collaboarate on a new board.",
         }, function(err, reply) {
           console.log(err && err.stack);
           console.dir(reply);
