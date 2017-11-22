@@ -103,7 +103,7 @@ class Whiteboard extends Component {
         <rect
            width="300" height="250"
         style = {{fill: 'green', stroke: 'black', strokeWidth: 5, opacity: 0.5}} />
-        <text x="4" y="50" font-family="Verdana" font-size="35" fill="blue">Idea Basket</text>
+        <text x="4" y="50" fontFamily="Verdana" fontSize="35" fill="blue">Idea Basket</text>
       </g>
       </svg>
       {
