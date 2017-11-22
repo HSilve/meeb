@@ -93,7 +93,14 @@ class Whiteboard extends Component {
   clickConnection(evt, id) {
     if (this.state.connectionArray.indexOf(id) === -1) {
       this.setState({ connectionArray: [...this.state.connectionArray, id]})
+    } else {
+      let array = this.state.connectionArray
+      let index = array.indexOf(id)
+      array.splice(index, 1)
+      this.setState({ connectionArray: array})
     }
+      // var selectedCard = document.getElementById(`card${id}`)
+      // selectedCard.className = 'DropShadow'
   }
 
 
@@ -119,6 +126,7 @@ class Whiteboard extends Component {
             return   note.position ?
              (
                   <div
+                    id={`card${note.id}`}
                     className="card"
                     key={note.id}
                     style = {{position: 'absolute', left: this.state.selectedNote === note.id && this.state.pos.x || note.position[0], top: this.state.selectedNote === note.id && this.state.pos.y || note.position[1], cursor: 'pointer' }}

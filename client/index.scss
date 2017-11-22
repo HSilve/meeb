@@ -90,6 +90,15 @@ body {
       width: 60px;
     }
   }
+
+.DropShadow {
+  box-shadow: 2px 2px 2px pink;
+  width: 250px;
+  .card-image {
+    width: 60px;
+  }
+}
+
   .blob {
     background-color:rgb(164, 173, 190);
     border-radius: 15px;
