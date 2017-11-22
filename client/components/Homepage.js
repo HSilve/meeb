@@ -35,7 +35,7 @@ class Homepage extends Component {
         {/* <button onClick={() => this.props.createRoom(this.props.user)}>New Session</button> */}
         {/* <NavLink to='/ns'>Show Form </NavLink> */}
         <div className="grid-example col s12">
-          <div class="grid-example col s3">
+          <div className="grid-example col s3">
             <h5>Hosted</h5>
             {
               this.props.allRooms.filter(room => {
@@ -52,7 +52,7 @@ class Homepage extends Component {
                 })
             }
           </div>
-          <div class="grid-example col s3">
+          <div className="grid-example col s3">
             <h5>Attended</h5>
             {
               this.props.allRooms.filter(room => {
@@ -67,7 +67,7 @@ class Homepage extends Component {
             }
           </div>
           <div className="grid example col s6">
-            <a class="waves-effect waves-light btn" onClick={() => this.setState({ show: !show })}>Create New Session</a>
+            <a className="waves-effect waves-light btn" onClick={() => this.setState({ show: !show })}>Create New Session</a>
             {
               show ?
                 <span>
