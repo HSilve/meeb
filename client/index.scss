@@ -36,7 +36,6 @@ body {
   #main-space {
     display: flex;
     flex-direction: row;
-    // height: 70vh;
   }
 
   #basket {
@@ -56,7 +55,15 @@ body {
   .aUser {
     font: 30%;
   }
-
+  #formBox {
+    border: 5px solid grey;
+  }
+  #formNote {
+    // border: 5px dotted grey;
+    border-top-style: dotted;
+    border-bottom-style: dotted;
+    border-color: grey;
+  }
   .popup-box {
     // display: none;
     // position: fixed;

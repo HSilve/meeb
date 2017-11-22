@@ -55,7 +55,9 @@ router.post('/', (req, res, next) => {
   Whiteboard.create({
     name: req.body.name,
     host: req.body.host,
-    userId: req.body.userId
+    userId: req.body.userId,
+    startTime: req.body.startTime,
+    date: req.body.date
   })
     .then(room => {
       req.body.attendees.forEach(attendee => {
