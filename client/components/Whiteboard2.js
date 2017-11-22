@@ -11,15 +11,14 @@ class Whiteboard extends Component {
       dragging: false,
       rel: null,
       pos: {x: null, y: null},
-      selectedNote: 0,
-      connectionArray: 0,
+      selectedNote: 0
     }
     this.clickImage = this.clickImage.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this)
     this.onMouseUp = this.onMouseUp.bind(this)
     this.onMouseMove = this.onMouseMove.bind(this)
     this.handleDelete = this.handleDelete.bind(this);
-    this.clickConnection = this.clickConnection.bind(this)
+
   }
 
 
@@ -90,11 +89,6 @@ class Whiteboard extends Component {
     this.props.deleteNote(evt.target.value);
   }
 
-  clickConnection(evt, id) {
-    this.setState({ connectionArray: id })
-    console.log('this is the clickConnection', this.state.connectionArray)
-  }
-
 
   render() {
     let data = [];
@@ -109,7 +103,7 @@ class Whiteboard extends Component {
         <rect
            width="300" height="250"
         style = {{fill: 'green', stroke: 'black', strokeWidth: 5, opacity: 0.5}} />
-      <text x="4" y="50" fontFamily="Verdana" fontSize="35" fill="blue">Idea Basket</text>
+        <text x="4" y="50" font-family="Verdana" font-size="35" fill="blue">Idea Basket</text>
       </g>
       </svg>
       {
@@ -123,7 +117,6 @@ class Whiteboard extends Component {
                     style = {{position: 'absolute', left: this.state.selectedNote === note.id && this.state.pos.x || note.position[0], top: this.state.selectedNote === note.id && this.state.pos.y || note.position[1], cursor: 'pointer' }}
                     onMouseMove={this.onMouseMove}
                     onMouseUp={this.onMouseUp}
-                    onClick={(evt) => this.clickConnection(evt, note.id)}
                     onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt)}} >
 
                   <button value={note.id} onClick={this.handleDelete}>x</button>
