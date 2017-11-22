@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchRoom, editNote, fetchNotes, deleteNote} from '../store'
 import { withRouter } from 'react-router'
+import { submitEdges } from './BranchPanel'
 
 class Whiteboard extends Component {
   constructor(props) {
@@ -98,7 +99,10 @@ class Whiteboard extends Component {
       let index = array.indexOf(id)
       array.splice(index, 1)
       this.setState({ connectionArray: array})
+      console.log('splice', this.state.connectionArray.slice(1))
+      console.log('after state', this.state.connectionArray)
     }
+    submitEdges(this.state.connectionArray)
       // var selectedCard = document.getElementById(`card${id}`)
       // selectedCard.className = 'DropShadow'
   }
@@ -155,7 +159,6 @@ class Whiteboard extends Component {
                         <a type="text/css" href={note.link}>Go Here </a>
                       </div>
                     }
-
                   </div>
 
                 )

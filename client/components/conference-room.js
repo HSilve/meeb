@@ -1,5 +1,5 @@
 import React from 'react'
-import { Sidebar, Whiteboard, ActionPanel } from './index'
+import { Sidebar, Whiteboard, ActionPanel, BranchPanel } from './index'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 
@@ -9,6 +9,7 @@ export function ConferenceRoom() {
     <div id="main-space">
 
       <Sidebar />
+      <BranchPanel />
       <Whiteboard />
       <ActionPanel />
     </div>
