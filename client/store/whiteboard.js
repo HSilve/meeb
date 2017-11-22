@@ -41,19 +41,19 @@ export const getRooms = user => dispatch => {
 // };
 export const newRoom = (roomName, host, attendeeId, date) => dispatch => {
 
-    axios.post('/api/whiteboards', {
-      host: host.name,
-      userId: host.id,
-      name: roomName,
-      attendees: attendeeId,
-      date: date
+  axios.post('/api/whiteboards', {
+    host: host.name,
+    userId: host.id,
+    name: roomName,
+    date: date,
+    attendees: attendeeId
+  })
+    .then(res => {
+      dispatch(createRoom(res.data))
+      history.push(`/whiteboards/${res.data.id}`);
     })
-      .then(res => {
-        dispatch(createRoom(res.data))
-        history.push(`/whiteboards/${res.data.id}`);
-      })
-      .catch(err => console.error('Could not create room!', err));
-  };
+    .catch(err => console.error('Could not create room!', err));
+};
 
 
 // REDUCER

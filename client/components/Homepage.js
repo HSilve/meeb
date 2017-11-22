@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { withRouter, NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { newRoom, getRooms } from '../store/whiteboard'
+import { withRouter } from 'react-router'
 
 
-export class Homepage extends Component {
+class Homepage extends Component {
 
   componentDidMount() {
     if (this.props.user.id) {
       this.props.getAllRooms(this.props.user)
     }
-
   }
 
   componentWillReceiveProps(nextProps) {
@@ -29,6 +29,9 @@ export class Homepage extends Component {
         <h5>Hosted</h5>
         {
           this.props.allRooms.filter(room => {
+            // console.log("ROOM USER---", room.userId)
+            // console.log("PROPS USER---", this.props.user.id)
+            // console.log("logic--", room.userId === this.props.user.id)
             return room.userId === this.props.user.id
           })
             .map(result => {
