@@ -16,45 +16,41 @@ router.get('/:id', (req, res, next) => {
     .catch(next);
 })
 
+AWS.config.update(
+  {
+    accessKeyId: AWS_ACCESS_KEY_ID,
+    secretAccessKey: SECRET_ACCESS_KEY,
+  }
+)
+const s3 = new AWS.S3()
+
 router.post('/', (req, res, next) => {
-  console.log(req.body.note)
-  console.log(req.body.note.file.length)
-  if (req.body.note.file.length !== 0) {
-    AWS.config.update(
-      {
-        accessKeyId: AWS_ACCESS_KEY_ID,
-        secretAccessKey: SECRET_ACCESS_KEY,
-      }
-    )
-    const s3 = new AWS.S3()
-
-    s3.putObject({
-      ACL: 'public-read',
-      Bucket: 'meeb-whiteboard',
-      Key: req.body.note.imageName,
-      Body: new Buffer((req.body.note.file).split(',')[1], 'base64'),
-      ContentType: req.body.note.fileType,
-    }, (err) => {
-        if (err) console.log(err)
-        else {
-          console.log('File uploaded to S3')
-          req.body.note.image = `https://s3.amazonaws.com/meeb-whiteboard/${req.body.note.imageName}`
-
-          Note.create(req.body.note)
-            .then(note => {
-              res.json(note)
+  Note.create(req.body.note)
+  .then(note => {
+    if (req.body.note.file.length !== 0) {
+      s3.putObject({
+        ACL: 'public-read',
+        Bucket: 'meeb-whiteboard',
+        Key: `${note.id}-${req.body.note.image}`,
+        Body: new Buffer((req.body.note.file).split(',')[1], 'base64'),
+        ContentType: req.body.note.fileType,
+      }, (err) => {
+          if (err) console.log(err)
+          else {
+            console.log('File uploaded to S3')
+            note.update({ image: `https://s3.amazonaws.com/meeb-whiteboard/${note.id}-${req.body.note.image}` }, {
+              returning: true, plain: true
             })
-            .catch(next);
+            .then(result => {
+              res.json(result)
+            })
+          }
         }
-    })
-  }
-  else {
-    Note.create(req.body.note)
-    .then(note => {
+      )
+    } else {
       res.json(note)
-    })
-    .catch(next);
-  }
+    }
+  })
 })
 
 router.put('/:id', (req, res, next) => {

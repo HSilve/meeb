@@ -1,0 +1,26 @@
+nav {
+  height: 10vh !important;
+  top: 0
+}
+
+.children {
+  margin-top: 10vh
+}
+
+.icon {
+  margin-top: -3vh;
+  height: 30%;
+  width: 30%
+}
+
+.home-info {
+  margin-top: 5%;
+  height: 35vh;
+  width: 100vw;
+  background-color: #FBFFB9;
+}
+
+.details {
+  padding: 50px;
+  margin-left: 30%
+}
