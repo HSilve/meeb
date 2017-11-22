@@ -12,7 +12,7 @@ class Whiteboard extends Component {
       rel: null,
       pos: {x: null, y: null},
       selectedNote: 0,
-      connectionArray: 0,
+      connectionArray: [],
     }
     this.clickImage = this.clickImage.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this)
@@ -66,7 +66,7 @@ class Whiteboard extends Component {
   //once mouse is released, the new position of note is updated in db
   //and dragging is set to false
   onMouseUp(evt) {
-    if (this.state.pos.x !== null && !this.state.pos.y !== null) this.props.editNote(this.state.selectedNote, {position: [this.state.pos.x, this.state.pos.y]})
+    this.props.editNote(this.state.selectedNote, {position: [this.state.pos.x, this.state.pos.y]})
     evt.stopPropagation()
     evt.preventDefault()
     this.setState({dragging: false})
@@ -91,8 +91,9 @@ class Whiteboard extends Component {
   }
 
   clickConnection(evt, id) {
-    this.setState({ connectionArray: id })
-    console.log('this is the clickConnection', this.state.connectionArray)
+    if (this.state.connectionArray.indexOf(id) === -1) {
+      this.setState({ connectionArray: [...this.state.connectionArray, id]})
+    }
   }
 
 
@@ -101,7 +102,7 @@ class Whiteboard extends Component {
     if (this.props.notes) {
       data = this.props.notes
     }
-
+    console.log('render connectionArray', this.state.connectionArray)
     return (
       <div id="whiteboard">
        <svg id="basket" width="300" height="250">
