@@ -29,9 +29,9 @@ export class Sidebar extends Component {
               <div>Attendees</div>
               <i alt="Brand" className="glyphicon glyphicon-comment">
               </i>
-            </h5>
-            <Attendees />
-            <Chatbox />
+              </h5>
+              <Attendees />
+              <Chatbox />
             </div> : null
           }
       </div>
