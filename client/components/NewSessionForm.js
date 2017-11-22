@@ -42,7 +42,8 @@ export class NewSessionForm extends Component {
       })
     }
     this.props.addNote({
-      file: reader.result, image: imageFile.name, fileType: imageFile.type, text: evt.target.noteText.value, link: evt.target.noteLink.value, whiteboardId: this.props.match.params.id.toString(), userId: this.props.user.id
+      file: reader.result, image: imageFile.name, fileType: imageFile.type, text: evt.target.noteText.value, link: evt.target.noteLink.value, whiteboardId: this.props.match.params.id.toString(), userId: this.props.user.id,
+      position:[50, 50]
     })
   }
 
