@@ -14,11 +14,11 @@ const Whiteboard = db.define('whiteboard', {
     type: Sequelize.DATEONLY
   },
   startTime: {
-    type: Sequelize.TIME,
+    type: Sequelize.STRING,
     allowNull: false
   },
   endTime: {
-    type: Sequelize.TIME,
+    type: Sequelize.STRING,
     allowNull: true
   }
 

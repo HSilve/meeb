@@ -27,8 +27,8 @@ async function seed () {
     User.create({email: 'Evlis@email.com', password: '456', name: 'Evlis Henry'})
   ])
   await Promise.all([
-    Whiteboard.create({name: 'Best Dog Treats', host: 'Cody', userId: 1}),
-    Whiteboard.create({name: 'FullStack', host: 'Murphy', userId: 2})
+    Whiteboard.create({name: 'Best Dog Treats', host: 'Cody', userId: 1, startTime: '04:30'}),
+    Whiteboard.create({name: 'FullStack', host: 'Murphy', userId: 2,startTime: '04:30'})
 
   ])
 
