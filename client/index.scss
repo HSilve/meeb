@@ -21,11 +21,6 @@ body {
     z-index: 1;
   }
 
-  form div {
-    // margin: 1em;
-    // display: inline-block;
-  }
-
   .sidebar {
     margin-top: 10vh;
     position: fixed;
@@ -41,7 +36,6 @@ body {
   #main-space {
     display: flex;
     flex-direction: row;
-    // height: 70vh;
   }
 
   #whiteboard {
@@ -53,11 +47,18 @@ body {
   .aUser {
     font: 30%;
   }
-
+  #formBox {
+    border: 5px solid grey;
+  }
+  #formNote {
+    // border: 5px dotted grey;
+    border-top-style: dotted;
+    border-bottom-style: dotted;
+    border-color: grey;
+  }
   .popup-box {
     // display: none;
     // position: fixed;
-
     // height: 285px;
     height: 40vh;
     float: left;
