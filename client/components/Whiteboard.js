@@ -107,9 +107,9 @@ class Whiteboard extends Component {
       </g>
       </svg>
       {
-        data && data.map((note, idx) => {
+        data && data.map((note) => {
           {
-            return   note.position ?
+            return note.position &&
              (
                   <div
                     className="card"
@@ -140,39 +140,6 @@ class Whiteboard extends Component {
                       </div>
                     }
 
-                  </div>
-
-                )
-
-                :
-                (
-                  <div
-                      className="card"
-                      key={note.id}
-                      style = {{position: 'absolute', right: this.state.selectedNote === note.id && this.state.pos.x || 10 - (idx * 5), top: this.state.selectedNote === note.id && this.state.pos.y || 125 + (idx * 5), cursor: 'pointer' }}
-                      onMouseMove={this.onMouseMove}
-                      onMouseUp={this.onMouseUp}
-                      onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt)}} >
-
-                    <button value={note.id} onClick={this.handleDelete}>x</button>
-                    {note.text &&
-                      <div className="card-content">
-                        {note.text}
-                      </div>
-                    }
-
-                    {note.image &&
-                      <div className="card-image">
-                        <img onClick={this.clickImage} className="image" src={note.image} />
-                      </div>
-                    }
-
-
-                    {note.link &&
-                      <div className="card-action">
-                        <a type="text/css" href={note.link}>Go Here </a>
-                      </div>
-                    }
                   </div>
 
                 )
