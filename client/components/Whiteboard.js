@@ -1,9 +1,9 @@
 /* eslint-disable no-lone-blocks */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchRoom, editNote, fetchNotes, deleteNote} from '../store'
+import { fetchRoom, editNote, fetchNotes, deleteNote } from '../store'
 import { withRouter } from 'react-router'
-import { submitEdges } from './BranchPanel'
+import BranchPanel from './BranchPanel'
 
 class Whiteboard extends Component {
   constructor(props) {
@@ -102,7 +102,6 @@ class Whiteboard extends Component {
       console.log('splice', this.state.connectionArray.slice(1))
       console.log('after state', this.state.connectionArray)
     }
-    submitEdges(this.state.connectionArray)
       // var selectedCard = document.getElementById(`card${id}`)
       // selectedCard.className = 'DropShadow'
   }
@@ -199,6 +198,7 @@ class Whiteboard extends Component {
 
           })
         }
+        <BranchPanel />
       </div>
     );
   }

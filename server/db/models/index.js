@@ -24,6 +24,7 @@ Whiteboard.hasMany(Note);
 Whiteboard.hasMany(Drawing);
 Message.belongsTo(User);
 Message.belongsTo(Whiteboard);
+Note.belongsToMany(Note, {as: 'NoteChild', through: 'NoteLink'})
 
 
 /**

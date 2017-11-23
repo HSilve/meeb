@@ -24,14 +24,10 @@ module.exports = {
         ]
       },
       {
-        test: /\.svg$|\.ttf?|\.woff$|\.woff2|\.eof|\.eot/,
+        test: /\.svg$|\.ttf?|\.woff$|\.woff2|\.eof|\.eot|\.(png|jpg)$/,
         loader: 'file-loader'
       },
-      {
-      test: /\.(png|jpg)$/,
-      loader: 'url?limit=25000'
-    },
-    ]
+    ],
   },
   // When we're in development, we can use this handy live-reload plugin
   // to refresh the page for us every time we make a change to our client-side

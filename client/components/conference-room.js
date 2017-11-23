@@ -9,8 +9,8 @@ export function ConferenceRoom() {
     <div id="main-space">
 
       <Sidebar />
-      <BranchPanel />
       <Whiteboard />
+      <BranchPanel />
       <ActionPanel />
     </div>
   )
