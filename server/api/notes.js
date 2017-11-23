@@ -11,7 +11,7 @@ router.get('/', (req, res, next) => {
 })
 
 router.get('/:id', (req, res, next) => {
-  Note.findById(req.params.id)
+  Note.findById(req.params.id, {include: [{all: true}]})
     .then(note => res.json(note))
     .catch(next);
 })
@@ -55,6 +55,7 @@ router.post('/', (req, res, next) => {
 
 
 router.put('/:id', (req, res, next) => {
+  console.log(req.body)
   Note.findById(req.params.id, {include: [{ all: true}]})
     .then(note => note.update(req.body, {returning: true}))
     .then(updatedNote => {return res.json(updatedNote)})
@@ -62,7 +63,7 @@ router.put('/:id', (req, res, next) => {
 })
 
 // router.put('/:id', (req, res, next) => {
-//   Note.findById(req.params.id)
+//   Note.findById(req.params.id, {include: [{all: true}]})
 //     .then(note => note.update(req.body))
 //     .then(_ => {
 //       Note.findById(req.params.id)

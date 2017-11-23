@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchRoom, editNote, fetchNotes, deleteNote } from '../store'
 import { withRouter } from 'react-router'
-import BranchPanel from './BranchPanel'
 
 class Whiteboard extends Component {
   constructor(props) {
@@ -14,6 +13,8 @@ class Whiteboard extends Component {
       pos: {x: null, y: null},
       selectedNote: 0,
       connectionArray: [],
+      edges: {},
+      nodes: [],
     }
     this.clickImage = this.clickImage.bind(this)
     this.onMouseDown = this.onMouseDown.bind(this)
@@ -22,6 +23,7 @@ class Whiteboard extends Component {
     this.handleDelete = this.handleDelete.bind(this)
     this.clickConnection = this.clickConnection.bind(this)
     this.updateParent = this.updateParent.bind(this)
+    this.submitEdges = this.submitEdges.bind(this)
   }
 
 
@@ -38,6 +40,7 @@ class Whiteboard extends Component {
       document.removeEventListener('mouseup', this.onMouseUp)
     }
   }
+
 
   clickImage (evt) {
     evt.preventDefault();
@@ -62,10 +65,6 @@ class Whiteboard extends Component {
     })
     evt.stopPropagation()
     evt.preventDefault()
-    this.clickConnection(this.state.selectedNote)
-    if (this.state.connectionArray.length > 1) {
-      this.props.editNote(this.state.selectedNote, {noteParent: [this.state.connectionArray[0]]})
-    }
   }
 
   //once mouse is released, the new position of note is updated in db
@@ -95,28 +94,55 @@ class Whiteboard extends Component {
     this.props.deleteNote(evt.target.value);
   }
 
-  clickConnection = (id) => {
+  clickConnection = (evt, id) => {
     if (this.state.connectionArray.indexOf(id) === -1 && id !== 0) {
       this.setState({connectionArray: [...this.state.connectionArray, id]})
-    } else if (this.state.connectionArray.indexOf(id) > 0 && id !== 0){
+      // let selectedCard = document.getElementById(`card${id}`)
+      // selectedCard.className = 'DropShadow'
+    } else if (id !== 0) {
       let array = this.state.connectionArray
       let index = array.indexOf(id)
       array.splice(index, 1)
       this.setState({ connectionArray: array})
+      // let selectedCard = document.getElementById(`card${id}`)
+      // selectedCard.className = 'card'
     }
-      // var selectedCard = document.getElementById(`card${id}`)
-      // selectedCard.className = 'DropShadow'
   }
+  submitEdges = () => {
+    let edgeTracker = []
+    let parent = Number(this.state.connectionArray.slice(0, 1))
+    this.state.connectionArray.slice(1).forEach(connection => {
+        edgeTracker.push({from: parent, to: connection})
+    })
+    this.setState({edges: edgeTracker})
+    this.setState({nodes: this.props.notes})
+  }
+  //
+  // submitNodes = () => {
+  //   let nodeTracker = []
+  //   this.state.connectionArray.forEach(node => {
+  //     nodeTracker.push({id: this.state.connectionArray.id, label: connectionArray})
+  //   })
+  // }
 
-  updateParent = (evt, childId) => {
+  updateParent = () => {
+    let noteParent = {
+      NoteParent: {
+        noteParentId: 0
+      }
+    }
     if (this.state.connectionArray.length > 1) {
-      this.props.editNote(childId, {noteParent: [this.state.connectionArray[0]]})
+      for (var i = 1; i < this.state.connectionArray.length; i++){
+        this.props.editNote(this.state.connectionArray[i], {noteParent: { NoteParent: { noteParentId: this.state.connectionArray[0]}}})
+      }
     }
   }
 
   render() {
+    console.log('nodes', this.state.nodes)
     console.log('connectionArray', this.state.connectionArray)
     console.log('whiteboard', this.props)
+    console.log('edges', this.state.edges)
     let data = [];
     if (this.props.notes) {
       data = this.props.notes
@@ -143,6 +169,7 @@ class Whiteboard extends Component {
                     style = {{position: 'absolute', left: this.state.selectedNote === note.id && this.state.pos.x || note.position[0], top: this.state.selectedNote === note.id && this.state.pos.y || note.position[1], cursor: 'pointer' }}
                     onMouseMove={this.onMouseMove}
                     onMouseUp={this.onMouseUp}
+                    onClick={(evt) => this.clickConnection(evt, note.id)}
                     onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt);}} >
 
                   <button value={note.id} onClick={this.handleDelete}>x</button>
@@ -205,7 +232,14 @@ class Whiteboard extends Component {
 
           })
         }
-        <BranchPanel />
+        <div id="branch-panel" className="fixed-action-btn vertical click-to-toggle" onClick={() => {this.submitEdges()}}>
+          <a className="btn-floating btn-large blue">
+            <img src="/icons8-connect-40.png" align="center" alt="Branch" />
+          </a>
+          <ul>
+            <li><a className="btn-floating light white" onClick={() => {this.updateParent()}}><img src="/icons8-checkmark-30.png" align="center" alt="Parent" /></a></li>
+          </ul>
+        </div>
       </div>
     );
   }
