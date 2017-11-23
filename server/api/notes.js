@@ -25,20 +25,21 @@ AWS.config.update(
 const s3 = new AWS.S3()
 
 router.post('/', (req, res, next) => {
+  console.log(req.body)
   Note.create(req.body.note)
   .then(note => {
     if (req.body.note.file.length !== 0) {
       s3.putObject({
         ACL: 'public-read',
         Bucket: 'meeb-whiteboard',
-        Key: `${note.id}-${req.body.note.image}`,
+        Key: `${note.id}-${req.body.note.imageName}`,
         Body: new Buffer((req.body.note.file).split(',')[1], 'base64'),
         ContentType: req.body.note.fileType,
       }, (err) => {
           if (err) console.log(err)
           else {
             console.log('File uploaded to S3')
-            note.update({ image: `https://s3.amazonaws.com/meeb-whiteboard/${note.id}-${req.body.note.image}` }, {
+            note.update({ image: `https://s3.amazonaws.com/meeb-whiteboard/${note.id}-${req.body.note.imageName}` }, {
               returning: true, plain: true
             })
             .then(result => {

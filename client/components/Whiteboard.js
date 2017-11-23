@@ -58,6 +58,7 @@ class Whiteboard extends Component {
         y: null
       }
     })
+    console.log(this.state)
     evt.stopPropagation()
     evt.preventDefault()
   }
@@ -65,6 +66,7 @@ class Whiteboard extends Component {
   //once mouse is released, the new position of note is updated in db
   //and dragging is set to false
   onMouseUp(evt) {
+    console.log(this.state)
     if (this.state.pos.x !== null && !this.state.pos.y !== null) this.props.editNote(this.state.selectedNote, {position: [this.state.pos.x, this.state.pos.y]})
     evt.stopPropagation()
     evt.preventDefault()
@@ -80,6 +82,7 @@ class Whiteboard extends Component {
         y: evt.pageY - this.state.rel.y
       }
     })
+    console.log(this.state)
     evt.stopPropagation()
     evt.preventDefault()
   }
@@ -114,7 +117,7 @@ class Whiteboard extends Component {
                   <div
                     className="card"
                     key={note.id}
-                    style = {{position: 'absolute', left: this.state.selectedNote === note.id && this.state.pos.x || note.position[0], top: this.state.selectedNote === note.id && this.state.pos.y || note.position[1], cursor: 'pointer' }}
+                    style = {{position: 'absolute', left: (this.state.selectedNote === note.id && this.state.pos.x) || note.position[0], top: (this.state.selectedNote === note.id && this.state.pos.y) || note.position[1], cursor: 'pointer' }}
                     onMouseMove={this.onMouseMove}
                     onMouseUp={this.onMouseUp}
                     onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt)}} >
