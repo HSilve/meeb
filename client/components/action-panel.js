@@ -1,3 +1,4 @@
+/* eslint-disable max-params */
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
@@ -54,7 +55,7 @@ class ActionPanel extends React.Component {
             <div className="btn-floating" onClick={() => this.toggle('image')}>Image</div>
             <div className="btn-floating" onClick={() => this.toggle('link')}>Link</div>
             <div className="btn-floating">Draw</div>
-            <form onSubmit={(evt) => { evt.preventDefault(); this.props.handleSubmit(evt, this.state.file, this.state.name, this.state.type, this.props.user.id, this.props.match.params.id) }} >
+            <form onSubmit={(evt) => { evt.preventDefault(); this.props.handleSubmit(evt, this.state.file, this.state.name, this.state.type, this.props.user.id, this.props.match.params.id, this.props.notes.length) }} >
               {(this.state.textToggle || this.state.linkToggle) && <input name="text" type="text" />}
               {this.state.imageToggle &&
                 <div>
@@ -73,20 +74,22 @@ class ActionPanel extends React.Component {
 const mapState = state => {
   return {
     user: state.user,
+    notes: state.notes
   }
 }
 
 const mapDispatch = dispatch => {
   return {
-    handleSubmit(evt, file, imageName, fileType, userId, whiteboardId) {
+    handleSubmit(evt, file, imageName, fileType, userId, whiteboardId, noteIdx) {
       evt.preventDefault()
       whiteboardId = whiteboardId.toString()
       userId = userId.toString()
       const text = evt.target.text && evt.target.text.value
       const link = evt.target.link && evt.target.link.value
+      const position = [1315 + (noteIdx * 5), 125 + (noteIdx * 5)]
 
       //ONLY WORKS IF USER IS LOGGED IN FIRST
-      dispatch(addNote({ file, imageName, fileType, text, link, whiteboardId, userId }))
+      dispatch(addNote({ file, imageName, fileType, text, link, whiteboardId, userId, position }))
     }
   }
 }
