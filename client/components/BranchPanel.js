@@ -9,6 +9,7 @@ class BranchPanel extends Component{
     this.state = {
       edges: [],
       nodes: [],
+      connectionArray: [],
     }
     this.submitEdges = this.submitEdges.bind(this)
   }
@@ -29,7 +30,6 @@ class BranchPanel extends Component{
   }
 
   render() {
-    console.log('branch-panel', this.props)
     return (
       <div id="branch-panel" className="fixed-action-btn vertical click-to-toggle" onClick={() => {this.submitEdges(this.state.edges)}}>
         <a className="btn-floating btn-large white">

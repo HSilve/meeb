@@ -45,6 +45,7 @@ export const editNote = (id, data) =>
   dispatch =>
     axios.put(`/api/notes/${id}`, data)
       .then(updatedNote => {
+          console.log('axios', updatedNote.data)
         dispatch(updateNote(updatedNote.data))
         socket.emit('edit-note', updatedNote.data)
       })

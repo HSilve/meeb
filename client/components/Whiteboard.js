@@ -15,18 +15,18 @@ class Whiteboard extends Component {
       selectedNote: 0,
       connectionArray: [],
     }
-    this.clickImage = this.clickImage.bind(this);
+    this.clickImage = this.clickImage.bind(this)
     this.onMouseDown = this.onMouseDown.bind(this)
     this.onMouseUp = this.onMouseUp.bind(this)
     this.onMouseMove = this.onMouseMove.bind(this)
-    this.handleDelete = this.handleDelete.bind(this);
+    this.handleDelete = this.handleDelete.bind(this)
     this.clickConnection = this.clickConnection.bind(this)
+    this.updateParent = this.updateParent.bind(this)
   }
 
 
   componentDidMount() {
     this.props.fetchNotes(this.props.match.params.id)
-    console.log('the window', document.getElementById('whiteboard').getBoundingClientRect())
   }
 
   componentDidUpdate(props, state) {
@@ -62,6 +62,10 @@ class Whiteboard extends Component {
     })
     evt.stopPropagation()
     evt.preventDefault()
+    this.clickConnection(this.state.selectedNote)
+    if (this.state.connectionArray.length > 1) {
+      this.props.editNote(this.state.selectedNote, {noteParent: [this.state.connectionArray[0]]})
+    }
   }
 
   //once mouse is released, the new position of note is updated in db
@@ -91,28 +95,32 @@ class Whiteboard extends Component {
     this.props.deleteNote(evt.target.value);
   }
 
-  clickConnection(evt, id) {
-    if (this.state.connectionArray.indexOf(id) === -1) {
-      this.setState({ connectionArray: [...this.state.connectionArray, id]})
-    } else {
+  clickConnection = (id) => {
+    if (this.state.connectionArray.indexOf(id) === -1 && id !== 0) {
+      this.setState({connectionArray: [...this.state.connectionArray, id]})
+    } else if (this.state.connectionArray.indexOf(id) > 0 && id !== 0){
       let array = this.state.connectionArray
       let index = array.indexOf(id)
       array.splice(index, 1)
       this.setState({ connectionArray: array})
-      console.log('splice', this.state.connectionArray.slice(1))
-      console.log('after state', this.state.connectionArray)
     }
       // var selectedCard = document.getElementById(`card${id}`)
       // selectedCard.className = 'DropShadow'
   }
 
+  updateParent = (evt, childId) => {
+    if (this.state.connectionArray.length > 1) {
+      this.props.editNote(childId, {noteParent: [this.state.connectionArray[0]]})
+    }
+  }
 
   render() {
+    console.log('connectionArray', this.state.connectionArray)
+    console.log('whiteboard', this.props)
     let data = [];
     if (this.props.notes) {
       data = this.props.notes
     }
-    console.log('render connectionArray', this.state.connectionArray)
     return (
       <div id="whiteboard">
        <svg id="basket" width="300" height="250">
@@ -135,8 +143,7 @@ class Whiteboard extends Component {
                     style = {{position: 'absolute', left: this.state.selectedNote === note.id && this.state.pos.x || note.position[0], top: this.state.selectedNote === note.id && this.state.pos.y || note.position[1], cursor: 'pointer' }}
                     onMouseMove={this.onMouseMove}
                     onMouseUp={this.onMouseUp}
-                    onClick={(evt) => this.clickConnection(evt, note.id)}
-                    onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt)}} >
+                    onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt);}} >
 
                   <button value={note.id} onClick={this.handleDelete}>x</button>
                     { note.text &&

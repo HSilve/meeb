@@ -53,15 +53,23 @@ router.post('/', (req, res, next) => {
   })
 })
 
+
 router.put('/:id', (req, res, next) => {
-  Note.findById(req.params.id)
-    .then(note => note.update(req.body))
-    .then(_ => {
-      Note.findById(req.params.id)
-      .then(updatedNote => res.json(updatedNote))
-    })
+  Note.findById(req.params.id, {include: [{ all: true}]})
+    .then(note => note.update(req.body, {returning: true}))
+    .then(updatedNote => {return res.json(updatedNote)})
     .catch(next);
 })
+
+// router.put('/:id', (req, res, next) => {
+//   Note.findById(req.params.id)
+//     .then(note => note.update(req.body))
+//     .then(_ => {
+//       Note.findById(req.params.id)
+//       .then(updatedNote => res.json(updatedNote))
+//     })
+//     .catch(next);
+// })
 
 router.delete('/:id', (req, res, next) => {
   const id = req.params.id
