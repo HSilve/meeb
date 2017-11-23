@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 import Chatbox from './Chatbox'
-import Attendees from './Attendees'
+// import Attendees from './Attendees'
 
 class Sidebar extends Component {
   constructor(props) {
@@ -20,12 +20,12 @@ class Sidebar extends Component {
           {
             show ?
             <span>
-              <h5 href="#">
+              {/* <h5 href="#">
               <div>Attendees</div>
               <i alt="Brand" className="glyphicon glyphicon-comment">
               </i>
               </h5>
-              <Attendees />
+              <Attendees /> */}
               <Chatbox />
             </span> : null
           }
