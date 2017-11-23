@@ -27,6 +27,18 @@ module.exports = {
         test: /\.svg$|\.ttf?|\.woff$|\.woff2|\.eof|\.eot|\.(png|jpg)$/,
         loader: 'file-loader'
       },
+      {
+         test: /node_modules[\\\/]vis[\\\/].*\.js$/,
+         loader: 'babel-loader',
+         query: {
+             cacheDirectory: true,
+             plugins: [
+                 "transform-es3-property-literals",
+                 "transform-es3-member-expression-literals",
+                 "transform-runtime"
+             ]
+         }
+     },
     ],
   },
   // When we're in development, we can use this handy live-reload plugin
