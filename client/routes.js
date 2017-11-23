@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Router } from 'react-router-dom'
-import { Route, Switch, Redirect } from 'react-router-dom'
+import { Route, Switch, Redirect, Router } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import history from './history'
-import { Main, Login, Signup, Home, ConferenceRoom, Homepage, LoginSignup } from './components'
+import { Main, Home, ConferenceRoom, Homepage, LoginSignup } from './components'
 import { me } from './store'
 
 
