@@ -75,7 +75,7 @@ export class NewSessionForm extends Component {
   render() {
     return (
       <div className="row">
-      <form className="col s4 push-s3" id="formBox" onSubmit={this.handleSubmit}>
+      <form className="col s6" id="formBox" onSubmit={this.handleSubmit}>
          Room Name:
          <input name="roomName" type="text" onChange={this.changeName} placeholder="Enter a name" />
          Date:

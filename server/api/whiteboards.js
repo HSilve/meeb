@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { Whiteboard, Message, User, Attendees } = require('../db/models')
+const { Whiteboard, User, Attendees } = require('../db/models')
 module.exports = router
 
 router.get('/', (req, res, next) => {
@@ -14,7 +14,6 @@ router.get('/myRooms/:id', (req, res, next) => {
       return user.getWhiteboards({ include: [{ all: true, nested: true }] })
     })
     .then(whiteboards => {
-      console.log("WHITEBOARDS--", whiteboards)
       res.json(whiteboards)
     })
 
