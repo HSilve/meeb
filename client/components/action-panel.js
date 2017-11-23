@@ -85,8 +85,11 @@ const mapDispatch = dispatch => {
       const text = evt.target.text && evt.target.text.value
       const link = evt.target.link && evt.target.link.value
 
+      if (imageName || text || link ) {
       //ONLY WORKS IF USER IS LOGGED IN FIRST
       dispatch(addNote({ file, imageName, fileType, text, link, whiteboardId, userId }))
+      }
+
     }
   }
 }
