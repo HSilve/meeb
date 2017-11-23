@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Router } from 'react-router-dom'
-import { Route, Switch, Redirect } from 'react-router-dom'
+import { Route, Switch, Redirect, Router} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import history from './history'
 import { Main, Login, Signup, Home, ConferenceRoom, Homepage, LoginSignup } from './components'
@@ -32,8 +31,8 @@ class Routes extends Component {
               <Switch>
                 <Route exact path="/home" component={Home} />
                 <Route path="/whiteboards/:id" component={ConferenceRoom} />
-                <Route exact path="/homepage" component={Homepage} />
-                <Redirect to="/homepage" />
+                <Route exact path="/profile" component={Homepage} />
+                <Redirect to="/profile" />
               </Switch>
             }
           </Switch>
