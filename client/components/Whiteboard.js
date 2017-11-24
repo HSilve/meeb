@@ -1,7 +1,7 @@
 /* eslint-disable no-lone-blocks */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchRoom, editNote, fetchNotes, deleteNote} from '../store'
+import { editNote, fetchNotes, deleteNote} from '../store'
 import { withRouter } from 'react-router'
 
 class Whiteboard extends Component {
@@ -86,7 +86,7 @@ class Whiteboard extends Component {
 
   handleDelete(evt) {
     evt.preventDefault();
-    this.props.deleteNote(evt.target.value);
+    this.props.deleteNote(evt.target.value, this.props.boardId);
   }
 
 
@@ -152,9 +152,12 @@ class Whiteboard extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({ notes: state.notes })
+const mapStateToProps = (state) => ({
+  notes: state.notes,
+  boardId: state.singleWhiteboard.id
+})
 
-const mapDispatchToProps = { fetchRoom, editNote, fetchNotes, deleteNote }
+const mapDispatchToProps = { editNote, fetchNotes, deleteNote }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Whiteboard));
 

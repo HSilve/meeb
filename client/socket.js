@@ -1,5 +1,5 @@
 import io from 'socket.io-client'
-import store, { postMessage, insertNote, updateNote, removeNote } from './store';
+import store, { postMessage, insertNote, updateNote, removeNote, createRoom, updateRoom, enterUser } from './store';
 
 const socket = io(window.location.origin)
 
@@ -21,15 +21,36 @@ socket.on('new-note', note => {
   store.dispatch(insertNote(note));
   console.log('new note has been posted');
 })
-socket.on('edit-note', (id, data) => {
-  console.log('A note has been edited', data)
-  store.dispatch(updateNote(id, data));
+socket.on('edit-note', (note) => {
+  console.log('A note has been edited', note)
+  store.dispatch(updateNote(note));
   console.log('Edits have been reflected')
 })
 socket.on('delete-note', id =>  {
   console.log('A note has been deleted')
   store.dispatch(removeNote(id))
   console.log('Note Removed')
+})
+
+socket.on('new-room', room => {
+  console.log('A new room has been made', room);
+  store.dispatch(createRoom(room));
+  console.log('New room has been posted');
+})
+socket.on('edit-room', (id, data) => {
+  console.log('A room has been edited', data)
+  store.dispatch(updateRoom(id, data));
+  console.log('Edits have been reflected')
+})
+socket.on('enter-room', (userId, roomId) => {
+  console.log(userId, 'joining room', roomId);
+  store.dispatch(enterUser(userId, roomId))
+})
+
+socket.on('leave-room', (userId, roomId) => {
+  console.log(userId, 'leaving', roomId);
+
+
 })
 
 export default socket
