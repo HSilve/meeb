@@ -42,6 +42,12 @@ socket.on('edit-room', (id, data) => {
   store.dispatch(updateRoom(id, data));
   console.log('Edits have been reflected')
 })
+socket.on('enter-user', (roomId, userId) => {
+  console.log(userId, 'joining room', roomId);
+})
 
+socket.on('leave-user', (roomId, userId) => {
+
+})
 
 export default socket

@@ -13,19 +13,18 @@ const Message = require('../db/models/message')
 //   }
 // }
 //whiteboards available:
-var rooms = ['board1', 'board2', 'board3']
 module.exports = (io) => {
   io.on('connection', (socket) => {
     // sockets.set(socket.id, socket)
 
     console.log(`A socket connection to the server has been made: ${socket.id}`)
      //Entering A room
-      socket.on('enter-room', (roomId, userId) => {
+      socket.on('enter-user', (roomId, userId) => {
         console.log(userId, 'joining room', roomId);
         socket.join(roomId)
       })
 
-      socket.on('leave-room', (roomId, userId) => {
+      socket.on('leave-user', (roomId, userId) => {
         console.log(userId, 'leaving room', roomId);
         socket.join(roomId)
       })
@@ -58,21 +57,17 @@ module.exports = (io) => {
       console.log(`Connection ${socket.id} has left the building`)
     })
 
-    ///Creating A Room
-    socket.on('new-room', room => {
-      console.log('Entering Room');
-      socket.broadcast.emit('new-room', room);
-      console.log('broadcast done')
-    })
-    socket.on('edit-room', (id, data) => {
-      console.log('Editing Room');
-      socket.boradcast.emit('eidt-room', id, data);
-      console.log('broadcast done')
-    })
-
-
-
-
+    // ///Creating A Room
+    // socket.on('new-room', room => {
+    //   console.log('Entering Room');
+    //   socket.broadcast.emit('new-room', room);
+    //   console.log('broadcast done')
+    // })
+    // socket.on('edit-room', (id, data) => {
+    //   console.log('Editing Room');
+    //   socket.boradcast.emit('eidt-room', id, data);
+    //   console.log('broadcast done')
+    // })
   })
 }
 

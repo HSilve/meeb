@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { Sidebar, Whiteboard, ActionPanel } from './index'
+import { Sidebar, Whiteboard, ActionPanel, Attendees} from './index'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 import {fetchRoom} from '../store'
@@ -12,6 +12,7 @@ class ConferenceRoom extends Component {
   render ()  {
     return (
       <div id="main-space">
+        <Attendees />
         <Sidebar />
         <Whiteboard />
         <ActionPanel />
