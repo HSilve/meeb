@@ -24,7 +24,6 @@ const createRoom = room => ({ type: CREATE_ROOM, room })
 // THUNK CREATORS
 
 export const getRooms = user => dispatch => {
-  console.log(`user: ${user}`)
   axios.get(`/api/whiteboards/myRooms/${user.id}`)
     .then(res => {
       console.log(res)
