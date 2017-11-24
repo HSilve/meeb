@@ -12,13 +12,25 @@ body {
   nav a {
     display: inline-block;
     margin: 1em;
+  }
+ button, .btn {
+   background-color: rgb(3, 3, 82);
+   color: yellow;
+ }
+  nav {
+    z-index: 1;
+    background-color: teal;
 
   }
-
-  nav {
-    // height: 60px;
-    // position: fixed;
-    z-index: 1;
+  #attendee-box {
+    margin-top: 30px;
+    #attendees {
+      display: inline-block;
+      height: 30px;
+      overflow-x: auto;
+      white-space:nowrap;
+      width: 70vw;
+    }
   }
 
   .sidebar {
@@ -43,13 +55,15 @@ body {
     position: fixed;
     right: 0;
     top: 70;
+    width: 300px;
+    height: 250px;
 
   }
 
   #whiteboard {
     // width: 70vw;
     // height: 80vh;
-    width: 100vw;
+    // width: 100vw;
     overflow: scroll;
   }
   .aUser {
@@ -59,15 +73,11 @@ body {
     border: 5px solid grey;
   }
   #formNote {
-    // border: 5px dotted grey;
     border-top-style: dotted;
     border-bottom-style: dotted;
     border-color: grey;
   }
   .popup-box {
-    // display: none;
-    // position: fixed;
-    // height: 285px;
     height: 40vh;
     float: left;
     overflow-y: scroll;
@@ -86,6 +96,7 @@ body {
   .card {
     width: 250px;
     // height: 150px;
+    background-color:yellow;
     .card-image {
       width: 60px;
     }
@@ -93,8 +104,8 @@ body {
   .blob {
     background-color:rgb(164, 173, 190);
     border-radius: 15px;
-    margin:2px;
-    height: 40px;
+    margin:3px;
+    padding: 5px;
   }
 
   .chat-header {

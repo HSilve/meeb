@@ -15,7 +15,7 @@ const Main = (props) => {
 
   return (
     <div>
-      <nav>
+      <nav className="nav">
         <div className="nav-wrapper">
         <Link to="/home" className="brand-logo"><img className="icon" src="/favicon.ico" /></Link>
         { isLoggedIn ?
@@ -32,6 +32,7 @@ const Main = (props) => {
         }
         </div>
       </nav>
+      <hr />
       {children}
     </div>
   )
