@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
-import {fetchRoom} from '../store'
 
 class Attendees extends Component {
   constructor (props) {
@@ -11,14 +10,11 @@ class Attendees extends Component {
     }
     this.showAtt = this.showAtt.bind(this);
   }
-  componentDidMount() {
-    this.props.fetchRoom(this.props.match.params.id)
-  }
+
   showAtt = (evt) => {evt.preventDefault(); this.setState({show: !this.state.show})}
 
   render() {
     const foundWhiteboard = this.props.whiteboard
-    const { users } = foundWhiteboard
     return (
       <div id="attendee-box" className="horizontal">
         <button
@@ -31,19 +27,19 @@ class Attendees extends Component {
         this.state.show &&
         <div id="attendees" >
           {
-            this.props.whiteboard.users && users.map(user => {
-                  return (
-                    <span className="chip" key={user.id}>
-                    {
-                        user.attended ?
-                        <img className="circle green" />
-                        :
-                        <img className="circle red" />
-                    }
-                         <a> {user.name}</a>
-                   </span>
-                   )
-                })
+            this.props.attendees.map(user => {
+              return (
+                <span className="chip" key={user.id}>
+                {
+                    user.whiteboards[0].attendees.attended ?
+                    <img className="circle green" />
+                    :
+                    <img className="circle red" />
+                }
+                      <a> {user.name}</a>
+                </span>
+                )
+              })
           }
         </div>
         }
@@ -55,10 +51,11 @@ class Attendees extends Component {
 const mapState = state => {
   return {
     whiteboard: state.singleWhiteboard,
-    user: state.user
+    user: state.user,
+    attendees: state.attendees.list
   }
 }
 
-const mapDispatch = {fetchRoom}
+const mapDispatch = null;
 
 export default withRouter(connect(mapState, mapDispatch)(Attendees))

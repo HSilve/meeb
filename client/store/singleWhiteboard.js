@@ -1,5 +1,5 @@
-import axios from 'axios'
-import history from '../history'
+import axios from 'axios';
+import history from '../history';
 import socket from '../socket';
 
 const GET_ROOM = 'GET_ROOM'
@@ -13,14 +13,17 @@ export const destroyRoom = room => ({type: CLOSE_ROOM, room})
 export const fetchRoom = (whiteboardId) =>
   dispatch =>
     axios.get(`/api/whiteboards/${whiteboardId}`)
-      .then(res => dispatch(getRoom(res.data)))
+      .then(res => {
+        dispatch(getRoom(res.data))
+        }
+      )
       .catch(err => console.log(err))
 
 export const modifyRoom = (room) => dispatch => {
   axios.put(`/api/whiteboards/${room.id}`, room)
     .then(res => {
       dispatch(updateRoom(res.data))
-      socket.emit('updated-room', res.data);
+      socket.emit('edit-room', res.data);
     })
     .catch(err => console.error(err));
 }
