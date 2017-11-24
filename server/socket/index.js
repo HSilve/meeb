@@ -19,14 +19,14 @@ module.exports = (io) => {
 
     console.log(`A socket connection to the server has been made: ${socket.id}`)
      //Entering A room
-      socket.on('enter-user', (roomId, userId) => {
-        console.log(userId, 'joining room', roomId);
-        socket.join(roomId)
+      socket.on('enter-room', (userId, whiteboardId) => {
+        console.log(userId, 'joining room', whiteboardId);
+        socket.join(whiteboardId)
       })
 
-      socket.on('leave-user', (roomId, userId) => {
-        console.log(userId, 'leaving room', roomId);
-        socket.join(roomId)
+      socket.on('leave-room', (userId, whiteboardId) => {
+        console.log(userId, 'leaving room', whiteboardId);
+        socket.leave(whiteboardId)
       })
 
     socket.on('new-message', (message) => {

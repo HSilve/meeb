@@ -2,12 +2,12 @@ import React, {Component} from 'react'
 import { Sidebar, Whiteboard, ActionPanel, Attendees} from './index'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
-import {fetchRoom} from '../store'
+import {fetchRoom, announceUser} from '../store'
 
 
 class ConferenceRoom extends Component {
   componentWillMount() {
-    this.props.fetchRoom(this.props.match.params.id, this.props.user.id);
+    this.props.announceUser(this.props.user.id, this.props.match.params.id);
   }
   render ()  {
     return (
@@ -22,6 +22,6 @@ class ConferenceRoom extends Component {
 }
 
 const mapState = (state) => ({user: state.user})
-const mapDispatch = {fetchRoom}
+const mapDispatch = {fetchRoom, announceUser}
 
 export default withRouter(connect(mapState, mapDispatch)(ConferenceRoom))

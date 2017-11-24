@@ -15,10 +15,10 @@ class MessageEntry extends Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  // componentDidMount() {
-  //   const { id } = this.props.match.params
-  //   this.props.getWhiteboard(id)
-  // }
+  componentDidMount() {
+    const { id } = this.props.match.params
+    this.props.getWhiteboard(id)
+  }
 
   handleSubmit = (evt) => {
     evt.preventDefault()
@@ -68,9 +68,9 @@ const mapState = (state) => {
 
 const mapDispatch = (dispatch) => {
   return {
-    // getWhiteboard: (id) => {
-    //   dispatch(fetchRoom(id))
-    // },
+    getWhiteboard: (id) => {
+      dispatch(fetchRoom(id))
+    },
     sendMessage: (message) => {
       dispatch(addMessage(message))
     },

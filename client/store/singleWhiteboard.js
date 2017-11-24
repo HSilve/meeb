@@ -8,14 +8,13 @@ const ANNOUNCE_USER = 'ANNOUNCE_USER'
 
 const getRoom = room => ({ type: GET_ROOM, room })
 const updateRoom = room => ({ type: UPDATE_ROOM, room })
-const enteruser = user => ({type: ANNOUNCE_USER, user})
+const enterUser = user => ({type: ANNOUNCE_USER, user})
 
-export const fetchRoom = (whiteboardId, userId) =>
+export const fetchRoom = (whiteboardId) =>
   dispatch =>
     axios.get(`/api/whiteboards/${whiteboardId}`)
       .then(res => {
         dispatch(getRoom(res.data))
-        socket.emit('enter-room', res.data.id, userId)
         }
       )
       .catch(err => console.log(err))
@@ -29,9 +28,10 @@ export const modifyRoom = (room) => dispatch => {
     .catch(err => console.error(err));
 }
 
-export const announceUser = (userId) => dispatch => {
-  axios.put(`/api/attendees`)
-  socket.emit('edit-room', res.data);
+export const announceUser = (userId, whiteboardId) => dispatch => {
+  // axios.put(`/api/attendees`)
+  socket.emit('enter-room', whiteboardId, userId);
+  // dispatch(enterUser(userId) )
 }
 
 
