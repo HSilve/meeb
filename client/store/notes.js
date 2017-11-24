@@ -32,12 +32,12 @@ export const addNote = (note) =>
       .catch(err => console.log(err))
     }
 
-export const deleteNote = id =>
+export const deleteNote = (noteId, whiteboardId) =>
   dispatch =>
-    axios.delete(`/api/notes/${id}`)
+    axios.delete(`/api/notes/${noteId}`)
       .then(_ => {
-        dispatch(removeNote(id))
-        socket.emit('delete-note', id)
+        dispatch(removeNote(noteId))
+        socket.emit('delete-note', (noteId, whiteboardId))
       })
       .catch(err => console.log(err))
 

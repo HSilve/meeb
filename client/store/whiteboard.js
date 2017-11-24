@@ -53,6 +53,7 @@ export const newRoom = (roomName, host, attendeeId, date, time, note) => dispatc
   })
     .then(res => {
       dispatch(createRoom(res.data))
+      socket.emit('new-room', res.data)
         note.whiteboardId = res.data.id;
         note.userId = host.id
         note.host = host.name;
