@@ -86,7 +86,7 @@ class Whiteboard extends Component {
 
   handleDelete(evt) {
     evt.preventDefault();
-    this.props.deleteNote(evt.target.value);
+    this.props.deleteNote(evt.target.value, this.props.boardId);
   }
 
 
@@ -185,7 +185,10 @@ class Whiteboard extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({ notes: state.notes })
+const mapStateToProps = (state) => ({
+  notes: state.notes,
+  boardId: state.singleWhiteboard.id
+})
 
 const mapDispatchToProps = { editNote, fetchNotes, deleteNote }
 
