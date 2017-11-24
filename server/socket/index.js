@@ -19,9 +19,11 @@ module.exports = (io) => {
 
     console.log(`A socket connection to the server has been made: ${socket.id}`)
      //Entering A room
-      socket.on('enter-room', (userId, whiteboardId) => {
-        console.log(userId, 'joining room', whiteboardId);
+      socket.on('enter-room', (user, whiteboardId) => {
+        console.log(user.name, 'joining room', whiteboardId);
         socket.join(whiteboardId)
+        socket.broadcast.to(whiteboardId).emit('enter-room', user)
+        console.log('broadcast done')
       })
 
       socket.on('leave-room', (userId, whiteboardId) => {
