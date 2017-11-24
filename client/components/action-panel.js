@@ -63,6 +63,7 @@ class ActionPanel extends React.Component {
                 </div>
               }
               <button type="submit">Insert</button>
+              <button onClick={(evt) => evt.preventDefault()} > End Session </button>
             </form>
           </span>
         }
