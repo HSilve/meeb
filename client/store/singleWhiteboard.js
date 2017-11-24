@@ -4,11 +4,9 @@ import socket from '../socket';
 
 const GET_ROOM = 'GET_ROOM'
 const UPDATE_ROOM = 'UPDATE_ROOM'
-const ANNOUNCE_USER = 'ANNOUNCE_USER'
 
 const getRoom = room => ({ type: GET_ROOM, room })
 const updateRoom = room => ({ type: UPDATE_ROOM, room })
-const enterUser = user => ({type: ANNOUNCE_USER, user})
 
 export const fetchRoom = (whiteboardId) =>
   dispatch =>
@@ -28,12 +26,6 @@ export const modifyRoom = (room) => dispatch => {
     .catch(err => console.error(err));
 }
 
-export const announceUser = (userId, whiteboardId) => dispatch => {
-  // axios.put(`/api/attendees`)
-  socket.emit('enter-room', whiteboardId, userId);
-  // dispatch(enterUser(userId) )
-}
-
 
 export default function reducer(state = {}, action) {
 
@@ -44,11 +36,6 @@ export default function reducer(state = {}, action) {
 
     case UPDATE_ROOM:
       return action.room
-
-    case ANNOUNCE_USER:
-      return Object.assign( {},
-        state.users.filter(person => person.id != action.user.id), action.user
-      )
 
     default:
       return state;

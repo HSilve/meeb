@@ -2,14 +2,19 @@ import React, {Component} from 'react'
 import { Sidebar, Whiteboard, ActionPanel, Attendees} from './index'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
-import {fetchRoom, announceUser} from '../store'
+import {announceCollaborator, fetchCollaborators} from '../store'
 
 
 class ConferenceRoom extends Component {
   componentWillMount() {
-    this.props.announceUser(this.props.user.id, this.props.match.params.id);
+    let boardId = this.props.match.params.id;
+    this.props.fetchCollaborators(boardId)
+    this.props.announceCollaborator(this.props.user.id, boardId);
   }
   render ()  {
+    if (this.props.person.userName) {
+      Materialize.toast(`${this.props.person.userName}, has entered the session`, 4000) // 4000 is the duration of the toast
+    }
     return (
       <div id="main-space">
         <Attendees />
@@ -21,7 +26,10 @@ class ConferenceRoom extends Component {
   }
 }
 
-const mapState = (state) => ({user: state.user})
-const mapDispatch = {fetchRoom, announceUser}
+const mapState = (state) => ({
+  user: state.user,
+  person: state.attendees.justEntered
+})
+const mapDispatch = {announceCollaborator, fetchCollaborators}
 
 export default withRouter(connect(mapState, mapDispatch)(ConferenceRoom))

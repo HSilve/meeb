@@ -1,5 +1,5 @@
 import io from 'socket.io-client'
-import store, { postMessage, insertNote, updateNote, removeNote, createRoom, updateRoom, enterUser } from './store';
+import store, { postMessage, insertNote, updateNote, removeNote, createRoom, updateRoom, enterCollaborator } from './store';
 
 const socket = io(window.location.origin)
 
@@ -42,9 +42,9 @@ socket.on('edit-room', (id, data) => {
   store.dispatch(updateRoom(id, data));
   console.log('Edits have been reflected')
 })
-socket.on('enter-room', (userId, roomId) => {
-  console.log(userId, 'joining room', roomId);
-  store.dispatch(enterUser(userId, roomId))
+socket.on('enter-room', (user) => {
+  console.log(user.name, 'joining room');
+  store.dispatch(enterCollaborator(user))
 })
 
 socket.on('leave-room', (userId, roomId) => {
