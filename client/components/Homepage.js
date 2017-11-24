@@ -32,35 +32,56 @@ class Homepage extends Component {
     return (
       <div className="row">
         <h2>Welcome, {this.props.user.name}</h2>
-        {/* <button onClick={() => this.props.createRoom(this.props.user)}>New Session</button> */}
-        {/* <NavLink to='/ns'>Show Form </NavLink> */}
+
         <div className="grid-example col s12">
           <div className="grid-example col s3">
-            <h5>Hosted</h5>
+            <h5>Past Brainstorms</h5>
             {
               this.props.allRooms.filter(room => {
-                // console.log("ROOM USER---", room.userId)
-                // console.log("PROPS USER---", this.props.user.id)
-                // console.log("logic--", room.userId === this.props.user.id)
-                return room.userId === this.props.user.id
+
+                var dateObj = new Date();
+                var month = dateObj.getUTCMonth() + 1; //months from 1-12
+                var day = dateObj.getUTCDate();
+                var year = dateObj.getUTCFullYear();
+                var hours = dateObj.getHours();
+                var minutes = dateObj.getMinutes();
+
+                var newdate = year + "-" + month + "-" + day;
+                var newtime = hours + ":" + minutes;
+
+                return room.date < newdate ||
+                  (room.date == newdate && room.startTime < newtime)
               })
                 .map(result => {
                   return (<div key={result.id}>
-                    <NavLink to={`/whiteboards/${result.id}`}>{result.host}</NavLink>
+                    <NavLink to={`/whiteboards/${result.id}`}>{result.name}</NavLink>
                   </div>
                   )
                 })
             }
           </div>
           <div className="grid-example col s3">
-            <h5>Attended</h5>
+            <h5>Future Brainstorms</h5>
             {
               this.props.allRooms.filter(room => {
-                return room.userId !== this.props.user.id
+
+                var dateObj = new Date();
+                var month = dateObj.getUTCMonth() + 1; //months from 1-12
+                var day = dateObj.getUTCDate();
+                var year = dateObj.getUTCFullYear();
+                var hours = dateObj.getHours();
+                var minutes = dateObj.getMinutes();
+
+                var newdate = year + "-" + month + "-" + day;
+                var newtime = hours + ":" + minutes;
+
+
+                return room.date > newdate ||
+                  (room.date == newdate && room.startTime >= newtime)
               })
                 .map(result => {
                   return (<div key={result.id}>
-                    <NavLink to={`/whiteboards/${result.id}`}>{result.host}</NavLink>
+                    <NavLink to={`/whiteboards/${result.id}`}>{result.name}</NavLink>
                   </div>
                   )
                 })
