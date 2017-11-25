@@ -1,5 +1,4 @@
 import axios from 'axios';
-import history from '../history';
 import socket from '../socket';
 
 const GET_ROOM = 'GET_ROOM'
@@ -27,11 +26,11 @@ export const modifyRoom = (room) => dispatch => {
     })
     .catch(err => console.error(err));
 }
-export const closeRoom = (id) => dispatch => {
-  axios.put(`/api/whiteboards/${id}`, {endTime: Date.now()})
+export const closeRoom = (id, time) => dispatch => {
+  axios.put(`/api/whiteboards/${id}`, {endTime: time})
   .then(res => {
-    dispatch(destroyRoom(res.data))
-    socket.emit('close-room', res.data)
+    dispatch(destroyRoom(res.data[1]))
+    socket.emit('end-session', res.data[1])
   })
   .catch(err => console.error(err));
 }

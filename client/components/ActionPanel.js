@@ -2,7 +2,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { addNote } from '../store'
+import { addNote, closeRoom } from '../store'
 import { withRouter } from 'react-router';
 
 class ActionPanel extends React.Component {
@@ -63,7 +63,10 @@ class ActionPanel extends React.Component {
                 </div>
               }
               <button type="submit">Insert</button>
-              <button onClick={(evt) => evt.preventDefault()} > End Session </button>
+              {
+              this.props.user.id == this.props.whiteboardId &&
+              <button onClick={(evt) => {evt.preventDefault(); this.props.handleClose(this.props.whiteboardId)}}> End Session </button>
+              }
             </form>
           </span>
         }
@@ -75,7 +78,8 @@ class ActionPanel extends React.Component {
 const mapState = state => {
   return {
     user: state.user,
-    notes: state.notes
+    notes: state.notes,
+    whiteboardId: state.singleWhiteboard.id
   }
 }
 
@@ -94,6 +98,11 @@ const mapDispatch = dispatch => {
       dispatch(addNote({ file, imageName, fileType, text, link, whiteboardId, userId, position }))
       }
 
+    },
+    handleClose(whiteboardId) {
+      var date = new Date(); // for now
+      let time =  date.getHours() + ':' + date.getMinutes();
+      dispatch(closeRoom(whiteboardId, time))
     }
   }
 }
