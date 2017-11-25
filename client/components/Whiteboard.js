@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { editNote, fetchNotes, deleteNote} from '../store'
 import { withRouter } from 'react-router'
+import ContentEditable from 'react-contenteditable'
+import debounce from 'lodash/debounce'
 
 class Whiteboard extends Component {
   constructor(props) {
@@ -11,14 +13,16 @@ class Whiteboard extends Component {
       dragging: false,
       rel: null,
       pos: {x: null, y: null},
-      selectedNote: 0
+      selectedNote: 0,
+      content: ''
     }
     this.clickImage = this.clickImage.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this)
     this.onMouseUp = this.onMouseUp.bind(this)
     this.onMouseMove = this.onMouseMove.bind(this)
-    this.handleDelete = this.handleDelete.bind(this);
-
+    this.handleDelete = this.handleDelete.bind(this)
+    this.handleChange = this.handleChange.bind(this)
+    this.changed = debounce(this.props.editNote, 10)
   }
 
 
@@ -39,6 +43,13 @@ class Whiteboard extends Component {
 
   clickImage (evt) {
     evt.preventDefault();
+  }
+
+  handleChange(evt, noteId) {
+    this.setState({ content: evt.target.value }, () => {
+      this.changed(noteId, { text: this.state.content })
+    })
+
   }
 
   //when user clicks mouse down, dragging state is set to true and new relative position
@@ -71,6 +82,7 @@ class Whiteboard extends Component {
     this.setState({dragging: false})
   }
 
+
   //when state.pos is set to anything but null, the top and left of card is set to state.pos instead of note.position[0] & note.position[1]
   onMouseMove(evt) {
     if (!this.state.dragging) return
@@ -89,8 +101,15 @@ class Whiteboard extends Component {
     this.props.deleteNote(evt.target.value, this.props.boardId);
   }
 
+  handleChange(evt) {
+    evt.preventDefault()
+    console.log(this.state.content)
+    this.setState({ content: evt.target.value })
+  }
+
 
   render() {
+    const { userId } = this.props
     let data = [];
     if (this.props.notes) {
       data = this.props.notes
@@ -115,15 +134,24 @@ class Whiteboard extends Component {
                     className="card"
                     key={note.id}
                     style = {{position: 'absolute', left: this.state.selectedNote === note.id && this.state.pos.x || note.position[0], top: this.state.selectedNote === note.id && this.state.pos.y || note.position[1], cursor: 'pointer' }}
-                    onMouseMove={this.onMouseMove}
-                    onMouseUp={this.onMouseUp}
-                    onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt)}} >
+                    >
+
 
                   <button value={note.id} onClick={this.handleDelete}>x</button>
+                  <button
+                      onMouseMove={this.onMouseMove}
+                      onMouseUp={this.onMouseUp}
+                      onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt)}}
+                      style={{borderRadius: '25px'}}
+                  > Drag
+                  </button>
                     { note.text &&
-                      <div className="card-content">
-                        {note.text}
-                      </div>
+                      <ContentEditable
+                        className="card-content"
+                        html={note.text}
+                        disabled={!(userId === note.userId)}
+                        onChange={evt => this.handleChange(evt, note.id)}
+                      />
                     }
 
 
@@ -154,7 +182,8 @@ class Whiteboard extends Component {
 
 const mapStateToProps = (state) => ({
   notes: state.notes,
-  boardId: state.singleWhiteboard.id
+  boardId: state.singleWhiteboard.id,
+  userId: state.user.id
 })
 
 const mapDispatchToProps = { editNote, fetchNotes, deleteNote }

@@ -27,6 +27,7 @@ class ActionPanel extends React.Component {
     else if (type === 'image') this.setState({ imageToggle: !this.state.imageToggle })
     else if (type === 'link') this.setState({ linkToggle: !this.state.linkToggle })
     else this.setState({ drawToggle: !this.state.drawToggle })
+    console.log(this.state)
   }
 
   handleFileUpload(evt) {
@@ -56,7 +57,8 @@ class ActionPanel extends React.Component {
             <div className="btn-floating" onClick={() => this.toggle('link')}>Link</div>
             <div className="btn-floating">Draw</div>
             <form onSubmit={(evt) => { evt.preventDefault(); this.props.handleSubmit(evt, this.state.file, this.state.name, this.state.type, this.props.user.id, this.props.match.params.id, this.props.notes.length) }} >
-              {(this.state.textToggle || this.state.linkToggle) && <input name="text" type="text" />}
+              {(this.state.textToggle) && <input name="text" type="text" />}
+              {(this.state.linkToggle) && <input name="link" type="text" />}
               {this.state.imageToggle &&
                 <div>
                   <input name="file" type="file" onChange={this.handleFileUpload} />
