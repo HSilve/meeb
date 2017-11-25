@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
 import { logout } from '../store'
-import { Footer } from './index'
 
 /**
  * COMPONENT
@@ -35,7 +34,6 @@ const Main = (props) => {
       </nav>
       <hr />
       {children}
-      <Footer />
     </div>
   )
 }

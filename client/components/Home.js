@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import ReactPlayer from 'react-player'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { ActionPanel } from './index'
+import { Footer } from './index'
 import { insertNote, removeNote, getNotes } from '../store'
 
 export class Home extends Component {
@@ -166,7 +166,7 @@ export class Home extends Component {
               )
             }
           )}
-          <div className="fixed-action-btn horizontal click-to-toggle">
+          <div className="fixed-action-btn horizontal click-to-toggle home-toggle">
             <button className="btn-floating btn-large" type="submit" onClick={() => this.setState({ expandToggle: !this.state.expandToggle })}>+</button>
             { this.state.expandToggle &&
               <form onSubmit={ this.handleSubmit }>
@@ -177,6 +177,7 @@ export class Home extends Component {
           </div>
           </div>
           </div>
+          <Footer />
         </div>
     )
   }

@@ -3,13 +3,13 @@ nav {
   top: 0
 }
 
-.children {
+/*.children {
   margin-top: 10vh
-}
+}*/
 
 .icon {
   margin-top: -3vh;
-  height: 30%;
+  height: 10vh;
   width: 30%
 }
 
@@ -47,16 +47,16 @@ nav {
   margin-bottom: 25vh !important
 }*/
 
-div.fixed-action-btn.horizontal.click-to-toggle {
+div.home-toggle {
   position: absolute;
   top: 210vh
 }
 
 footer {
-  position: static;
   width: 100%;
   left: 0;
-  bottom: 0px;
+  bottom: 0;
+  margin-bottom: 0;
   margin-top: 50vh;
   background-color: teal !important
 }
