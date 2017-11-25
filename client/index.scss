@@ -96,7 +96,6 @@ body {
   .card {
     width: 250px;
     // height: 150px;
-    background-color:yellow;
     .card-image {
       width: 60px;
     }
@@ -114,6 +113,11 @@ body {
   	color: #fff;
   	cursor: pointer;
   	padding: 10px 10px;
+  }
+
+  .colorPalette {
+    right: 0px;
+    bottom: 0px;
   }
 
   #mini-whiteboard {

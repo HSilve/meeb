@@ -20,6 +20,9 @@ const Note = db.define('note', {
     allowNull: true,
     defaultValue: null
   },
+  color: {
+    type: Sequelize.STRING
+  },
   highlighted: {
     type: Sequelize.BOOLEAN,
     defaultValue: false

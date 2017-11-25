@@ -1,9 +1,8 @@
 /* eslint-disable no-lone-blocks */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { editNote, fetchNotes, deleteNote} from '../store'
+import { editNote, fetchNotes, deleteNote } from '../store'
 import { withRouter } from 'react-router'
-import { BlockPicker } from 'react-color'
 
 class Whiteboard extends Component {
   constructor(props) {
@@ -13,21 +12,26 @@ class Whiteboard extends Component {
       rel: null,
       pos: {x: null, y: null},
       selectedNote: 0,
-      noteColor: 'yellow',
+      connectionArray: [],
+      edges: [],
+      nodes: [],
+      parentChildPos: {},
+      line: {x: null, y: null},
+      target: [],
     }
-    this.clickImage = this.clickImage.bind(this);
+    this.clickImage = this.clickImage.bind(this)
     this.onMouseDown = this.onMouseDown.bind(this)
     this.onMouseUp = this.onMouseUp.bind(this)
     this.onMouseMove = this.onMouseMove.bind(this)
-    this.handleDelete = this.handleDelete.bind(this);
-    this.handleColorChange = this.handleColorChange.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
+    this.clickConnection = this.clickConnection.bind(this)
+    this.updateParent = this.updateParent.bind(this)
+    this.submitEdges = this.submitEdges.bind(this)
   }
 
 
   componentDidMount() {
     this.props.fetchNotes(this.props.match.params.id)
-
-    console.log('the window', document.getElementById('whiteboard').getBoundingClientRect())
   }
 
   componentDidUpdate(props, state) {
@@ -37,6 +41,10 @@ class Whiteboard extends Component {
     } else if (!this.state.dragging && state.dragging) {
       document.removeEventListener('mousemove', this.onMouseMove)
       document.removeEventListener('mouseup', this.onMouseUp)
+    }
+    if (state.parentChildPos.length !== this.state.parentChildPos.length ||
+      this.state.dragging && !state.dragging) {
+
     }
   }
 
@@ -59,8 +67,24 @@ class Whiteboard extends Component {
       pos: {
         x: null,
         y: null
+      },
+      target: [
+        evt.pageX - pos.left,
+        evt.pageY - pos.top
+      ],
+      line: {
+        x: null,
+        y: null
       }
     })
+    const parentChildPos = this.state.parentChildPos
+    if (this.state.parentChildPos.length){
+      parentChildPos[0].target = this.state.target
+      this.setState({
+        parentChildPos
+      })
+    }
+    console.log('target', this.state.target)
     evt.stopPropagation()
     evt.preventDefault()
   }
@@ -71,6 +95,7 @@ class Whiteboard extends Component {
     if (this.state.pos.x !== null && this.state.pos.y !== null) this.props.editNote(this.state.selectedNote, {position: [this.state.pos.x, this.state.pos.y]})
     evt.stopPropagation()
     evt.preventDefault()
+    console.log('onMouseUp', this.state.parentChildPos)
     this.setState({dragging: false})
   }
 
@@ -79,6 +104,10 @@ class Whiteboard extends Component {
     if (!this.state.dragging) return
     this.setState({
       pos: {
+        x: evt.pageX - this.state.rel.x,
+        y: evt.pageY - this.state.rel.y
+      },
+      line: {
         x: evt.pageX - this.state.rel.x,
         y: evt.pageY - this.state.rel.y
       }
@@ -92,23 +121,62 @@ class Whiteboard extends Component {
     this.props.deleteNote(evt.target.value, this.props.boardId);
   }
 
-  handleColorChange = (color) => {
-    this.props.editNote(this.state.selectedNote, {color: color.hex})
-    document.getElementById(`card${this.state.selectedNote}`).style.background = color.hex
-    console.log('selectedNote', this.state.selectedNote)
+  clickConnection = (evt, note) => {
+    if (this.state.connectionArray.indexOf(note.id) === -1 && note.id !== 0) {
+      this.setState({connectionArray: [...this.state.connectionArray, note.id]})
+      this.setState({nodes: [...this.state.nodes, note]})
+      // let selectedCard = document.getElementById(`card${id}`)
+      // selectedCard.className = 'DropShadow'
+    } else if (note.id !== 0) {
+      let array = this.state.connectionArray
+      let index = array.indexOf(note.id)
+      array.splice(index, 1)
+      this.setState({ connectionArray: array})
+      // let selectedCard = document.getElementById(`card${id}`)
+      // selectedCard.className = 'card'
+    }
+  }
+  submitEdges = () => {
+    let edgeTracker = []
+    let parent = Number(this.state.connectionArray.slice(0, 1))
+    let parentPos = this.state.nodes.slice(0, 1)
+    let parentChildPos = []
+    this.state.connectionArray.slice(1).forEach(connection => {
+        edgeTracker.push({source: parent, target: connection })
+    })
+
+    this.state.nodes.slice(1).forEach(position => {
+      parentChildPos.push({id: position.id, source: parentPos, target: position.position})
+    })
+    this.setState({edges: edgeTracker})
+    this.setState({parentChildPos: parentChildPos})
+    // console.log('nodes', this.state.nodes)
+    // console.log('parentPos', parentChildPos)
+    // console.log('line', this.state.line)
+  }
+
+  updateParent = () => {
+    let noteParent = {
+      NoteParent: {
+        noteParentId: 0
+      }
+    }
+    if (this.state.connectionArray.length > 1) {
+      for (var i = 1; i < this.state.connectionArray.length; i++){
+        this.props.editNote(this.state.connectionArray[i], {noteParent: { NoteParent: { noteParentId: this.state.connectionArray[0]}}})
+      }
+    }
   }
 
   render() {
+    // console.log('nodes', this.state.nodes)
+    // console.log('connectionArray', this.state.connectionArray)
+    // console.log('whiteboard', this.props)
+    // console.log('edges', this.state.edges)
     let data = [];
     if (this.props.notes) {
       data = this.props.notes
     }
-      this.props.notes.map(note => {
-        console.log('I here', note.color)
-        // document.getElementById(`card${note.id}`).style.background = note.color
-      })
-
-    console.log('componentDidMount', this.props.notes)
     return (
       <div id="whiteboard">
        <svg id="basket" width="300" height="250">
@@ -125,14 +193,14 @@ class Whiteboard extends Component {
             return note.position &&
              (
                   <div
-                    className="card"
-                    background-color={note.color}
                     id={`card${note.id}`}
+                    className="card"
                     key={note.id}
                     style = {{position: 'absolute', left: this.state.selectedNote === note.id && this.state.pos.x || note.position[0], top: this.state.selectedNote === note.id && this.state.pos.y || note.position[1], cursor: 'pointer' }}
                     onMouseMove={this.onMouseMove}
                     onMouseUp={this.onMouseUp}
-                    onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt)}} >
+                    onClick={(evt) => this.clickConnection(evt, note)}
+                    onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt);}} >
 
                   <button value={note.id} onClick={this.handleDelete}>x</button>
                     { note.text &&
@@ -154,7 +222,6 @@ class Whiteboard extends Component {
                         <a type="text/css" href={note.link}>Go Here </a>
                       </div>
                     }
-
                   </div>
 
                 )
@@ -162,9 +229,24 @@ class Whiteboard extends Component {
 
           })
         }
-        <div className="colorPalette">
-          <BlockPicker onChange={this.handleColorChange} />
+        <div id="branch-panel" className="fixed-action-btn vertical click-to-toggle" onClick={() => {this.submitEdges()}}>
+          <a className="btn-floating btn-large blue">
+            <img src="/icons8-connect-40.png" align="center" alt="Branch" />
+          </a>
+          <ul>
+            <li><a className="btn-floating light white" onClick={() => {this.updateParent()}}><img src="/icons8-checkmark-30.png" align="center" alt="Parent" /></a></li>
+          </ul>
         </div>
+        <svg width="500" height="500">
+          {
+            this.state.parentChildPos.length
+            ? this.state.parentChildPos.map(position => {
+              return (
+                  <line  key={position.id + position.source[0].id.toString()} x1={position.source[0].position[0]} y1={position.source[0].position[1]} x2={position.target[0]} y2={position.target[1]} strokeWidth="1" stroke="grey" />
+                )
+            }) : null
+          }
+        </svg>
       </div>
     );
   }
