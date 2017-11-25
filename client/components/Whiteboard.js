@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { editNote, fetchNotes, deleteNote, fetchRoom } from '../store'
 import { withRouter } from 'react-router'
 import ContentEditable from 'react-contenteditable'
+// import ContentEditable from 'react-simple-contenteditable'
 import debounce from 'lodash/debounce'
 
 class Whiteboard extends Component {
@@ -14,7 +15,7 @@ class Whiteboard extends Component {
       rel: null,
       pos: {x: null, y: null},
       selectedNote: 0,
-      content: ''
+      content: {}
     }
     this.clickImage = this.clickImage.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this)
@@ -22,7 +23,7 @@ class Whiteboard extends Component {
     this.onMouseMove = this.onMouseMove.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
     this.handleChange = this.handleChange.bind(this)
-    this.changed = debounce(this.props.editNote, 10)
+    this.changed = debounce(this.props.editNote, 250)
   }
 
 
@@ -44,13 +45,6 @@ class Whiteboard extends Component {
 
   clickImage (evt) {
     evt.preventDefault();
-  }
-
-  handleChange(evt, noteId) {
-    this.setState({ content: evt.target.value }, () => {
-      this.changed(noteId, { text: this.state.content })
-    })
-
   }
 
   //when user clicks mouse down, dragging state is set to true and new relative position
@@ -104,8 +98,14 @@ class Whiteboard extends Component {
 
   handleChange(evt) {
     evt.preventDefault()
+    console.log(evt.target.value)
+    console.log(this.state.selectedNote)
     console.log(this.state.content)
-    this.setState({ content: evt.target.value })
+    let content = {...this.state.content}
+    content[this.state.selectedNote] = evt.target.value
+    this.setState({ content })
+    this.changed(this.state.selectedNote, { text: evt.target.value })
+    // this.setState({ content: '' })
   }
 
 
@@ -148,10 +148,12 @@ class Whiteboard extends Component {
                   </button>
                     { note.text &&
                       <ContentEditable
+                        onClick={() => this.setState({ selectedNote: note.id })}
                         className="card-content"
-                        html={note.text}
+                        html={this.state.content[note.id] || note.text}
                         disabled={userId !== note.userId && userId !== hostId}
-                        onChange={evt => this.handleChange(evt, note.id)}
+                        onChange={this.handleChange}
+                        contentEditable="plaintext-only"
                       />
                     }
 
