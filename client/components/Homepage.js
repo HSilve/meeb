@@ -27,8 +27,33 @@ class Homepage extends Component {
     }
   }
 
+  hosted(result, user) {
+    if (result.host == user.name) {
+      return (<div key={result.id}>
+        <NavLink to={`/whiteboards/${result.id}`}>{result.name + ' ⚡️'}</NavLink>
+      </div>
+      )
+    }
+
+    return (<div key={result.id}>
+      <NavLink to={`/whiteboards/${result.id}`}>{result.name}</NavLink>
+    </div>
+    )
+  }
+
   render() {
     const { show } = this.state
+
+    var dateObj = new Date();
+    var month = dateObj.getUTCMonth() + 1; //months from 1-12
+    var day = dateObj.getUTCDate();
+    var year = dateObj.getUTCFullYear();
+    var hours = dateObj.getHours();
+    var minutes = dateObj.getMinutes();
+
+    var newdate = year + "-" + month + "-" + day;
+    var newtime = hours + ":" + minutes;
+
     return (
       <div className="row">
         <h2>Welcome, {this.props.user.name}</h2>
@@ -39,33 +64,12 @@ class Homepage extends Component {
             <h5>Past Brainstorms</h5>
             {
               this.props.allRooms.filter(room => {
-
-                var dateObj = new Date();
-                var month = dateObj.getUTCMonth() + 1; //months from 1-12
-                var day = dateObj.getUTCDate();
-                var year = dateObj.getUTCFullYear();
-                var hours = dateObj.getHours();
-                var minutes = dateObj.getMinutes();
-
-                var newdate = year + "-" + month + "-" + day;
-                var newtime = hours + ":" + minutes;
-
                 return room.date < newdate ||
                   (room.date == newdate && room.startTime < newtime)
               })
                 .map(result => {
                   const user = this.props.user
-                  if (result.host == user.name) {
-                    return (<div key={result.id}>
-                      <NavLink to={`/whiteboards/${result.id}`}>{result.name + ' ⚡️'}</NavLink>
-                    </div>
-                    )
-                  }
-
-                  return (<div key={result.id}>
-                    <NavLink to={`/whiteboards/${result.id}`}>{result.name}</NavLink>
-                  </div>
-                  )
+                  return this.hosted(result, user);
                 })
             }
           </div>
@@ -73,34 +77,12 @@ class Homepage extends Component {
             <h5>Future Brainstorms</h5>
             {
               this.props.allRooms.filter(room => {
-
-                var dateObj = new Date();
-                var month = dateObj.getUTCMonth() + 1; //months from 1-12
-                var day = dateObj.getUTCDate();
-                var year = dateObj.getUTCFullYear();
-                var hours = dateObj.getHours();
-                var minutes = dateObj.getMinutes();
-
-                var newdate = year + "-" + month + "-" + day;
-                var newtime = hours + ":" + minutes;
-
-
                 return room.date > newdate ||
                   (room.date == newdate && room.startTime >= newtime)
               })
                 .map(result => {
                   const user = this.props.user
-                  if (result.host == user.name) {
-                    return (<div key={result.id}>
-                      <NavLink to={`/whiteboards/${result.id}`}>{result.name + ' ⚡️'}</NavLink>
-                    </div>
-                    )
-
-                  }
-                  return (<div key={result.id}>
-                    <NavLink to={`/whiteboards/${result.id}`}>{result.name}</NavLink>
-                  </div>
-                  )
+                  return this.hosted(result, user)
                 })
             }
           </div>
