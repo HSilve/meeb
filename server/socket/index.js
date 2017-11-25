@@ -53,28 +53,14 @@ module.exports = (io) => {
       socket.broadcast.to(whiteboardId).emit('delete-note', noteId);
       console.log('broadcast done')
     })
-
+    socket.on('end-session', (whiteboard => {
+      socket.broadcast.to(whiteboard.id).emit('end-session', whiteboard)
+      // socket.disconnectRoom(whiteboard.id)
+    }))
     socket.on('disconnect', () => {
       // sockets.delete(socket.id)
       console.log(`Connection ${socket.id} has left the building`)
     })
 
-    // ///Creating A Room
-    // socket.on('new-room', room => {
-    //   console.log('Entering Room');
-    //   socket.broadcast.emit('new-room', room);
-    //   console.log('broadcast done')
-    // })
-    // socket.on('edit-room', (id, data) => {
-    //   console.log('Editing Room');
-    //   socket.boradcast.emit('eidt-room', id, data);
-    //   console.log('broadcast done')
-    // })
   })
 }
-
-
-//need to broadcast :
-//when someone enters a room
-//when someone sends a chat to a specific room
-//notes to a specific room

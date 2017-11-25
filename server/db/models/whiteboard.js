@@ -20,6 +20,10 @@ const Whiteboard = db.define('whiteboard', {
   endTime: {
     type: Sequelize.STRING,
     allowNull: true
+  },
+  closed: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
   }
 
 })
