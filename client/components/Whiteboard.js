@@ -1,7 +1,7 @@
 /* eslint-disable no-lone-blocks */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { editNote, fetchNotes, deleteNote} from '../store'
+import { editNote, fetchNotes, deleteNote, fetchRoom } from '../store'
 import { withRouter } from 'react-router'
 import ContentEditable from 'react-contenteditable'
 import debounce from 'lodash/debounce'
@@ -27,6 +27,7 @@ class Whiteboard extends Component {
 
 
   componentDidMount() {
+    this.props.fetchRoom(this.props.match.params.id)
     this.props.fetchNotes(this.props.match.params.id)
     console.log('the window', document.getElementById('whiteboard').getBoundingClientRect())
   }
@@ -109,7 +110,7 @@ class Whiteboard extends Component {
 
 
   render() {
-    const { userId } = this.props
+    const { userId, hostId } = this.props
     let data = [];
     if (this.props.notes) {
       data = this.props.notes
@@ -149,7 +150,7 @@ class Whiteboard extends Component {
                       <ContentEditable
                         className="card-content"
                         html={note.text}
-                        disabled={!(userId === note.userId)}
+                        disabled={userId !== note.userId && userId !== hostId}
                         onChange={evt => this.handleChange(evt, note.id)}
                       />
                     }
@@ -183,10 +184,11 @@ class Whiteboard extends Component {
 const mapStateToProps = (state) => ({
   notes: state.notes,
   boardId: state.singleWhiteboard.id,
+  hostId: state.singleWhiteboard.userId,
   userId: state.user.id
 })
 
-const mapDispatchToProps = { editNote, fetchNotes, deleteNote }
+const mapDispatchToProps = { editNote, fetchNotes, deleteNote, fetchRoom }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Whiteboard));
 
