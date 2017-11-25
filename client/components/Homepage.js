@@ -32,6 +32,7 @@ class Homepage extends Component {
     return (
       <div className="row">
         <h2>Welcome, {this.props.user.name}</h2>
+        <p>⚡️ : <b>Sessions You've Hosted</b></p>
 
         <div className="grid-example col s12">
           <div className="grid-example col s3">
@@ -53,6 +54,14 @@ class Homepage extends Component {
                   (room.date == newdate && room.startTime < newtime)
               })
                 .map(result => {
+                  const user = this.props.user
+                  if (result.host == user.name) {
+                    return (<div key={result.id}>
+                      <NavLink to={`/whiteboards/${result.id}`}>{result.name + ' ⚡️'}</NavLink>
+                    </div>
+                    )
+                  }
+
                   return (<div key={result.id}>
                     <NavLink to={`/whiteboards/${result.id}`}>{result.name}</NavLink>
                   </div>
@@ -80,6 +89,14 @@ class Homepage extends Component {
                   (room.date == newdate && room.startTime >= newtime)
               })
                 .map(result => {
+                  const user = this.props.user
+                  if (result.host == user.name) {
+                    return (<div key={result.id}>
+                      <NavLink to={`/whiteboards/${result.id}`}>{result.name + ' ⚡️'}</NavLink>
+                    </div>
+                    )
+
+                  }
                   return (<div key={result.id}>
                     <NavLink to={`/whiteboards/${result.id}`}>{result.name}</NavLink>
                   </div>
