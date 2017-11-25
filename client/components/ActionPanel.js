@@ -20,6 +20,16 @@ class ActionPanel extends React.Component {
     }
     this.handleFileUpload = this.handleFileUpload.bind(this)
   }
+  componentWillMount () {
+    $(document).ready(function(){
+      // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
+      $('.modal').modal({
+        dismissible: true,
+        opacity: 0.25
+      });
+    });
+
+  }
 
   toggle(type) {
     if (type === 'expand') this.setState({ expandToggle: !this.state.expandToggle })
@@ -64,8 +74,8 @@ class ActionPanel extends React.Component {
               }
               <button type="submit">Insert</button>
               {
-              this.props.user.id == this.props.whiteboardId &&
-              <button onClick={(evt) => {evt.preventDefault(); this.props.handleClose(this.props.whiteboardId)}}> End Session </button>
+              this.props.user.id == this.props.whiteboard.userId &&
+              <button onClick={(evt) => {evt.preventDefault(); this.props.handleClose(this.props.whiteboard.id)}}> End Session </button>
               }
             </form>
           </span>
@@ -79,7 +89,7 @@ const mapState = state => {
   return {
     user: state.user,
     notes: state.notes,
-    whiteboardId: state.singleWhiteboard.id
+    whiteboard: state.singleWhiteboard
   }
 }
 
