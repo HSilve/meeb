@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { editNote, fetchNotes, deleteNote, fetchRoom } from '../store'
 import { withRouter } from 'react-router'
 import ContentEditable from 'react-contenteditable'
-// import ContentEditable from 'react-simple-contenteditable'
 import debounce from 'lodash/debounce'
 
 class Whiteboard extends Component {
@@ -99,8 +98,6 @@ class Whiteboard extends Component {
   handleChange(evt) {
     evt.preventDefault()
     console.log(evt.target.value)
-    console.log(this.state.selectedNote)
-    console.log(this.state.content)
     let content = {...this.state.content}
     content[this.state.selectedNote] = evt.target.value
     this.setState({ content })
