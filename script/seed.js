@@ -28,7 +28,12 @@ async function seed () {
   ])
   await Promise.all([
     Whiteboard.create({name: 'Best Dog Treats', host: 'Cody', userId: 1, startTime: '04:30'}),
-    Whiteboard.create({name: 'FullStack', host: 'Murphy', userId: 2,startTime: '04:30'})
+    Whiteboard.create({name: 'FullStack', host: 'Murphy', userId: 2, startTime: '04:30'}),
+    Whiteboard.create({name: "Blanca's Room", host: 'Blanca Sanchez', userId: 3, startTime: '02:30'}),
+    Whiteboard.create({name: "Maria's Room", host: 'Maria Betances', userId: 4, startTime: '03:30'}),
+    Whiteboard.create({name: 'Chai Tea', host: 'Erica Chai', userId: 5, startTime: '04:45'}),
+    Whiteboard.create({name: 'My Room ', host: 'Evlis Henry', userId: 6, startTime: '06:30'}),
+
 
   ])
 
