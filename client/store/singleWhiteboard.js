@@ -27,7 +27,7 @@ export const modifyRoom = (room) => dispatch => {
     .catch(err => console.error(err));
 }
 export const closeRoom = (id, time) => dispatch => {
-  axios.put(`/api/whiteboards/${id}`, {endTime: time})
+  axios.put(`/api/whiteboards/${id}`, {endTime: time, closed: true})
   .then(res => {
     dispatch(destroyRoom(res.data[1]))
     socket.emit('end-session', res.data[1])

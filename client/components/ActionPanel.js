@@ -20,16 +20,6 @@ class ActionPanel extends React.Component {
     }
     this.handleFileUpload = this.handleFileUpload.bind(this)
   }
-  componentWillMount () {
-    $(document).ready(function(){
-      // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
-      $('.modal').modal({
-        dismissible: true,
-        opacity: 0.25
-      });
-    });
-
-  }
 
   toggle(type) {
     if (type === 'expand') this.setState({ expandToggle: !this.state.expandToggle })
@@ -57,6 +47,7 @@ class ActionPanel extends React.Component {
 
   render() {
     return (
+      !this.props.whiteboard.closed &&
       <div className="fixed-action-btn horizontal click-to-toggle">
         <button className="btn-floating btn-large" type="submit" onClick={() => this.toggle('expand')}>+</button>
         {this.state.expandToggle &&
@@ -75,11 +66,30 @@ class ActionPanel extends React.Component {
               <button type="submit">Insert</button>
               {
               this.props.user.id == this.props.whiteboard.userId &&
-              <button onClick={(evt) => {evt.preventDefault(); this.props.handleClose(this.props.whiteboard.id)}}> End Session </button>
+                  <button
+                      id="myBtn" onClick={() => {document.getElementById('myModal').style.display = 'block';}}>
+                      End Session
+                  </button>
               }
             </form>
           </span>
         }
+            {/* <!-- The Modal --> */}
+            <div id="myModal" className="modal">
+
+              {/* <!-- Modal content --> */}
+              <div className="modal-content">
+                <span
+                onClick ={ () => {document.getElementById('myModal').style.display = 'none';
+              }}
+                className="close">&times;</span>
+                <h3>End Session </h3>
+                <p>Are you sure you want to end collaboration on {this.props.whiteboard.name}? Collaborators will no longer be able to send messages or edit the whiteboard.</p>
+                <button onClick={(evt) => {evt.preventDefault(); this.props.handleClose(this.props.whiteboard.id)}}> End Session </button>
+              </div>
+            </div>
+
+
       </div>
     )
   }
@@ -113,6 +123,8 @@ const mapDispatch = dispatch => {
       var date = new Date(); // for now
       let time =  date.getHours() + ':' + date.getMinutes();
       dispatch(closeRoom(whiteboardId, time))
+      document.getElementById('myModal').style.display = 'none';
+
     }
   }
 }

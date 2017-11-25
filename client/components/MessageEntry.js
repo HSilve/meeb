@@ -39,6 +39,7 @@ class MessageEntry extends Component {
     const { messageEntry } = this.props
     console.log('messageEntry', this.props)
     return (
+      !this.props.whiteboard.closed &&
       <form id="new-message-form" onSubmit={this.handleSubmit}>
         <div className="input-group input-group-lg">
           <input
