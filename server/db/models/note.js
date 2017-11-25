@@ -23,6 +23,11 @@ const Note = db.define('note', {
   highlighted: {
     type: Sequelize.BOOLEAN,
     defaultValue: false
+  },
+  votes: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0,
+    allowNull: false
   }
 
 

@@ -1,7 +1,7 @@
 /* eslint-disable no-lone-blocks */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { editNote, fetchNotes, deleteNote} from '../store'
+import { editNote, fetchNotes, deleteNote, castVote} from '../store'
 import { withRouter } from 'react-router'
 
 class Whiteboard extends Component {
@@ -88,7 +88,10 @@ class Whiteboard extends Component {
     evt.preventDefault();
     this.props.deleteNote(evt.target.value, this.props.boardId);
   }
-
+  handleVote(evt) {
+    evt.preventDefault();
+    this.props.castVote(evt.target.value, this.props.boardId)
+  }
 
   render() {
     let data = [];
@@ -119,13 +122,19 @@ class Whiteboard extends Component {
                     onMouseUp={this.onMouseUp}
                     onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt)}} >
 
-                  <button value={note.id} onClick={this.handleDelete}>x</button>
+                  <button value={note.id} style={{float: 'left'}} onClick={this.handleDelete}>x</button>
+                  <div style={{float: 'right'}} >
+                    <button value={note.id} onClick={this.handleVote}>⚡️</button>
+                    {
+                      note.votes > 0 && <a>{note.votes}</a>
+                    }
+                  </div>
+
                     { note.text &&
                       <div className="card-content">
                         {note.text}
                       </div>
                     }
-
 
                     {note.image &&
                       <div className="card-image">
@@ -157,7 +166,7 @@ const mapStateToProps = (state) => ({
   boardId: state.singleWhiteboard.id
 })
 
-const mapDispatchToProps = { editNote, fetchNotes, deleteNote }
+const mapDispatchToProps = { editNote, fetchNotes, deleteNote, castVote }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Whiteboard));
 
