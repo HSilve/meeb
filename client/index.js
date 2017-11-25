@@ -4,8 +4,6 @@ import ReactDOM from 'react-dom'
 import {Provider} from 'react-redux'
 import store from './store'
 import Routes from './routes'
-let vis = require('vis/index-network')
-
 // establishes socket connection
 import './socket'
 

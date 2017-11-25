@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchRoom, editNote, fetchNotes, deleteNote } from '../store'
 import { withRouter } from 'react-router'
+import { Graph } from 'react-d3-graph';
 
 class Whiteboard extends Component {
   constructor(props) {

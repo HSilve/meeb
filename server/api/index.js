@@ -1,6 +1,7 @@
 const router = require('express').Router()
 module.exports = router
 
+
 router.use('/users', require('./users'))
 router.use('/notes', require('./notes'))
 router.use('/whiteboards', require('./whiteboards'))
