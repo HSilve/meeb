@@ -53,6 +53,10 @@ div.fixed-action-btn.horizontal.click-to-toggle {
 }
 
 footer {
-  margin-top: 20vh;
+  position: static;
+  width: 100%;
+  left: 0;
+  bottom: 0px;
+  margin-top: 50vh;
   background-color: teal !important
 }
