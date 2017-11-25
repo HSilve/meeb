@@ -24,7 +24,6 @@ const createRoom = room => ({ type: CREATE_ROOM, room })
 // THUNK CREATORS
 
 export const getRooms = user => dispatch => {
-  console.log(`user: ${user}`)
   axios.get(`/api/whiteboards/myRooms/${user.id}`)
     .then(res => {
       console.log(res)
@@ -53,6 +52,7 @@ export const newRoom = (roomName, host, attendeeId, date, time, note) => dispatc
   })
     .then(res => {
       dispatch(createRoom(res.data))
+      socket.emit('new-room', res.data)
         note.whiteboardId = res.data.id;
         note.userId = host.id
         note.host = host.name;

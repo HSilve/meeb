@@ -3,7 +3,9 @@ const { Whiteboard, User, Attendees } = require('../db/models')
 module.exports = router
 
 router.get('/', (req, res, next) => {
-  Whiteboard.findAll({ include: [{ all: true, nested: true }] })
+  Whiteboard.findAll(
+    // { include: [{ all: true, nested: true }] }
+  )
     .then(whiteboards => res.json(whiteboards))
     .catch(next)
 })

@@ -1,7 +1,7 @@
 /* eslint-disable no-lone-blocks */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchRoom, editNote, fetchNotes, deleteNote } from '../store'
+import { editNote, fetchNotes, deleteNote } from '../store'
 import { withRouter } from 'react-router'
 import { Graph } from 'react-d3-graph';
 
@@ -71,7 +71,7 @@ class Whiteboard extends Component {
   //once mouse is released, the new position of note is updated in db
   //and dragging is set to false
   onMouseUp(evt) {
-    this.props.editNote(this.state.selectedNote, {position: [this.state.pos.x, this.state.pos.y]})
+    if (this.state.pos.x !== null && this.state.pos.y !== null) this.props.editNote(this.state.selectedNote, {position: [this.state.pos.x, this.state.pos.y]})
     evt.stopPropagation()
     evt.preventDefault()
     this.setState({dragging: false})
@@ -92,7 +92,7 @@ class Whiteboard extends Component {
 
   handleDelete(evt) {
     evt.preventDefault();
-    this.props.deleteNote(evt.target.value);
+    this.props.deleteNote(evt.target.value, this.props.boardId);
   }
 
   clickConnection = (evt, id) => {
@@ -154,14 +154,14 @@ class Whiteboard extends Component {
       <g>
         <rect
            width="300" height="250"
-        style = {{fill: 'green', stroke: 'black', strokeWidth: 5, opacity: 0.5}} />
+        style = {{fill: 'white', stroke: 'black', strokeWidth: 5, opacity: 0.5}} />
         <text x="4" y="50" fontFamily="Verdana" fontSize="35" fill="blue">Idea Basket</text>
       </g>
       </svg>
       {
-        data && data.map((note, idx) => {
+        data && data.map((note) => {
           {
-            return   note.position ?
+            return note.position &&
              (
                   <div
                     id={`card${note.id}`}
@@ -196,39 +196,6 @@ class Whiteboard extends Component {
                   </div>
 
                 )
-
-                :
-                (
-                  <div
-                      className="card"
-                      key={note.id}
-                      style = {{position: 'absolute', right: this.state.selectedNote === note.id && this.state.pos.x || 10 - (idx * 5), top: this.state.selectedNote === note.id && this.state.pos.y || 125 + (idx * 5), cursor: 'pointer' }}
-                      onMouseMove={this.onMouseMove}
-                      onMouseUp={this.onMouseUp}
-                      onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt)}} >
-
-                    <button value={note.id} onClick={this.handleDelete}>x</button>
-                    {note.text &&
-                      <div className="card-content">
-                        {note.text}
-                      </div>
-                    }
-
-                    {note.image &&
-                      <div className="card-image">
-                        <img onClick={this.clickImage} className="image" src={note.image} />
-                      </div>
-                    }
-
-
-                    {note.link &&
-                      <div className="card-action">
-                        <a type="text/css" href={note.link}>Go Here </a>
-                      </div>
-                    }
-                  </div>
-
-                )
             }
 
           })
@@ -246,9 +213,12 @@ class Whiteboard extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({ notes: state.notes })
+const mapStateToProps = (state) => ({
+  notes: state.notes,
+  boardId: state.singleWhiteboard.id
+})
 
-const mapDispatchToProps = { fetchRoom, editNote, fetchNotes, deleteNote }
+const mapDispatchToProps = { editNote, fetchNotes, deleteNote }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Whiteboard));
 
