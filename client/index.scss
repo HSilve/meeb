@@ -99,6 +99,10 @@ body {
     background-color:yellow;
     .card-image {
       width: 60px;
+      transition: 1s;
+    }
+    .card-image:hover {
+      transform: scale(2,2);
     }
   }
   .blob {
@@ -164,3 +168,4 @@ body {
 }
 
 }
+
