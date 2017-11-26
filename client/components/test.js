@@ -1,11 +1,8 @@
 /* eslint-disable no-lone-blocks */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { editNote, fetchNotes, deleteNote,castVote, fetchRoom } from '../store'
+import { editNote, fetchNotes, deleteNote } from '../store'
 import { withRouter } from 'react-router'
-import { TwitterPicker } from 'react-color'
-import ContentEditable from 'react-contenteditable'
-import debounce from 'lodash/debounce'
 
 class Whiteboard extends Component {
   constructor(props) {
@@ -15,28 +12,25 @@ class Whiteboard extends Component {
       rel: null,
       pos: {x: null, y: null},
       selectedNote: 0,
-      show: false,
       connectionArray: [],
-      content: {},
+      edges: [],
+      nodes: [],
+      parentChildPos: {},
+      line: {x: null, y: null},
+      target: [],
     }
+    this.clickImage = this.clickImage.bind(this)
     this.onMouseDown = this.onMouseDown.bind(this)
     this.onMouseUp = this.onMouseUp.bind(this)
     this.onMouseMove = this.onMouseMove.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
-    this.handleChange = this.handleChange.bind(this)
-<<<<<<< HEAD
-    this.changed = debounce(this.props.editNote, 250);
-    this.handleVote = this.handleVote.bind(this);
-=======
-    this.changed = debounce(this.props.editNote, 250)
-    this.handleColorChange = this.handleColorChange.bind(this)
     this.clickConnection = this.clickConnection.bind(this)
->>>>>>> origin/master
+    this.updateParent = this.updateParent.bind(this)
+    this.submitEdges = this.submitEdges.bind(this)
   }
 
 
   componentDidMount() {
-    this.props.fetchRoom(this.props.match.params.id)
     this.props.fetchNotes(this.props.match.params.id)
   }
 
@@ -48,6 +42,14 @@ class Whiteboard extends Component {
       document.removeEventListener('mousemove', this.onMouseMove)
       document.removeEventListener('mouseup', this.onMouseUp)
     }
+    if (state.parentChildPos.length !== this.state.parentChildPos.length ||
+      this.state.dragging && !state.dragging) {
+
+    }
+  }
+
+  clickImage (evt) {
+    evt.preventDefault();
   }
 
   //when user clicks mouse down, dragging state is set to true and new relative position
@@ -65,8 +67,24 @@ class Whiteboard extends Component {
       pos: {
         x: null,
         y: null
+      },
+      target: [
+        evt.pageX - pos.left,
+        evt.pageY - pos.top
+      ],
+      line: {
+        x: null,
+        y: null
       }
     })
+    const parentChildPos = this.state.parentChildPos
+    if (this.state.parentChildPos.length){
+      parentChildPos[0].target = this.state.target
+      this.setState({
+        parentChildPos
+      })
+    }
+    console.log('target', this.state.target)
     evt.stopPropagation()
     evt.preventDefault()
   }
@@ -77,15 +95,19 @@ class Whiteboard extends Component {
     if (this.state.pos.x !== null && this.state.pos.y !== null) this.props.editNote(this.state.selectedNote, {position: [this.state.pos.x, this.state.pos.y]})
     evt.stopPropagation()
     evt.preventDefault()
+    console.log('onMouseUp', this.state.parentChildPos)
     this.setState({dragging: false})
   }
-
 
   //when state.pos is set to anything but null, the top and left of card is set to state.pos instead of note.position[0] & note.position[1]
   onMouseMove(evt) {
     if (!this.state.dragging) return
     this.setState({
       pos: {
+        x: evt.pageX - this.state.rel.x,
+        y: evt.pageY - this.state.rel.y
+      },
+      line: {
         x: evt.pageX - this.state.rel.x,
         y: evt.pageY - this.state.rel.y
       }
@@ -98,49 +120,59 @@ class Whiteboard extends Component {
     evt.preventDefault();
     this.props.deleteNote(evt.target.value, this.props.boardId);
   }
-  handleVote(evt) {
-    evt.preventDefault();
-    this.props.castVote(evt.target.value)
-  }
-
-  handleChange(evt) {
-    evt.preventDefault()
-    let content = {...this.state.content}
-    content[this.state.selectedNote] = evt.target.value
-    this.setState({ content })
-    this.changed(this.state.selectedNote, { text: evt.target.value })
-    // this.setState({ content: '' })
-  }
-
-  handleColorChange = (color) => {
-    if (this.state.connectionArray.length) {
-      this.state.connectionArray.forEach(note => {
-        document.getElementById(`card${note}`).style.background = color.hex
-        this.props.editNote(note, {color: color.hex})
-        let selectedCard = document.getElementById(`card${note}`)
-        selectedCard.style.boxShadow = '0 4px 2px -2px gray'
-      })
-    }
-    this.setState({connectionArray: []})
-  }
 
   clickConnection = (evt, note) => {
     if (this.state.connectionArray.indexOf(note.id) === -1 && note.id !== 0) {
       this.setState({connectionArray: [...this.state.connectionArray, note.id]})
-      let selectedCard = document.getElementById(`card${note.id}`)
-      selectedCard.style.boxShadow = '0 0 20px yellow'
+      this.setState({nodes: [...this.state.nodes, note]})
+      // let selectedCard = document.getElementById(`card${id}`)
+      // selectedCard.className = 'DropShadow'
     } else if (note.id !== 0) {
       let array = this.state.connectionArray
       let index = array.indexOf(note.id)
       array.splice(index, 1)
       this.setState({ connectionArray: array})
-      let selectedCard = document.getElementById(`card${note.id}`)
-      selectedCard.style.boxShadow = '0 4px 2px -2px gray'
+      // let selectedCard = document.getElementById(`card${id}`)
+      // selectedCard.className = 'card'
+    }
+  }
+  submitEdges = () => {
+    let edgeTracker = []
+    let parent = Number(this.state.connectionArray.slice(0, 1))
+    let parentPos = this.state.nodes.slice(0, 1)
+    let parentChildPos = []
+    this.state.connectionArray.slice(1).forEach(connection => {
+        edgeTracker.push({source: parent, target: connection })
+    })
+
+    this.state.nodes.slice(1).forEach(position => {
+      parentChildPos.push({id: position.id, source: parentPos, target: position.position})
+    })
+    this.setState({edges: edgeTracker})
+    this.setState({parentChildPos: parentChildPos})
+    // console.log('nodes', this.state.nodes)
+    // console.log('parentPos', parentChildPos)
+    // console.log('line', this.state.line)
+  }
+
+  updateParent = () => {
+    let noteParent = {
+      NoteParent: {
+        noteParentId: 0
+      }
+    }
+    if (this.state.connectionArray.length > 1) {
+      for (var i = 1; i < this.state.connectionArray.length; i++){
+        this.props.editNote(this.state.connectionArray[i], {noteParent: { NoteParent: { noteParentId: this.state.connectionArray[0]}}})
+      }
     }
   }
 
   render() {
-    const { userId, hostId } = this.props
+    // console.log('nodes', this.state.nodes)
+    // console.log('connectionArray', this.state.connectionArray)
+    // console.log('whiteboard', this.props)
+    // console.log('edges', this.state.edges)
     let data = [];
     if (this.props.notes) {
       data = this.props.notes
@@ -161,53 +193,22 @@ class Whiteboard extends Component {
             return note.position &&
              (
                   <div
-                    className="card"
                     id={`card${note.id}`}
+                    className="card"
                     key={note.id}
-                    style = {{position: 'absolute', background: note.color,
-                    left: this.state.selectedNote === note.id && this.state.pos.x || note.position[0],
-                    top: this.state.selectedNote === note.id && this.state.pos.y || note.position[1],
-                    cursor: 'pointer' }}
-                >
-
-
-                    {/* style = {{position: 'absolute', left: this.state.selectedNote === note.id && this.state.pos.x || note.position[0], top: this.state.selectedNote === note.id && this.state.pos.y || note.position[1], cursor: 'pointer' }}
+                    style = {{position: 'absolute', left: this.state.selectedNote === note.id && this.state.pos.x || note.position[0], top: this.state.selectedNote === note.id && this.state.pos.y || note.position[1], cursor: 'pointer' }}
                     onMouseMove={this.onMouseMove}
                     onMouseUp={this.onMouseUp}
-                    onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt)}} > */}
+                    onClick={(evt) => this.clickConnection(evt, note)}
+                    onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt);}} >
 
-
-                  {this.props.open &&
-                  <span>
-                    <button style={{float: 'left'}} value={note.id} onClick={this.handleDelete}>x</button>
-                    <button
-                        onMouseMove={this.onMouseMove}
-                        onMouseUp={this.onMouseUp}
-                        onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt)}}
-                        style={{borderRadius: '25px'}}
-                    > Drag
-                    </button>
-                    <button value={note.id} onClick={ (evt) => {this.clickConnection(evt, note)}}>edit</button>
-                    {this.props.vote &&
-                    <div style={{float: 'right'}} >
-                            <button value={note.id} onClick={this.handleVote}>⚡️</button>
-                            {
-                              note.votes > 0 && <a>{note.votes}</a>
-                            }
-                          </div>
-                    }
-                  </span>
-                  }
+                  <button value={note.id} onClick={this.handleDelete}>x</button>
                     { note.text &&
-                      <ContentEditable
-                        onClick={() => this.setState({ selectedNote: note.id })}
-                        className="card-content"
-                        html={this.state.content[note.id] || note.text}
-                        disabled={userId !== note.userId && userId !== hostId}
-                        onChange={this.handleChange}
-                        contentEditable="plaintext-only"
-                      />
+                      <div className="card-content">
+                        {note.text}
+                      </div>
                     }
+
 
                     {note.image &&
                       <div className="card-image">
@@ -221,7 +222,6 @@ class Whiteboard extends Component {
                         <a type="text/css" href={note.link}>Go Here </a>
                       </div>
                     }
-
                   </div>
 
                 )
@@ -229,16 +229,24 @@ class Whiteboard extends Component {
 
           })
         }
-        <div className="colorPalette">
-          <button onClick={() => this.setState({ show: !this.state.show })}>
-            <img src="/icons8-fill-color-30.png" align="center" alt="Branch" />
-          </button>
-          {
-            this.state.show ?
-              <TwitterPicker onChange={this.handleColorChange} />
-             : null
-          }
+        <div id="branch-panel" className="fixed-action-btn vertical click-to-toggle" onClick={() => {this.submitEdges()}}>
+          <a className="btn-floating btn-large blue">
+            <img src="/icons8-connect-40.png" align="center" alt="Branch" />
+          </a>
+          <ul>
+            <li><a className="btn-floating light white" onClick={() => {this.updateParent()}}><img src="/icons8-checkmark-30.png" align="center" alt="Parent" /></a></li>
+          </ul>
         </div>
+        <svg width="500" height="500">
+          {
+            this.state.parentChildPos.length
+            ? this.state.parentChildPos.map(position => {
+              return (
+                  <line  key={position.id + position.source[0].id.toString()} x1={position.source[0].position[0]} y1={position.source[0].position[1]} x2={position.target[0]} y2={position.target[1]} strokeWidth="1" stroke="grey" />
+                )
+            }) : null
+          }
+        </svg>
       </div>
     );
   }
@@ -246,14 +254,10 @@ class Whiteboard extends Component {
 
 const mapStateToProps = (state) => ({
   notes: state.notes,
-  boardId: state.singleWhiteboard.id,
-  hostId: state.singleWhiteboard.userId,
-  userId: state.user.id,
-  open: !state.singleWhiteboard.closed,
-  vote: state.singleWhiteboard.voteable
+  boardId: state.singleWhiteboard.id
 })
 
-const mapDispatchToProps = { editNote, fetchNotes, deleteNote, castVote, fetchRoom  }
+const mapDispatchToProps = { editNote, fetchNotes, deleteNote }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Whiteboard));
 
