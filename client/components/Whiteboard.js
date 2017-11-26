@@ -166,6 +166,7 @@ class Whiteboard extends Component {
                       left: this.state.selectedNote === note.id && this.state.pos.x || note.position[0],
                       top: this.state.selectedNote === note.id && this.state.pos.y || note.position[1],
                       cursor: 'pointer' }}
+                    onClick={ (evt) => {this.clickConnection(evt, note)}}
                   >
 
                   {this.props.open &&
@@ -174,7 +175,6 @@ class Whiteboard extends Component {
                     <button
                         onMouseMove={this.onMouseMove}
                         onMouseUp={this.onMouseUp}
-                        onClick={ (evt) => {this.clickConnection(evt, note)}}
                         onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt)}}
                         style={{borderRadius: '25px'}}
                     > Drag
