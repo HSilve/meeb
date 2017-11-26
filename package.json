@@ -41,6 +41,7 @@
     "prop-types": "^15.5.8",
     "react": "^16.0.0",
     "react-bootstrap-typeahead": "^2.0.0",
+    "react-color": "^2.13.8",
     "react-contenteditable": "^2.0.5",
     "react-dom": "^16.0.0",
     "react-dropzone": "^4.2.3",
