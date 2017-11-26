@@ -62,6 +62,7 @@ async function seed () {
     Attendees.create({userId: 3, whiteboardId: 2}),
     Attendees.create({userId: 4, whiteboardId: 2}),
     Attendees.create({userId: 2, whiteboardId: 3}),
+    Attendees.create({userId: 3, whiteboardId: 4}),
     Attendees.create({userId: 1, whiteboardId: 3}),
     Attendees.create({userId: 4, whiteboardId: 3}),
     Attendees.create({userId: 5, whiteboardId: 3}),
@@ -69,18 +70,22 @@ async function seed () {
     Attendees.create({userId: 3, whiteboardId: 4}),
     Attendees.create({userId: 1, whiteboardId: 4}),
     Attendees.create({userId: 2, whiteboardId: 4}),
+    Attendees.create({userId: 4, whiteboardId: 4}),
     Attendees.create({userId: 5, whiteboardId: 4}),
     Attendees.create({userId: 6, whiteboardId: 4}),
     Attendees.create({userId: 1, whiteboardId: 5}),
     Attendees.create({userId: 2, whiteboardId: 5}),
     Attendees.create({userId: 3, whiteboardId: 5}),
     Attendees.create({userId: 5, whiteboardId: 5}),
+    Attendees.create({userId: 4, whiteboardId: 5}),
     Attendees.create({userId: 6, whiteboardId: 5}),
     Attendees.create({userId: 4, whiteboardId: 6}),
     Attendees.create({userId: 1, whiteboardId: 6}),
     Attendees.create({userId: 2, whiteboardId: 6}),
     Attendees.create({userId: 3, whiteboardId: 6}),
     Attendees.create({userId: 5, whiteboardId: 6}),
+    Attendees.create({userId: 6, whiteboardId: 6})
+
   ])
 
   // Wowzers! We can even `await` on the right-hand side of the assignment operator
