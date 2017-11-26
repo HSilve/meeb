@@ -75,7 +75,6 @@ async function seed () {
     Attendees.create({userId: 1, whiteboardId: 5}),
     Attendees.create({userId: 2, whiteboardId: 5}),
     Attendees.create({userId: 3, whiteboardId: 5}),
-    Attendees.create({userId: 4, whiteboardId: 5}),
     Attendees.create({userId: 5, whiteboardId: 5}),
     Attendees.create({userId: 6, whiteboardId: 5}),
     Attendees.create({userId: 4, whiteboardId: 6}),
