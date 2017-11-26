@@ -2,13 +2,14 @@ import React, {Component} from 'react'
 import { Sidebar, Whiteboard, ActionPanel, Attendees} from './index'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
-import {announceCollaborator, fetchCollaborators} from '../store'
+import {announceCollaborator, fetchCollaborators, fetchRoom} from '../store'
 
 
 class ConferenceRoom extends Component {
   componentWillMount() {
     let boardId = this.props.match.params.id;
-    this.props.fetchCollaborators(boardId)
+    this.props.fetchRoom(boardId);
+    this.props.fetchCollaborators(boardId);
     this.props.announceCollaborator(this.props.user.id, boardId);
   }
   render ()  {
@@ -30,6 +31,6 @@ const mapState = (state) => ({
   user: state.user,
   person: state.attendees.justEntered
 })
-const mapDispatch = {announceCollaborator, fetchCollaborators}
+const mapDispatch = {announceCollaborator, fetchCollaborators, fetchRoom}
 
 export default withRouter(connect(mapState, mapDispatch)(ConferenceRoom))

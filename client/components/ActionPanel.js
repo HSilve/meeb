@@ -2,7 +2,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { addNote } from '../store'
+import { addNote, closeRoom } from '../store'
 import { withRouter } from 'react-router';
 
 class ActionPanel extends React.Component {
@@ -47,6 +47,7 @@ class ActionPanel extends React.Component {
 
   render() {
     return (
+      !this.props.whiteboard.closed &&
       <div className="fixed-action-btn horizontal click-to-toggle">
         <button className="btn-floating btn-large" type="submit" onClick={() => this.toggle('expand')}>+</button>
         {this.state.expandToggle &&
@@ -63,9 +64,32 @@ class ActionPanel extends React.Component {
                 </div>
               }
               <button type="submit">Insert</button>
+              {
+              this.props.user.id == this.props.whiteboard.userId &&
+                  <button
+                      id="myBtn" onClick={() => {document.getElementById('myModal').style.display = 'block';}}>
+                      End Session
+                  </button>
+              }
             </form>
           </span>
         }
+            {/* <!-- The Modal --> */}
+            <div id="myModal" className="modal">
+
+              {/* <!-- Modal content --> */}
+              <div className="modal-content">
+                <span
+                onClick ={ () => {document.getElementById('myModal').style.display = 'none';
+              }}
+                className="close">&times;</span>
+                <h3>End Session </h3>
+                <p>Are you sure you want to end collaboration on {this.props.whiteboard.name}? Collaborators will no longer be able to send messages or edit the whiteboard.</p>
+                <button onClick={(evt) => {evt.preventDefault(); this.props.handleClose(this.props.whiteboard.id)}}> End Session </button>
+              </div>
+            </div>
+
+
       </div>
     )
   }
@@ -74,7 +98,8 @@ class ActionPanel extends React.Component {
 const mapState = state => {
   return {
     user: state.user,
-    notes: state.notes
+    notes: state.notes,
+    whiteboard: state.singleWhiteboard
   }
 }
 
@@ -92,6 +117,13 @@ const mapDispatch = dispatch => {
       //ONLY WORKS IF USER IS LOGGED IN FIRST
       dispatch(addNote({ file, imageName, fileType, text, link, whiteboardId, userId, position }))
       }
+
+    },
+    handleClose(whiteboardId) {
+      var date = new Date(); // for now
+      let time =  date.getHours() + ':' + date.getMinutes();
+      dispatch(closeRoom(whiteboardId, time))
+      document.getElementById('myModal').style.display = 'none';
 
     }
   }

@@ -122,14 +122,17 @@ class Whiteboard extends Component {
                     onMouseUp={this.onMouseUp}
                     onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt)}} >
 
-                  <button value={note.id} style={{float: 'left'}} onClick={this.handleDelete}>x</button>
-                  <div style={{float: 'right'}} >
-                    <button value={note.id} onClick={this.handleVote}>⚡️</button>
-                    {
-                      note.votes > 0 && <a>{note.votes}</a>
-                    }
-                  </div>
-
+                  {this.props.open &&
+                        <div>
+                          <button value={note.id} style={{float: 'left'}} onClick={this.handleDelete}>x</button>
+                          <div style={{float: 'right'}} >
+                            <button value={note.id} onClick={this.handleVote}>⚡️</button>
+                            {
+                              note.votes > 0 && <a>{note.votes}</a>
+                            }
+                          </div>
+                        </div>
+                  }
                     { note.text &&
                       <div className="card-content">
                         {note.text}
@@ -163,7 +166,8 @@ class Whiteboard extends Component {
 
 const mapStateToProps = (state) => ({
   notes: state.notes,
-  boardId: state.singleWhiteboard.id
+  boardId: state.singleWhiteboard.id,
+  open: !state.singleWhiteboard.closed
 })
 
 const mapDispatchToProps = { editNote, fetchNotes, deleteNote, castVote }
