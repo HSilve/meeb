@@ -1,5 +1,5 @@
 import io from 'socket.io-client'
-import store, { postMessage, insertNote, updateNote, removeNote, createRoom, updateRoom, enterCollaborator } from './store';
+import store, { postMessage, insertNote, updateNote, removeNote, createRoom, updateRoom, enterCollaborator, destroyRoom } from './store';
 
 const socket = io(window.location.origin)
 
@@ -27,9 +27,9 @@ socket.on('edit-note', (note) => {
   console.log('Edits have been reflected')
 })
 socket.on('delete-note', id =>  {
-  console.log('A note has been deleted')
-  store.dispatch(removeNote(id))
-  console.log('Note Removed')
+  console.log('A note has been deleted');
+  store.dispatch(removeNote(id));
+  console.log('Note Removed');
 })
 
 socket.on('new-room', room => {
@@ -40,12 +40,16 @@ socket.on('new-room', room => {
 socket.on('edit-room', (id, data) => {
   console.log('A room has been edited', data)
   store.dispatch(updateRoom(id, data));
-  console.log('Edits have been reflected')
+  console.log('Edits have been reflected');
 })
 socket.on('enter-room', (user) => {
   console.log(user.name, 'joining room');
-  store.dispatch(enterCollaborator(user))
+  store.dispatch(enterCollaborator(user));
 })
+socket.on('end-session', (whiteboard) => {
+  console.log('host has closed room', whiteboard.id)
+  socket.dispatch(destroyRoom(whiteboard));
+});
 
 socket.on('leave-room', (userId, roomId) => {
   console.log(userId, 'leaving', roomId);

@@ -28,8 +28,11 @@ async function seed () {
   ])
   await Promise.all([
     Whiteboard.create({name: 'Best Dog Treats', host: 'Cody', userId: 1, startTime: '04:30'}),
-    Whiteboard.create({name: 'FullStack', host: 'Murphy', userId: 2,startTime: '04:30'})
-
+    Whiteboard.create({name: 'FullStack', host: 'Murphy', userId: 2, startTime: '04:30'}),
+    Whiteboard.create({name: "Blanca's Room", host: 'Blanca Sanchez', userId: 3, startTime: '02:30'}),
+    Whiteboard.create({name: "Maria's Room", host: 'Maria Betances', userId: 4, startTime: '03:30'}),
+    Whiteboard.create({name: 'Chai Tea', host: 'Erica Chai', userId: 5, startTime: '04:45'}),
+    Whiteboard.create({name: 'My Room ', host: 'Evlis Henry', userId: 6, startTime: '06:30'})
   ])
 
   await Promise.all([
@@ -46,16 +49,38 @@ async function seed () {
     Note.create({text: "I'm just a lone note", userId: 2, whiteboardId: 2 }),
     Note.create({text: 'I wanna be a branch off the best idea', image: 'http://completecarnivore.com/wp-content/uploads/2016/07/short-rib-location.jpg', userId: 4, whiteboardId: 1 })
   ])
+
   await Promise.all([
     Attendees.create({userId: 2, whiteboardId: 1}),
     Attendees.create({userId: 3, whiteboardId: 1}),
     Attendees.create({userId: 4, whiteboardId: 1}),
     Attendees.create({userId: 5, whiteboardId: 1}),
     Attendees.create({userId: 6, whiteboardId: 1}),
+    Attendees.create({userId: 1, whiteboardId: 1}),
     Attendees.create({userId: 1, whiteboardId: 2}),
     Attendees.create({userId: 5, whiteboardId: 2}),
     Attendees.create({userId: 3, whiteboardId: 2}),
-    Attendees.create({userId: 4, whiteboardId: 2})
+    Attendees.create({userId: 4, whiteboardId: 2}),
+    Attendees.create({userId: 2, whiteboardId: 3}),
+    Attendees.create({userId: 1, whiteboardId: 3}),
+    Attendees.create({userId: 4, whiteboardId: 3}),
+    Attendees.create({userId: 5, whiteboardId: 3}),
+    Attendees.create({userId: 6, whiteboardId: 3}),
+    Attendees.create({userId: 3, whiteboardId: 4}),
+    Attendees.create({userId: 1, whiteboardId: 4}),
+    Attendees.create({userId: 2, whiteboardId: 4}),
+    Attendees.create({userId: 5, whiteboardId: 4}),
+    Attendees.create({userId: 6, whiteboardId: 4}),
+    Attendees.create({userId: 1, whiteboardId: 5}),
+    Attendees.create({userId: 2, whiteboardId: 5}),
+    Attendees.create({userId: 3, whiteboardId: 5}),
+    Attendees.create({userId: 5, whiteboardId: 5}),
+    Attendees.create({userId: 6, whiteboardId: 5}),
+    Attendees.create({userId: 4, whiteboardId: 6}),
+    Attendees.create({userId: 1, whiteboardId: 6}),
+    Attendees.create({userId: 2, whiteboardId: 6}),
+    Attendees.create({userId: 3, whiteboardId: 6}),
+    Attendees.create({userId: 5, whiteboardId: 6}),
   ])
 
   // Wowzers! We can even `await` on the right-hand side of the assignment operator
@@ -91,4 +116,3 @@ console.log('seeding...')
 //note
 //user
 //whiteboard
-

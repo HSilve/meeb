@@ -29,9 +29,13 @@ router.get('/:whiteboardId', (req, res, next) => {
     .catch(next)
 })
 router.put('/:whiteboardId', (req, res, next) => {
-  Whiteboard.findById(req.params.whiteboardId)
-    .then(board => res.json(board.update(req.body)))
-    .catch(next)
+  Whiteboard.update(req.body, {
+    where: {id: req.params.whiteboardId},
+    returning: true,
+    plain: true
+  })
+  .then(board => res.json(board))
+  .catch(next)
 })
 
 // router.post('/', (req, res, next) => {
