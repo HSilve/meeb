@@ -27,18 +27,13 @@ class Homepage extends Component {
     }
   }
 
-  hosted(result, user) {
-    if (result.host == user.name) {
-      return (<div key={result.id}>
-        <NavLink to={`/whiteboards/${result.id}`}>{result.name + ' ⚡️'}</NavLink>
-      </div>
-      )
-    }
+  navlink(result, user) {
 
     return (<div key={result.id}>
       <NavLink to={`/whiteboards/${result.id}`}>{result.name}</NavLink>
     </div>
     )
+
   }
 
   render() {
@@ -57,34 +52,54 @@ class Homepage extends Component {
     return (
       <div className="row">
         <h2>Welcome, {this.props.user.name}</h2>
-        <p>⚡️ : <b>Sessions You've Hosted</b></p>
 
         <div className="grid-example col s12">
           <div className="grid-example col s3">
-            <h5>Past Brainstorms</h5>
-            {
-              this.props.allRooms.filter(room => {
-                return room.date < newdate ||
-                  (room.date == newdate && room.startTime < newtime)
-              })
-                .map(result => {
-                  const user = this.props.user
-                  return this.hosted(result, user);
+            <h5 className="grey-text text-darken-3">Past Brainstorms</h5>
+            <ul className="collapsible" data-collapsible="accordion">
+              {
+                this.props.allRooms.filter(room => {
+                  return room.date < newdate ||
+                    (room.date == newdate && room.startTime < newtime)
                 })
-            }
+                  .map(result => {
+                    const user = this.props.user
+                    return (
+                      <li key={result.id}>
+                        <div className="collapsible-header">
+                          {this.navlink(result, user)}
+                          {user.name == result.host ?
+                            <span class="new badge" data-badge-caption="Hosted"></span> : ''}
+                        </div>
+                      </li>
+                    )
+                  })
+
+              }
+            </ul>
           </div>
           <div className="grid-example col s3">
-            <h5>Future Brainstorms</h5>
-            {
-              this.props.allRooms.filter(room => {
-                return room.date > newdate ||
-                  (room.date == newdate && room.startTime >= newtime)
-              })
-                .map(result => {
-                  const user = this.props.user
-                  return this.hosted(result, user)
+            <h5 className="grey-text text-darken-3">Future Brainstorms</h5>
+            <ul className="collapsible" data-collapsible="accordion">
+              {
+                this.props.allRooms.filter(room => {
+                  return room.date > newdate ||
+                    (room.date == newdate && room.startTime >= newtime)
                 })
-            }
+                  .map(result => {
+                    const user = this.props.user
+                    return (
+                      <li key={result.id}>
+                        <div className="collapsible-header">
+                          {this.navlink(result, user)}
+                          {user.name == result.host ?
+                            <span className="new badge" data-badge-caption="Hosted"></span> : ''}
+                        </div>
+                      </li>
+                    )
+                  })
+              }
+            </ul>
           </div>
           <div className="grid example col s6">
             <a className="waves-effect waves-light btn" onClick={() => this.setState({ show: !show })}>Create New Session</a>
