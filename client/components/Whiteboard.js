@@ -134,15 +134,19 @@ class Whiteboard extends Component {
                     style = {{position: 'absolute', left: this.state.selectedNote === note.id && this.state.pos.x || note.position[0], top: this.state.selectedNote === note.id && this.state.pos.y || note.position[1], cursor: 'pointer' }}
                     >
 
+                  {this.props.open &&
+                  <span>
+                    <button value={note.id} onClick={this.handleDelete}>x</button>
+                    <button
+                        onMouseMove={this.onMouseMove}
+                        onMouseUp={this.onMouseUp}
+                        onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt)}}
+                        style={{borderRadius: '25px'}}
+                    > Drag
+                    </button>
+                  </span>
+                  }
 
-                  <button value={note.id} onClick={this.handleDelete}>x</button>
-                  <button
-                      onMouseMove={this.onMouseMove}
-                      onMouseUp={this.onMouseUp}
-                      onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt)}}
-                      style={{borderRadius: '25px'}}
-                  > Drag
-                  </button>
                     { note.text &&
                       <ContentEditable
                         onClick={() => this.setState({ selectedNote: note.id })}
@@ -184,7 +188,8 @@ const mapStateToProps = (state) => ({
   notes: state.notes,
   boardId: state.singleWhiteboard.id,
   hostId: state.singleWhiteboard.userId,
-  userId: state.user.id
+  userId: state.user.id,
+  open: !state.singleWhiteboard.closed
 })
 
 const mapDispatchToProps = { editNote, fetchNotes, deleteNote, fetchRoom }

@@ -53,9 +53,11 @@ export const newRoom = (roomName, host, attendeeId, date, time, note) => dispatc
     .then(res => {
       dispatch(createRoom(res.data))
       socket.emit('new-room', res.data)
+        if (note.link == '') {note.link = null;}
         note.whiteboardId = res.data.id;
         note.userId = host.id
         note.host = host.name;
+        note.position = [1320, 130];
         axios.post('/api/notes', {note})
       // history.push(`/profile/${res.data.id}`);
 

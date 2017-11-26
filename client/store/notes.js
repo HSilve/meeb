@@ -53,6 +53,7 @@ export const editNote = (id, data) =>
 export default function (state = defaultNotes, action) {
   switch (action.type) {
     case GET_NOTES:
+      console.log(action.notes)
       return action.notes
     case INSERT_NOTE:
       return state.concat(action.note)
