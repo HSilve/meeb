@@ -24,14 +24,9 @@ class Whiteboard extends Component {
     this.onMouseMove = this.onMouseMove.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
     this.handleChange = this.handleChange.bind(this)
-<<<<<<< HEAD
-    this.changed = debounce(this.props.editNote, 250);
-    this.handleVote = this.handleVote.bind(this);
-=======
     this.changed = debounce(this.props.editNote, 250)
     this.handleColorChange = this.handleColorChange.bind(this)
     this.clickConnection = this.clickConnection.bind(this)
->>>>>>> origin/master
   }
 
 
