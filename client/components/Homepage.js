@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
-import { newRoom, getRooms } from '../store/whiteboard'
+import { newRoom, getRooms, removeRoom } from '../store/whiteboard'
 import { withRouter } from 'react-router'
 import { NewSessionForm } from './index'
 
@@ -36,6 +36,8 @@ class Homepage extends Component {
 
   }
 
+
+
   render() {
     const { show } = this.state
 
@@ -54,9 +56,9 @@ class Homepage extends Component {
         <h2>Welcome, {this.props.user.name}</h2>
 
         <div className="grid-example col s12">
-          <div className="grid-example col s3">
+          <div className="grid-example col s4">
             <h5 className="grey-text text-darken-3">Past Brainstorms</h5>
-            <ul className="collapsible" data-collapsible="accordion">
+            <div className="collection">
               {
                 this.props.allRooms.filter(room => {
                   return room.date < newdate ||
@@ -66,22 +68,28 @@ class Homepage extends Component {
                   .map(result => {
                     const user = this.props.user
                     return (
-                      <li key={result.id}>
-                        <div className="collapsible-header">
-                          {this.navlink(result, user)}
-                          {user.name == result.host ?
-                            <span className="new badge" data-badge-caption="Hosted"></span> : ''}
-                        </div>
-                      </li>
+                      <NavLink key={result.id} className="collection-item" to={`/whiteboards/${result.id}`}>
+
+                        <span className="blue-text text-darken-4">{result.name}</span> <br />
+                        {result.date}
+                        {user.name == result.host ?
+                          <span>
+                            <span className="badge" ><i className="material-icons" onClick={event => this.props.deleteARoom(result.id)}>delete</i></span>
+                            <span className="new badge" data-badge-caption="Hosted"></span>
+
+                          </span>
+                          : ''}
+
+                      </NavLink>
                     )
                   })
 
               }
-            </ul>
+            </div>
           </div>
-          <div className="grid-example col s3">
+          <div className="grid-example col s4">
             <h5 className="grey-text text-darken-3">Future Brainstorms</h5>
-            <ul className="collapsible" data-collapsible="accordion">
+            <ul className="collection">
               {
                 this.props.allRooms.filter(room => {
                   return room.date > newdate ||
@@ -90,19 +98,27 @@ class Homepage extends Component {
                   .map(result => {
                     const user = this.props.user
                     return (
-                      <li key={result.id}>
-                        <div className="collapsible-header">
-                          {this.navlink(result, user)}
-                          {user.name == result.host ?
-                            <span className="new badge" data-badge-caption="Hosted"></span> : ''}
-                        </div>
-                      </li>
+                      <NavLink key={result.id} className="collection-item" to={`/whiteboards/${result.id}`}>
+
+                        <span className="blue-text text-darken-4">{result.name}</span> <br />
+                        {result.date}
+                        {user.name == result.host ?
+                          <span>
+                            <span className="badge" >
+                              <i className="material-icons">delete</i>
+                            </span>
+                            <span className="new badge" data-badge-caption="Hosted"></span>
+
+                          </span>
+                          : ''}
+
+                      </NavLink>
                     )
                   })
               }
             </ul>
           </div>
-          <div className="grid example col s6">
+          <div className="grid example col s4">
             <a className="waves-effect waves-light btn" onClick={() => this.setState({ show: !show })}>Create New Session</a>
             {
               show ?
@@ -136,6 +152,9 @@ const mapDispatch = (dispatch) => {
     },
     getAllRooms: function (user) {
       dispatch(getRooms(user))
+    },
+    deleteARoom: function (id) {
+      dispatch(removeRoom(id))
     }
   }
 };
