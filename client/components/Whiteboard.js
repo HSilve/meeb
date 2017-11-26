@@ -27,6 +27,7 @@ class Whiteboard extends Component {
     this.changed = debounce(this.props.editNote, 250)
     this.handleColorChange = this.handleColorChange.bind(this)
     this.clickConnection = this.clickConnection.bind(this)
+    this.handleVote = this.handleVote.bind(this)
   }
 
 
