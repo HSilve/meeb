@@ -27,7 +27,7 @@ const s3 = new AWS.S3()
 router.post('/', (req, res, next) => {
   Note.create(req.body.note)
   .then(note => {
-    if (req.body.note.file.length !== 0) {
+    if (req.body.note.file && req.body.note.file.length !== 0) {
       s3.putObject({
         ACL: 'public-read',
         Bucket: 'meeb-whiteboard',

@@ -1,13 +1,14 @@
 import axios from 'axios';
-import history from '../history';
 import socket from '../socket';
 
 const GET_ROOM = 'GET_ROOM'
 const UPDATE_ROOM = 'UPDATE_ROOM'
+const CLOSE_ROOM = 'CLOSE_ROOM'
 
 
 const getRoom = room => ({ type: GET_ROOM, room })
 const updateRoom = room => ({ type: UPDATE_ROOM, room })
+export const destroyRoom = room => ({ type: CLOSE_ROOM, room })
 
 
 export const fetchRoom = (whiteboardId) =>
@@ -27,10 +28,14 @@ export const modifyRoom = (room) => dispatch => {
     })
     .catch(err => console.error(err));
 }
-
-
-
-
+export const closeRoom = (id, time) => dispatch => {
+  axios.put(`/api/whiteboards/${id}`, { endTime: time, closed: true })
+    .then(res => {
+      dispatch(destroyRoom(res.data[1]))
+      socket.emit('end-session', res.data[1])
+    })
+    .catch(err => console.error(err));
+}
 export default function reducer(state = {}, action) {
 
   switch (action.type) {
@@ -39,6 +44,9 @@ export default function reducer(state = {}, action) {
       return action.room
 
     case UPDATE_ROOM:
+      return action.room
+
+    case CLOSE_ROOM:
       return action.room
 
     default:

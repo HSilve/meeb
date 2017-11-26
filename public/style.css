@@ -3,24 +3,60 @@ nav {
   top: 0
 }
 
-.children {
+/*.children {
   margin-top: 10vh
-}
+}*/
 
 .icon {
   margin-top: -3vh;
-  height: 30%;
+  height: 10vh;
   width: 30%
 }
 
 .home-info {
-  margin-top: 5%;
-  height: 35vh;
+  height: 35%;
   width: 100vw;
   background-color: #FBFFB9;
+  margin: 10vh 0;
 }
 
 .details {
-  padding: 50px;
-  margin-left: 30%
+  padding-bottom: 7vh;
+  padding-top: 7vh;
+  margin: 0 auto;
+  width: 40vw;
+  height: 30%
+}
+
+.details h5 {
+  color: grey;
+  font-size: 2.5em
+}
+
+.details span {
+  padding: 2vw;
+  font-size: 1.2em
+}
+
+.children h3 {
+  text-align: center;
+  padding: 1vh
+}
+
+/*body {
+  margin-bottom: 25vh !important
+}*/
+
+div.home-toggle {
+  position: absolute;
+  top: 210vh
+}
+
+footer {
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  margin-bottom: 0;
+  margin-top: 50vh;
+  background-color: teal !important
 }
