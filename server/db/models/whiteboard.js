@@ -24,6 +24,11 @@ const Whiteboard = db.define('whiteboard', {
   closed: {
     type: Sequelize.BOOLEAN,
     defaultValue: false
+  },
+  voteable: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
+    allowNull: false
   }
 
 })

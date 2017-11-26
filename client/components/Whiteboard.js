@@ -146,12 +146,14 @@ class Whiteboard extends Component {
                         style={{borderRadius: '25px'}}
                     > Drag
                     </button>
+                    {this.props.vote &&
                     <div style={{float: 'right'}} >
                             <button value={note.id} onClick={this.handleVote}>⚡️</button>
                             {
                               note.votes > 0 && <a>{note.votes}</a>
                             }
                           </div>
+                    }
                   </span>
                   }
 
@@ -196,7 +198,8 @@ const mapStateToProps = (state) => ({
   boardId: state.singleWhiteboard.id,
   hostId: state.singleWhiteboard.userId,
   userId: state.user.id,
-  open: !state.singleWhiteboard.closed
+  open: !state.singleWhiteboard.closed,
+  vote: state.singleWhiteboard.voteable
 })
 
 const mapDispatchToProps = { editNote, fetchNotes, deleteNote, castVote, fetchRoom  }

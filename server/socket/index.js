@@ -31,6 +31,11 @@ module.exports = (io) => {
         socket.leave(whiteboardId)
       })
 
+      socket.on('edit-room', (whiteboard) => {
+        console.log('Change to room', whiteboard.name);
+        socket.broadcast.to(whiteboard.id).emit('edit-room', whiteboard)
+      })
+
     socket.on('new-message', (message) => {
       console.log('room', message.whiteboardId,'has a new-message', message)
       socket.broadcast.to(message.whiteboardId).emit('new-message', message);
