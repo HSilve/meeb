@@ -16,13 +16,13 @@ class Whiteboard extends Component {
       selectedNote: 0,
       content: {}
     }
-    this.clickImage = this.clickImage.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this)
     this.onMouseUp = this.onMouseUp.bind(this)
     this.onMouseMove = this.onMouseMove.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
     this.handleChange = this.handleChange.bind(this)
-    this.changed = debounce(this.props.editNote, 250)
+    this.changed = debounce(this.props.editNote, 250);
+    this.handleVote = this.handleVote.bind(this);
   }
 
 
@@ -40,10 +40,6 @@ class Whiteboard extends Component {
       document.removeEventListener('mousemove', this.onMouseMove)
       document.removeEventListener('mouseup', this.onMouseUp)
     }
-  }
-
-  clickImage (evt) {
-    evt.preventDefault();
   }
 
   //when user clicks mouse down, dragging state is set to true and new relative position
@@ -96,7 +92,7 @@ class Whiteboard extends Component {
   }
   handleVote(evt) {
     evt.preventDefault();
-    this.props.castVote(evt.target.value, this.props.boardId)
+    this.props.castVote(evt.target.value)
   }
 
   handleChange(evt) {
@@ -140,19 +136,9 @@ class Whiteboard extends Component {
                     onMouseUp={this.onMouseUp}
                     onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt)}} >
 
-                    {/* <div>
-                          <button value={note.id} style={{float: 'left'}} onClick={this.handleDelete}>x</button>
-                          <div style={{float: 'right'}} >
-                            <button value={note.id} onClick={this.handleVote}>⚡️</button>
-                            {
-                              note.votes > 0 && <a>{note.votes}</a>
-                            }
-                          </div>
-                        </div> */}
-
                   {this.props.open &&
                   <span>
-                    <button value={note.id} onClick={this.handleDelete}>x</button>
+                    <button style={{float: 'left'}} value={note.id} onClick={this.handleDelete}>x</button>
                     <button
                         onMouseMove={this.onMouseMove}
                         onMouseUp={this.onMouseUp}
@@ -160,6 +146,12 @@ class Whiteboard extends Component {
                         style={{borderRadius: '25px'}}
                     > Drag
                     </button>
+                    <div style={{float: 'right'}} >
+                            <button value={note.id} onClick={this.handleVote}>⚡️</button>
+                            {
+                              note.votes > 0 && <a>{note.votes}</a>
+                            }
+                          </div>
                   </span>
                   }
 
