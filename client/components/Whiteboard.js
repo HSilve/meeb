@@ -1,7 +1,7 @@
 /* eslint-disable no-lone-blocks */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { editNote, fetchNotes, deleteNote, fetchRoom } from '../store'
+import { editNote, fetchNotes, deleteNote,castVote, fetchRoom } from '../store'
 import { withRouter } from 'react-router'
 import { TwitterPicker } from 'react-color'
 import ContentEditable from 'react-contenteditable'
@@ -19,7 +19,6 @@ class Whiteboard extends Component {
       connectionArray: [],
       content: {},
     }
-    this.clickImage = this.clickImage.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this)
     this.onMouseUp = this.onMouseUp.bind(this)
     this.onMouseMove = this.onMouseMove.bind(this)
@@ -28,6 +27,7 @@ class Whiteboard extends Component {
     this.changed = debounce(this.props.editNote, 250)
     this.handleColorChange = this.handleColorChange.bind(this)
     this.clickConnection = this.clickConnection.bind(this)
+    this.handleVote = this.handleVote.bind(this)
   }
 
 
@@ -44,10 +44,6 @@ class Whiteboard extends Component {
       document.removeEventListener('mousemove', this.onMouseMove)
       document.removeEventListener('mouseup', this.onMouseUp)
     }
-  }
-
-  clickImage (evt) {
-    evt.preventDefault();
   }
 
   //when user clicks mouse down, dragging state is set to true and new relative position
@@ -97,6 +93,10 @@ class Whiteboard extends Component {
   handleDelete(evt) {
     evt.preventDefault();
     this.props.deleteNote(evt.target.value, this.props.boardId);
+  }
+  handleVote(evt) {
+    evt.preventDefault();
+    this.props.castVote(evt.target.value)
   }
 
   handleChange(evt) {
@@ -161,14 +161,21 @@ class Whiteboard extends Component {
                     id={`card${note.id}`}
                     key={note.id}
                     style = {{position: 'absolute', background: note.color,
-                      left: this.state.selectedNote === note.id && this.state.pos.x || note.position[0],
-                      top: this.state.selectedNote === note.id && this.state.pos.y || note.position[1],
-                      cursor: 'pointer' }}
-                  >
+                    left: this.state.selectedNote === note.id && this.state.pos.x || note.position[0],
+                    top: this.state.selectedNote === note.id && this.state.pos.y || note.position[1],
+                    cursor: 'pointer' }}
+                >
+
+
+                    {/* style = {{position: 'absolute', left: this.state.selectedNote === note.id && this.state.pos.x || note.position[0], top: this.state.selectedNote === note.id && this.state.pos.y || note.position[1], cursor: 'pointer' }}
+                    onMouseMove={this.onMouseMove}
+                    onMouseUp={this.onMouseUp}
+                    onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt)}} > */}
+
 
                   {this.props.open &&
                   <span>
-                    <button value={note.id} onClick={this.handleDelete}>x</button>
+                    <button style={{float: 'left'}} value={note.id} onClick={this.handleDelete}>x</button>
                     <button
                         onMouseMove={this.onMouseMove}
                         onMouseUp={this.onMouseUp}
@@ -177,6 +184,14 @@ class Whiteboard extends Component {
                     > Drag
                     </button>
                     <button value={note.id} onClick={ (evt) => {this.clickConnection(evt, note)}}>edit</button>
+                    {this.props.vote &&
+                    <div style={{float: 'right'}} >
+                            <button value={note.id} onClick={this.handleVote}>⚡️</button>
+                            {
+                              note.votes > 0 && <a>{note.votes}</a>
+                            }
+                          </div>
+                    }
                   </span>
                   }
                     { note.text &&
@@ -189,7 +204,6 @@ class Whiteboard extends Component {
                         contentEditable="plaintext-only"
                       />
                     }
-
 
                     {note.image &&
                       <div className="card-image">
@@ -231,10 +245,11 @@ const mapStateToProps = (state) => ({
   boardId: state.singleWhiteboard.id,
   hostId: state.singleWhiteboard.userId,
   userId: state.user.id,
-  open: !state.singleWhiteboard.closed
+  open: !state.singleWhiteboard.closed,
+  vote: state.singleWhiteboard.voteable
 })
 
-const mapDispatchToProps = { editNote, fetchNotes, deleteNote, fetchRoom }
+const mapDispatchToProps = { editNote, fetchNotes, deleteNote, castVote, fetchRoom  }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Whiteboard));
 

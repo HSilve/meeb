@@ -2,7 +2,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { addNote, closeRoom } from '../store'
+import { addNote, closeRoom , openVote} from '../store'
 import { withRouter } from 'react-router';
 
 class ActionPanel extends React.Component {
@@ -68,10 +68,16 @@ class ActionPanel extends React.Component {
               <button type="submit">Insert</button>
               {
               this.props.user.id == this.props.whiteboard.userId &&
+                <span>
                   <button
                       id="myBtn" onClick={() => {document.getElementById('myModal').style.display = 'block';}}>
                       End Session
                   </button>
+                  <button
+                  id="myBtn" onClick={(evt) => {evt.preventDefault(); this.props.letsVote(this.props.whiteboard.id)}}>
+                  Open Vote
+              </button>
+                 </span>
               }
             </form>
           </span>
@@ -127,6 +133,9 @@ const mapDispatch = dispatch => {
       dispatch(closeRoom(whiteboardId, time))
       document.getElementById('myModal').style.display = 'none';
 
+    },
+    letsVote(whiteboardId) {
+      dispatch(openVote(whiteboardId))
     }
   }
 }

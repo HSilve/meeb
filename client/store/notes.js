@@ -50,6 +50,14 @@ export const editNote = (id, data) =>
       })
       .catch(err => console.log(err))
 
+export const castVote = noteId => dispatch => {
+    return axios.put(`/api/notes/vote/${noteId}`)
+    .then(updatedNote => {
+      dispatch(updateNote(updatedNote.data))
+      socket.emit('edit-note', updatedNote.data)
+    })
+    .catch(err => console.log(err))
+  }
 export default function (state = defaultNotes, action) {
   switch (action.type) {
     case GET_NOTES:

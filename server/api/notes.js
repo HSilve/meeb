@@ -35,7 +35,7 @@ router.post('/', (req, res, next) => {
         Body: new Buffer((req.body.note.file).split(',')[1], 'base64'),
         ContentType: req.body.note.fileType,
       }, (err) => {
-          if (err) console.log(err)
+          if (err) {console.log(err)}
           else {
             console.log('File uploaded to S3')
             note.update({ image: `https://s3.amazonaws.com/meeb-whiteboard/${note.id}-${req.body.note.imageName}` }, {
@@ -53,15 +53,36 @@ router.post('/', (req, res, next) => {
   })
 })
 
+router.put('/vote/:id', (req, res, next) => {
+  Note.findById(req.params.id)
+  .then(note => {
+    let vts = note.votes + 1;
+    return note.update({votes: vts}, {
+      returning: true,
+      plain: true
+    })
+  })
+  .then(data => {
+    res.json(data)
+  })
+  .catch(next);
+})
+
 router.put('/:id', (req, res, next) => {
   Note.findById(req.params.id)
-    .then(note => note.update(req.body))
-    .then(_ => {
-      Note.findById(req.params.id)
-      .then(updatedNote => res.json(updatedNote))
+  .then(note => {
+    return note.update(req.body,{
+      returning: true,
+      plain: true
+    })
+  })
+  .then(data => {
+      res.json(data)
     })
     .catch(next);
 })
+
+
 
 router.delete('/:id', (req, res, next) => {
   const id = req.params.id
