@@ -32,9 +32,7 @@ async function seed () {
     Whiteboard.create({name: "Blanca's Room", host: 'Blanca Sanchez', userId: 3, startTime: '02:30', date: '2017-11-27'}),
     Whiteboard.create({name: "Maria's Room", host: 'Maria Betances', userId: 4, startTime: '03:30', date: '2017-11-27'}),
     Whiteboard.create({name: 'Chai Tea', host: 'Erica Chai', userId: 5, startTime: '04:45', date: '2017-11-27'}),
-    Whiteboard.create({name: 'A Really Awsome Room ', host: 'Evlis Henry', userId: 6, startTime: '06:30', date: '2017-11-27'}),
-
-
+    Whiteboard.create({name: 'A Really Awsome Room ', host: 'Evlis Henry', userId: 6, startTime: '06:30', date: '2017-11-27'})
   ])
 
   await Promise.all([
@@ -51,12 +49,14 @@ async function seed () {
     Note.create({text: "I'm just a lone note", userId: 2, whiteboardId: 2 }),
     Note.create({text: 'I wanna be a branch off the best idea', image: 'http://completecarnivore.com/wp-content/uploads/2016/07/short-rib-location.jpg', userId: 4, whiteboardId: 1 })
   ])
+
   await Promise.all([
     Attendees.create({userId: 2, whiteboardId: 1}),
     Attendees.create({userId: 3, whiteboardId: 1}),
     Attendees.create({userId: 4, whiteboardId: 1}),
     Attendees.create({userId: 5, whiteboardId: 1}),
     Attendees.create({userId: 6, whiteboardId: 1}),
+    Attendees.create({userId: 1, whiteboardId: 1}),
     Attendees.create({userId: 1, whiteboardId: 2}),
     Attendees.create({userId: 5, whiteboardId: 2}),
     Attendees.create({userId: 3, whiteboardId: 2}),
@@ -71,7 +71,6 @@ async function seed () {
     Attendees.create({userId: 2, whiteboardId: 4}),
     Attendees.create({userId: 5, whiteboardId: 4}),
     Attendees.create({userId: 6, whiteboardId: 4}),
-    Attendees.create({userId: 4, whiteboardId: 5}),
     Attendees.create({userId: 1, whiteboardId: 5}),
     Attendees.create({userId: 2, whiteboardId: 5}),
     Attendees.create({userId: 3, whiteboardId: 5}),
@@ -117,4 +116,3 @@ console.log('seeding...')
 //note
 //user
 //whiteboard
-
