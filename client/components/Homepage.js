@@ -62,6 +62,7 @@ class Homepage extends Component {
                   return room.date < newdate ||
                     (room.date == newdate && room.startTime < newtime)
                 })
+                  .sort((room1, room2) => { return new Date(room2.date) - new Date(room1.date) })
                   .map(result => {
                     const user = this.props.user
                     return (
@@ -69,7 +70,7 @@ class Homepage extends Component {
                         <div className="collapsible-header">
                           {this.navlink(result, user)}
                           {user.name == result.host ?
-                            <span class="new badge" data-badge-caption="Hosted"></span> : ''}
+                            <span className="new badge" data-badge-caption="Hosted"></span> : ''}
                         </div>
                       </li>
                     )
