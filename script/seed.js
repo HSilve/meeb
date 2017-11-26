@@ -27,12 +27,12 @@ async function seed () {
     User.create({email: 'Evlis@email.com', password: '456', name: 'Evlis Henry'})
   ])
   await Promise.all([
-    Whiteboard.create({name: 'Best Dog Treats', host: 'Cody', userId: 1, startTime: '04:30'}),
-    Whiteboard.create({name: 'FullStack', host: 'Murphy', userId: 2, startTime: '04:30'}),
-    Whiteboard.create({name: "Blanca's Room", host: 'Blanca Sanchez', userId: 3, startTime: '02:30'}),
-    Whiteboard.create({name: "Maria's Room", host: 'Maria Betances', userId: 4, startTime: '03:30'}),
-    Whiteboard.create({name: 'Chai Tea', host: 'Erica Chai', userId: 5, startTime: '04:45'}),
-    Whiteboard.create({name: 'My Room ', host: 'Evlis Henry', userId: 6, startTime: '06:30'})
+    Whiteboard.create({name: 'Best Dog Treats', host: 'Cody', userId: 1, startTime: '04:30', date: '2017-10-27'}),
+    Whiteboard.create({name: 'FullStack', host: 'Murphy', userId: 2, startTime: '04:30', date: '2017-11-25'}),
+    Whiteboard.create({name: "Blanca's Room", host: 'Blanca Sanchez', userId: 3, startTime: '02:30', date: '2017-11-27'}),
+    Whiteboard.create({name: "Maria's Room", host: 'Maria Betances', userId: 4, startTime: '03:30', date: '2017-11-27'}),
+    Whiteboard.create({name: 'Chai Tea', host: 'Erica Chai', userId: 5, startTime: '04:45', date: '2017-11-27'}),
+    Whiteboard.create({name: 'A Really Awsome Room ', host: 'Evlis Henry', userId: 6, startTime: '06:30', date: '2017-11-27'})
   ])
 
   await Promise.all([
@@ -62,25 +62,33 @@ async function seed () {
     Attendees.create({userId: 3, whiteboardId: 2}),
     Attendees.create({userId: 4, whiteboardId: 2}),
     Attendees.create({userId: 2, whiteboardId: 3}),
+    Attendees.create({userId: 3, whiteboardId: 3}),
     Attendees.create({userId: 1, whiteboardId: 3}),
     Attendees.create({userId: 4, whiteboardId: 3}),
     Attendees.create({userId: 5, whiteboardId: 3}),
     Attendees.create({userId: 6, whiteboardId: 3}),
+
     Attendees.create({userId: 3, whiteboardId: 4}),
     Attendees.create({userId: 1, whiteboardId: 4}),
     Attendees.create({userId: 2, whiteboardId: 4}),
+    Attendees.create({userId: 4, whiteboardId: 4}),
     Attendees.create({userId: 5, whiteboardId: 4}),
     Attendees.create({userId: 6, whiteboardId: 4}),
+
     Attendees.create({userId: 1, whiteboardId: 5}),
     Attendees.create({userId: 2, whiteboardId: 5}),
     Attendees.create({userId: 3, whiteboardId: 5}),
     Attendees.create({userId: 5, whiteboardId: 5}),
+    Attendees.create({userId: 4, whiteboardId: 5}),
     Attendees.create({userId: 6, whiteboardId: 5}),
+
     Attendees.create({userId: 4, whiteboardId: 6}),
     Attendees.create({userId: 1, whiteboardId: 6}),
     Attendees.create({userId: 2, whiteboardId: 6}),
     Attendees.create({userId: 3, whiteboardId: 6}),
     Attendees.create({userId: 5, whiteboardId: 6}),
+    Attendees.create({userId: 6, whiteboardId: 6})
+
   ])
 
   // Wowzers! We can even `await` on the right-hand side of the assignment operator
