@@ -27,17 +27,6 @@ class Homepage extends Component {
     }
   }
 
-  navlink(result, user) {
-
-    return (<div key={result.id}>
-      <NavLink to={`/whiteboards/${result.id}`}>{result.name}</NavLink>
-    </div>
-    )
-
-  }
-
-
-
   render() {
     const { show } = this.state
 
