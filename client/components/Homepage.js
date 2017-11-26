@@ -68,19 +68,23 @@ class Homepage extends Component {
                   .map(result => {
                     const user = this.props.user
                     return (
-                      <NavLink key={result.id} className="collection-item" to={`/whiteboards/${result.id}`}>
+                      <div key={result.id} className="collection-item">
 
-                        <span className="blue-text text-darken-4">{result.name}</span> <br />
+                        <NavLink className="blue-text text-darken-4" to={`/whiteboards/${result.id}`}>{result.name}</NavLink> <br />
                         {result.date}
                         {user.name == result.host ?
                           <span>
-                            <span className="badge" ><i className="material-icons" onClick={event => this.props.deleteARoom(result.id)}>delete</i></span>
+                            <span className="badge" >
+                              <a className="waves-effect waves-light"><i onClick={event => this.props.deleteARoom(result.id)}
+                                className="material-icons">delete</i>
+                              </a>
+                            </span>
                             <span className="new badge" data-badge-caption="Hosted"></span>
 
                           </span>
                           : ''}
 
-                      </NavLink>
+                      </div>
                     )
                   })
 
@@ -98,21 +102,22 @@ class Homepage extends Component {
                   .map(result => {
                     const user = this.props.user
                     return (
-                      <NavLink key={result.id} className="collection-item" to={`/whiteboards/${result.id}`}>
+                      <div key={result.id} className="collection-item">
 
-                        <span className="blue-text text-darken-4">{result.name}</span> <br />
+                        <NavLink className="blue-text text-darken-4" to={`/whiteboards/${result.id}`}>{result.name}</NavLink> <br />
                         {result.date}
                         {user.name == result.host ?
                           <span>
                             <span className="badge" >
-                              <i className="material-icons">delete</i>
+                              <a className="waves-effect waves-light"><i onClick={event => this.props.deleteARoom(result.id)} className="material-icons">delete</i>
+                              </a>
                             </span>
                             <span className="new badge" data-badge-caption="Hosted"></span>
 
                           </span>
                           : ''}
 
-                      </NavLink>
+                      </div>
                     )
                   })
               }
