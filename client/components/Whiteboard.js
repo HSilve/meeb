@@ -1,8 +1,10 @@
 /* eslint-disable no-lone-blocks */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { editNote, fetchNotes, deleteNote, castVote} from '../store'
+import { editNote, fetchNotes, deleteNote,castVote, fetchRoom } from '../store'
 import { withRouter } from 'react-router'
+import ContentEditable from 'react-contenteditable'
+import debounce from 'lodash/debounce'
 
 class Whiteboard extends Component {
   constructor(props) {
@@ -11,18 +13,21 @@ class Whiteboard extends Component {
       dragging: false,
       rel: null,
       pos: {x: null, y: null},
-      selectedNote: 0
+      selectedNote: 0,
+      content: {}
     }
     this.clickImage = this.clickImage.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this)
     this.onMouseUp = this.onMouseUp.bind(this)
     this.onMouseMove = this.onMouseMove.bind(this)
-    this.handleDelete = this.handleDelete.bind(this);
-
+    this.handleDelete = this.handleDelete.bind(this)
+    this.handleChange = this.handleChange.bind(this)
+    this.changed = debounce(this.props.editNote, 250)
   }
 
 
   componentDidMount() {
+    this.props.fetchRoom(this.props.match.params.id)
     this.props.fetchNotes(this.props.match.params.id)
     console.log('the window', document.getElementById('whiteboard').getBoundingClientRect())
   }
@@ -71,6 +76,7 @@ class Whiteboard extends Component {
     this.setState({dragging: false})
   }
 
+
   //when state.pos is set to anything but null, the top and left of card is set to state.pos instead of note.position[0] & note.position[1]
   onMouseMove(evt) {
     if (!this.state.dragging) return
@@ -93,7 +99,19 @@ class Whiteboard extends Component {
     this.props.castVote(evt.target.value, this.props.boardId)
   }
 
+  handleChange(evt) {
+    evt.preventDefault()
+    console.log(evt.target.value)
+    let content = {...this.state.content}
+    content[this.state.selectedNote] = evt.target.value
+    this.setState({ content })
+    this.changed(this.state.selectedNote, { text: evt.target.value })
+    // this.setState({ content: '' })
+  }
+
+
   render() {
+    const { userId, hostId } = this.props
     let data = [];
     if (this.props.notes) {
       data = this.props.notes
@@ -122,8 +140,7 @@ class Whiteboard extends Component {
                     onMouseUp={this.onMouseUp}
                     onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt)}} >
 
-                  {this.props.open &&
-                        <div>
+                    {/* <div>
                           <button value={note.id} style={{float: 'left'}} onClick={this.handleDelete}>x</button>
                           <div style={{float: 'right'}} >
                             <button value={note.id} onClick={this.handleVote}>⚡️</button>
@@ -131,12 +148,30 @@ class Whiteboard extends Component {
                               note.votes > 0 && <a>{note.votes}</a>
                             }
                           </div>
-                        </div>
+                        </div> */}
+
+                  {this.props.open &&
+                  <span>
+                    <button value={note.id} onClick={this.handleDelete}>x</button>
+                    <button
+                        onMouseMove={this.onMouseMove}
+                        onMouseUp={this.onMouseUp}
+                        onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt)}}
+                        style={{borderRadius: '25px'}}
+                    > Drag
+                    </button>
+                  </span>
                   }
+
                     { note.text &&
-                      <div className="card-content">
-                        {note.text}
-                      </div>
+                      <ContentEditable
+                        onClick={() => this.setState({ selectedNote: note.id })}
+                        className="card-content"
+                        html={this.state.content[note.id] || note.text}
+                        disabled={userId !== note.userId && userId !== hostId}
+                        onChange={this.handleChange}
+                        contentEditable="plaintext-only"
+                      />
                     }
 
                     {note.image &&
@@ -167,10 +202,12 @@ class Whiteboard extends Component {
 const mapStateToProps = (state) => ({
   notes: state.notes,
   boardId: state.singleWhiteboard.id,
+  hostId: state.singleWhiteboard.userId,
+  userId: state.user.id,
   open: !state.singleWhiteboard.closed
 })
 
-const mapDispatchToProps = { editNote, fetchNotes, deleteNote, castVote }
+const mapDispatchToProps = { editNote, fetchNotes, deleteNote, castVote, fetchRoom  }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Whiteboard));
 
