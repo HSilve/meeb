@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { Whiteboard, User, Attendees } = require('../db/models')
+const { Whiteboard, User, Note } = require('../db/models')
 module.exports = router
 
 router.get('/', (req, res, next) => {
@@ -78,9 +78,16 @@ router.post('/', (req, res, next) => {
 })
 
 router.delete('/:whiteboardId', (req, res, next) => {
-  Whiteboard.destroy({
-    where: { id: req.params.whiteboardId }
+  const id = req.params.whiteboardId;
+  Note.destroy({
+    where: {whiteboardId: id}
   })
-    .then(row => res.json(row))
-    .catch(next)
+  .then(_ => {
+    console.log("got here bro")
+      return Whiteboard.destroy({
+          where: {id}
+        })
+  })
+  .then(row => res.json(row))
+  .catch(next)
 })
