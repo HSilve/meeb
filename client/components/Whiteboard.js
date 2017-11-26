@@ -97,9 +97,10 @@ class Whiteboard extends Component {
   handleColorChange = (color) => {
     if (this.state.connectionArray.length) {
       this.state.connectionArray.forEach(note => {
-        console.log('note', note)
+        document.getElementById(`card${note}`).style.background = color.hex
         this.props.editNote(note, {color: color.hex})
-        document.getElementById(`card${this.state.selectedNote}`).style.background = color.hex
+        let selectedCard = document.getElementById(`card${note}`)
+        selectedCard.className = 'card'
       })
     }
     this.setState({connectionArray: []})
@@ -108,15 +109,15 @@ class Whiteboard extends Component {
   clickConnection = (evt, note) => {
     if (this.state.connectionArray.indexOf(note.id) === -1 && note.id !== 0) {
       this.setState({connectionArray: [...this.state.connectionArray, note.id]})
-      // let selectedCard = document.getElementById(`card${id}`)
-      // selectedCard.className = 'DropShadow'
+      let selectedCard = document.getElementById(`card${note.id}`)
+      selectedCard.className = 'DropShadow'
     } else if (note.id !== 0) {
       let array = this.state.connectionArray
       let index = array.indexOf(note.id)
       array.splice(index, 1)
       this.setState({ connectionArray: array})
-      // let selectedCard = document.getElementById(`card${id}`)
-      // selectedCard.className = 'card'
+      let selectedCard = document.getElementById(`card${note.id}`)
+      selectedCard.className = 'card'
     }
   }
 
@@ -125,8 +126,6 @@ class Whiteboard extends Component {
     if (this.props.notes) {
       data = this.props.notes
     }
-    console.log('connectionArray', this.state.connectionArray)
-    console.log('componentDidMount', this.props.notes)
     return (
       <div id="whiteboard">
        <svg id="basket" width="300" height="250">
@@ -182,7 +181,7 @@ class Whiteboard extends Component {
           })
         }
         <div className="colorPalette">
-          <button onClick={() => this.setState({ show: !this.state.show })}>-</button>
+          <button onClick={() => this.setState({ show: !this.state.show })}><img src={`../public/icons8-fill-color-30.png`}</button>
           {
             this.state.show ?
               <TwitterPicker onChange={this.handleColorChange} />
