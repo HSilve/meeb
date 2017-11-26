@@ -76,7 +76,7 @@ class Homepage extends Component {
                           <span>
                             <span className="badge" >
                               <a className="waves-effect waves-light"><i onClick={event => this.props.deleteARoom(result.id)}
-                                className="material-icons">delete</i>
+                                className="material-icons icon-grey">delete</i>
                               </a>
                             </span>
                             <span className="new badge" data-badge-caption="Hosted"></span>
@@ -109,7 +109,7 @@ class Homepage extends Component {
                         {user.name == result.host ?
                           <span>
                             <span className="badge" >
-                              <a className="waves-effect waves-light"><i onClick={event => this.props.deleteARoom(result.id)} className="material-icons">delete</i>
+                              <a className="waves-effect waves-light"><i onClick={event => this.props.deleteARoom(result.id)} className="material-icons icon-grey">delete</i>
                               </a>
                             </span>
                             <span className="new badge" data-badge-caption="Hosted"></span>
