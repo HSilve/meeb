@@ -52,6 +52,7 @@ router.post('/', (req, res, next) => {
     }
   })
 })
+
 router.put('/vote/:id', (req, res, next) => {
   Note.findById(req.params.id)
   .then(note => {
@@ -69,10 +70,14 @@ router.put('/vote/:id', (req, res, next) => {
 
 router.put('/:id', (req, res, next) => {
   Note.findById(req.params.id)
-    .then(note => note.update(req.body))
-    .then(_ => {
-      Note.findById(req.params.id)
-      .then(updatedNote => res.json(updatedNote.data))
+  .then(note => {
+    return note.update(req.body,{
+      returning: true,
+      plain: true
+    })
+  })
+  .then(data => {
+      res.json(data)
     })
     .catch(next);
 })
