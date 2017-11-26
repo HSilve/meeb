@@ -116,8 +116,10 @@ body {
   }
 
   .colorPalette {
-    right: 0px;
-    bottom: 0px;
+    right: 40px;
+    bottom: 100px;
+    position: absolute;
+    border-radius: 50%;
   }
 
   #mini-whiteboard {

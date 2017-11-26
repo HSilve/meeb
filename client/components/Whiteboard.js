@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { editNote, fetchNotes, deleteNote} from '../store'
 import { withRouter } from 'react-router'
-import { BlockPicker } from 'react-color'
+import { TwitterPicker } from 'react-color'
 
 class Whiteboard extends Component {
   constructor(props) {
@@ -13,7 +13,8 @@ class Whiteboard extends Component {
       rel: null,
       pos: {x: null, y: null},
       selectedNote: 0,
-      noteColor: 'yellow',
+      show: false,
+      connectionArray: [],
     }
     this.clickImage = this.clickImage.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this)
@@ -21,6 +22,7 @@ class Whiteboard extends Component {
     this.onMouseMove = this.onMouseMove.bind(this)
     this.handleDelete = this.handleDelete.bind(this);
     this.handleColorChange = this.handleColorChange.bind(this)
+    this.clickConnection = this.clickConnection.bind(this)
   }
 
 
@@ -93,9 +95,29 @@ class Whiteboard extends Component {
   }
 
   handleColorChange = (color) => {
-    this.props.editNote(this.state.selectedNote, {color: color.hex})
-    document.getElementById(`card${this.state.selectedNote}`).style.background = color.hex
-    console.log('selectedNote', this.state.selectedNote)
+    if (this.state.connectionArray.length) {
+      this.state.connectionArray.forEach(note => {
+        console.log('note', note)
+        this.props.editNote(note, {color: color.hex})
+        document.getElementById(`card${this.state.selectedNote}`).style.background = color.hex
+      })
+    }
+    this.setState({connectionArray: []})
+  }
+
+  clickConnection = (evt, note) => {
+    if (this.state.connectionArray.indexOf(note.id) === -1 && note.id !== 0) {
+      this.setState({connectionArray: [...this.state.connectionArray, note.id]})
+      // let selectedCard = document.getElementById(`card${id}`)
+      // selectedCard.className = 'DropShadow'
+    } else if (note.id !== 0) {
+      let array = this.state.connectionArray
+      let index = array.indexOf(note.id)
+      array.splice(index, 1)
+      this.setState({ connectionArray: array})
+      // let selectedCard = document.getElementById(`card${id}`)
+      // selectedCard.className = 'card'
+    }
   }
 
   render() {
@@ -103,11 +125,7 @@ class Whiteboard extends Component {
     if (this.props.notes) {
       data = this.props.notes
     }
-      this.props.notes.map(note => {
-        console.log('I here', note.color)
-        // document.getElementById(`card${note.id}`).style.background = note.color
-      })
-
+    console.log('connectionArray', this.state.connectionArray)
     console.log('componentDidMount', this.props.notes)
     return (
       <div id="whiteboard">
@@ -126,11 +144,12 @@ class Whiteboard extends Component {
              (
                   <div
                     className="card"
-                    background-color={note.color}
                     id={`card${note.id}`}
                     key={note.id}
-                    style = {{position: 'absolute', left: this.state.selectedNote === note.id && this.state.pos.x || note.position[0], top: this.state.selectedNote === note.id && this.state.pos.y || note.position[1], cursor: 'pointer' }}
+                    style = {{position: 'absolute', background: note.color, left: this.state.selectedNote === note.id && this.state.pos.x || note.position[0],
+                      top: this.state.selectedNote === note.id && this.state.pos.y || note.position[1], cursor: 'pointer' }}
                     onMouseMove={this.onMouseMove}
+                    onClick={ (evt) => {this.clickConnection(evt, note)}}
                     onMouseUp={this.onMouseUp}
                     onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt)}} >
 
@@ -163,7 +182,12 @@ class Whiteboard extends Component {
           })
         }
         <div className="colorPalette">
-          <BlockPicker onChange={this.handleColorChange} />
+          <button onClick={() => this.setState({ show: !this.state.show })}>-</button>
+          {
+            this.state.show ?
+              <TwitterPicker onChange={this.handleColorChange} />
+             : null
+          }
         </div>
       </div>
     );
