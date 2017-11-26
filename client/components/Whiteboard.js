@@ -34,7 +34,6 @@ class Whiteboard extends Component {
   componentDidMount() {
     this.props.fetchRoom(this.props.match.params.id)
     this.props.fetchNotes(this.props.match.params.id)
-    console.log('the window', document.getElementById('whiteboard').getBoundingClientRect())
   }
 
   componentDidUpdate(props, state) {
@@ -102,7 +101,6 @@ class Whiteboard extends Component {
 
   handleChange(evt) {
     evt.preventDefault()
-    console.log(evt.target.value)
     let content = {...this.state.content}
     content[this.state.selectedNote] = evt.target.value
     this.setState({ content })
@@ -116,7 +114,7 @@ class Whiteboard extends Component {
         document.getElementById(`card${note}`).style.background = color.hex
         this.props.editNote(note, {color: color.hex})
         let selectedCard = document.getElementById(`card${note}`)
-        selectedCard.className = 'card'
+        selectedCard.style.boxShadow = '0 4px 2px -2px gray'
       })
     }
     this.setState({connectionArray: []})
@@ -126,14 +124,14 @@ class Whiteboard extends Component {
     if (this.state.connectionArray.indexOf(note.id) === -1 && note.id !== 0) {
       this.setState({connectionArray: [...this.state.connectionArray, note.id]})
       let selectedCard = document.getElementById(`card${note.id}`)
-      selectedCard.className = 'DropShadow'
+      selectedCard.style.boxShadow = '0 0 20px yellow'
     } else if (note.id !== 0) {
       let array = this.state.connectionArray
       let index = array.indexOf(note.id)
       array.splice(index, 1)
       this.setState({ connectionArray: array})
       let selectedCard = document.getElementById(`card${note.id}`)
-      selectedCard.className = 'card'
+      selectedCard.style.boxShadow = '0 4px 2px -2px gray'
     }
   }
 
