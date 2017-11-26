@@ -28,7 +28,6 @@ class Whiteboard extends Component {
 
   componentDidMount() {
     this.props.fetchNotes(this.props.match.params.id)
-
     console.log('the window', document.getElementById('whiteboard').getBoundingClientRect())
   }
 
@@ -181,7 +180,9 @@ class Whiteboard extends Component {
           })
         }
         <div className="colorPalette">
-          <button onClick={() => this.setState({ show: !this.state.show })}><img src={`../public/icons8-fill-color-30.png`}</button>
+          <button onClick={() => this.setState({ show: !this.state.show })}>
+            <img src="/icons8-fill-color-30.png" align="center" alt="Branch" />
+          </button>
           {
             this.state.show ?
               <TwitterPicker onChange={this.handleColorChange} />
