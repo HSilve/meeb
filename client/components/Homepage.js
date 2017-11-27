@@ -93,7 +93,7 @@ class Homepage extends Component {
                     return (
                       <div key={result.id} className="collection-item">
 
-                        <NavLink className="blue-text text-darken-4" to={`/whiteboards/${result.id}`}>{result.name}</NavLink> <br />
+                        <div className="blue-text text-darken-4" to={`/whiteboards/${result.id}`}>{result.name}</div> <br />
                         {result.date}
                         {user.name == result.host ?
                           <span>
