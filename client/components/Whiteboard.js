@@ -97,7 +97,8 @@ class Whiteboard extends Component {
 
   handleVote(evt) {
     evt.preventDefault();
-    this.props.castVote(evt.target.value)
+    evt.target.disabled = true;
+    this.props.castVote(evt.target.value);
   }
 
   handleChange(evt) {
