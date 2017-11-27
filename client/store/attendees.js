@@ -25,7 +25,6 @@ export const fetchCollaborators = (whiteboardId) =>
 export const announceCollaborator = (userId, whiteboardId) => dispatch => {
   axios.put(`/api/attendees/${whiteboardId}`, {userId})
   .then(user => {
-    dispatch(enterCollaborator(user.data))
     socket.emit('enter-room', user.data, whiteboardId);
   })
 }
