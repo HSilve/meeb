@@ -1,7 +1,7 @@
 /* eslint-disable no-lone-blocks */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { editNote, fetchNotes, deleteNote,castVote, fetchRoom } from '../store'
+import { editNote, fetchNotes, deleteNote, castVote, fetchRoom, insertBranch, fetchBranches } from '../store'
 import { withRouter } from 'react-router'
 import { TwitterPicker } from 'react-color'
 import ContentEditable from 'react-contenteditable'
@@ -34,8 +34,12 @@ class Whiteboard extends Component {
 
 
   componentDidMount() {
-    this.props.fetchRoom(this.props.match.params.id)
-    this.props.fetchNotes(this.props.match.params.id)
+    const boardId = this.props.match.params.id
+    this.props.fetchRoom(boardId)
+    this.props.fetchNotes(boardId)
+
+    this.props.fetchBranches(boardId)
+    console.log(this.props.branches)
   }
 
   componentDidUpdate(props, state) {
@@ -81,6 +85,7 @@ class Whiteboard extends Component {
 
   //when state.pos is set to anything but null, the top and left of card is set to state.pos instead of note.position[0] & note.position[1]
   onMouseMove(evt) {
+    // console.log(evt)
     if (!this.state.dragging) return
     this.setState({
       pos: {
@@ -112,29 +117,30 @@ class Whiteboard extends Component {
   }
 
   handleConnect(evt, noteId) {
-    let newSelectedNote = {}
-    newSelectedNote[noteId] = evt.target.getBoundingClientRect()
-    this.setState({ branches: [...this.state.branches, evt.target.getBoundingClientRect()] })
-
-
-    if (this.state.branches.length >= 2) {
-      console.log(this.state.branches)
-      let firstConnect = this.state.branches[0]
-      let secondConnect = this.state.branches[1]
-      let bodyRect = document.body.getBoundingClientRect()
-      console.log(bodyRect)
-      console.log(firstConnect)
-      console.log(secondConnect)
-      d3.select('#svg').append('line')
-        .attr("x1", firstConnect.x)
-        .attr("y1", firstConnect.y)
-        .attr("x2", secondConnect.x)
-        .attr("y2", secondConnect.y)
-        .attr("stroke-width", 2)
-        .attr("stroke", "black")
-      let newArr = this.state.branches.slice(2)
-      this.setState({ branches: newArr })
-    }
+    // let newSelectedNote = {}
+    // newSelectedNote[noteId] = evt.target.getBoundingClientRect()
+    this.setState({ connectionArray: [...this.state.connectionArray, { noteId, elem: evt.target.getBoundingClientRect()} ] }, function() {
+      console.log(this.state.connectionArray)
+      if (this.state.connectionArray.length >= 2) {
+        console.log(this.state.connectionArray)
+        let firstConnect = this.state.connectionArray[0].elem
+        let secondConnect = this.state.connectionArray[1].elem
+        let bodyRect = document.body.getBoundingClientRect()
+        console.log(bodyRect)
+        console.log(firstConnect)
+        console.log(secondConnect)
+        d3.select('#svg').append('line')
+          .attr("x1", firstConnect.x)
+          .attr("y1", firstConnect.y)
+          .attr("x2", secondConnect.x)
+          .attr("y2", secondConnect.y)
+          .attr("stroke-width", 2)
+          .attr("stroke", "black")
+        this.props.insertBranch({noteId: this.state.connectionArray[0].noteId, endNoteId: this.state.connectionArray[1].noteId, whiteboardId: this.props.boardId})
+        let newArr = this.state.connectionArray.slice(2)
+        this.setState({ connectionArray: newArr })
+      }
+    })
   }
 
   handleColorChange = (color) => {
@@ -170,6 +176,18 @@ class Whiteboard extends Component {
     if (this.props.notes) {
       data = this.props.notes
     }
+    // this.props.branches && this.props.branches.map(branch => {
+    //   let firstConnect = document.getElementById(`connect-${branch.noteId}`).getBoundingClientRect()
+    //   let secondConnect = document.getElementById(`connect-${branch.endNoteId}`).getBoundingClientRect()
+    //
+    //   d3.select('#svg').append('line')
+    //     .attr("x1", firstConnect.x)
+    //     .attr("y1", firstConnect.y)
+    //     .attr("x2", secondConnect.x)
+    //     .attr("y2", secondConnect.y)
+    //     .attr("stroke-width", 2)
+    //     .attr("stroke", "black")
+    // })
     return (
       <div id="whiteboard">
        <svg id="basket" width="300" height="250">
@@ -225,6 +243,8 @@ class Whiteboard extends Component {
                   </span>
                   }
                     <button
+                      id={`connect-${note.id}`}
+                      ref={`connect-${note.id}`}
                       style={{borderRadius: '25px', width: '25px', height: '25px', backgroundColor: 'pink'}}
                       onClick={evt => { evt.preventDefault(); this.handleConnect(evt, note.id)}}
                     />
@@ -281,10 +301,11 @@ const mapStateToProps = (state) => ({
   hostId: state.singleWhiteboard.userId,
   userId: state.user.id,
   open: !state.singleWhiteboard.closed,
-  vote: state.singleWhiteboard.voteable
+  vote: state.singleWhiteboard.voteable,
+  branches: state.branches
 })
 
-const mapDispatchToProps = { editNote, fetchNotes, deleteNote, castVote, fetchRoom  }
+const mapDispatchToProps = { editNote, fetchNotes, deleteNote, castVote, fetchRoom, insertBranch, fetchBranches  }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Whiteboard));
 
