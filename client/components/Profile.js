@@ -6,7 +6,7 @@ import { withRouter } from 'react-router'
 import { NewSessionForm } from './index'
 
 
-class Homepage extends Component {
+class Profile extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -158,4 +158,4 @@ const mapDispatch = (dispatch) => {
   }
 };
 
-export default withRouter(connect(mapState, mapDispatch)(Homepage))
+export default withRouter(connect(mapState, mapDispatch)(Profile))
