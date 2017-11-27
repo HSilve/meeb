@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Route, Switch, Redirect, Router } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import history from './history'
-import { Main, Home, ConferenceRoom, Homepage, LoginSignup } from './components'
+import { Main, Home, ConferenceRoom, Profile, LoginSignup } from './components'
 import { me } from './store'
 
 
@@ -23,7 +23,7 @@ class Routes extends Component {
         <Main>
           <Switch id="switchSpace">
             {/* Routes placed here are available to all visitors */}
-            <Route path ="/login" component = {LoginSignup} />
+            <Route path="/login" component={LoginSignup} />
             <Route exact path="/home" component={Home} />
 
             {
@@ -31,8 +31,8 @@ class Routes extends Component {
               <Switch>
                 <Route exact path="/home" component={Home} />
                 <Route path="/whiteboards/:id" component={ConferenceRoom} />
-                <Route exact path="/homepage" component={Homepage} />
-                <Redirect to="/homepage" />
+                <Route exact path="/profile" component={Profile} />
+                <Redirect to="/home" />
               </Switch>
             }
           </Switch>
