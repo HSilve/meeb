@@ -238,7 +238,6 @@ class Whiteboard extends Component {
           </div>
         </div>
       </div>
-      </div>
     );
   }
 }
