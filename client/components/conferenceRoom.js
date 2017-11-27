@@ -24,21 +24,19 @@ class ConferenceRoom extends Component {
   }
 
   multipleLanes(num){
-    while(num > 0){
+    while (num > 0){
       num--
-      console.log('while loop', num)
-      console.log('swimlaneArray', this.state.swimlaneArray)
       this.state.swimlaneArray.push(<VerticalSwimlane key={num} />)
     }
   }
 
-  onClickVertical(evt) {
+  onClickVertical(evt, num) {
     evt.preventDefault()
     if (this.state.swimlaneArray.length){
       this.setState({swimlaneArray: []})
     }
     this.setState({verticalSwimlane: !this.state.verticalSwimlane})
-    this.multipleLanes(3)
+    this.multipleLanes(num)
   }
 
   render ()  {
@@ -58,13 +56,18 @@ class ConferenceRoom extends Component {
         }
         <Whiteboard />
         <ActionPanel />
-          <div className="laneButton">
-            <button onClick={(evt) => this.onClickVertical(evt)}>
-              Swimlane
-            </button>
+          <div className="fixed-action-btn horizontal click-to-toggle" id="laneButton">
+            <a className="btn-floating btn-large red">
+              <i className="material-icons">menu</i>
+            </a>
+            <ul>
+              <li><a className="btn-floating red" onClick={(evt) => this.onClickVertical(evt, 3)}><i className="material-icons"></i></a></li>
+              <li><a className="btn-floating yellow darken-1" onClick={(evt) => this.onClickVertical(evt, 4)}><i className="material-icons"></i></a></li>
+              <li><a className="btn-floating green" onClick={(evt) => this.onClickVertical(evt, 2)}><i className="material-icons"></i></a></li>
+            </ul>
+          </div>
           </div>
       </div>
-        </div>
     )
   }
 }

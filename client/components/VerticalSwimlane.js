@@ -19,7 +19,8 @@ class VerticalSwimlane extends Component{
           <div className="col s1"></div>
           <div className="col s1"></div>
           <div className="col s12">
-            <svg className="swimlaneLine">
+            <input type='text' />
+            <svg className="verticalSwimlane">
             </svg>
           </div>
         </div>
