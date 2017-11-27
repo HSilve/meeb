@@ -59,6 +59,7 @@ class Profile extends Component {
                     const user = this.props.user
                     return (
                       <div key={result.id} className="collection-item">
+
                         <span></span>
                         {
                           result.startTime <= newtime && !result.endtime ?
