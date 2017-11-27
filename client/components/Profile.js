@@ -50,11 +50,21 @@ class Profile extends Component {
             <h5 className="grey-text text-darken-3">Today's Remaining Brainstorms</h5>
             <div className="collection">
               {
-                this.props.allRooms.filter(room => room.date == newdate && room.startTime > newtime)
+
+                this.props.allRooms.filter(room => {
+
+                  return (room.date === newdate) && (((room.startTime >= newtime) && !room.endTime) || ((room.startTime <= newtime) && !room.endTime))
+                })
                   .map(result => {
                     const user = this.props.user
                     return (
                       <div key={result.id} className="collection-item">
+                        <span></span>
+                        {
+                          result.startTime <= newtime && !result.endtime ?
+                            <a className="btn btn-floating btn-small center pulse"><i className="material-icons">cloud</i></a> : ''
+                        }
+
                         <NavLink className="blue-text text-darken-4" to={`/whiteboards/${result.id}`}>{result.name}</NavLink>
                         {user.name == result.host ?
                           <span>
@@ -66,7 +76,11 @@ class Profile extends Component {
                             <span className="new badge" data-badge-caption="Hosted"></span>
 
                           </span>
-                          : ''}
+                          : ''
+                        }
+
+
+
                       </div>
                     )
                   })
@@ -82,7 +96,7 @@ class Profile extends Component {
               {
                 this.props.allRooms.filter(room => {
                   return room.date < newdate ||
-                    (room.date == newdate && room.startTime < newtime)
+                    (room.date == newdate && (room.startTime < newtime) && room.endTime)
                 })
                   .sort((room1, room2) => { return new Date(room2.date) - new Date(room1.date) })
                   .map(result => {
