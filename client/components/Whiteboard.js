@@ -30,6 +30,7 @@ class Whiteboard extends Component {
     this.handleColorChange = this.handleColorChange.bind(this)
     this.clickConnection = this.clickConnection.bind(this)
     this.handleVote = this.handleVote.bind(this)
+    this.showBranches = this.showBranches.bind(this)
   }
 
 
@@ -145,6 +146,10 @@ class Whiteboard extends Component {
     })
   }
 
+  // showBranches() {
+  //   this.props.branches && this.props.bran
+  // }
+
   handleColorChange = (color) => {
     if (this.state.connectionArray.length) {
       this.state.connectionArray.forEach(note => {
@@ -192,6 +197,10 @@ class Whiteboard extends Component {
       </svg>
       <svg id="svg" width={document.body.getBoundingClientRect().width} height={document.body.getBoundingClientRect().height}>
       </svg>
+      <button
+        onClick={this.showBranches}
+        >Show Branches
+      </button>
       {
         data && data.map((note) => {
           {
@@ -240,6 +249,7 @@ class Whiteboard extends Component {
                       style={{borderRadius: '25px', width: '25px', height: '25px', backgroundColor: 'pink'}}
                       onClick={evt => { evt.preventDefault(); this.handleConnect(evt, note.id)}}
                     />
+
 
                     { note.text &&
                       <ContentEditable
