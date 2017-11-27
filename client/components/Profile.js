@@ -6,7 +6,7 @@ import { withRouter } from 'react-router'
 import { NewSessionForm } from './index'
 
 
-class Homepage extends Component {
+class Profile extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -91,11 +91,16 @@ class Homepage extends Component {
                   .map(result => {
                     const user = this.props.user
                     return (
-                      <div key={result.id} className="collection-item">
+                      <div key={result.id} className="collection-item dataRow">
 
-                        <NavLink className="blue-text text-darken-4" to={`/whiteboards/${result.id}`}>{result.name}</NavLink> <br />
+                        <div className="blue-text text-darken-4" to={`/whiteboards/${result.id}`}>{result.name}</div>
+                        <div style={{float: 'right'}}>
                         {result.date}
-                        {user.name == result.host ?
+                        </div>
+                        <hr />
+                        <label> Time: </label>
+                        {result.startTime}
+                        {user.name == result.host &&
                           <span>
                             <span className="badge" >
                               <a className="waves-effect waves-light"><i onClick={event => this.props.deleteARoom(result.id)} className="material-icons icon-grey">delete</i>
@@ -104,7 +109,7 @@ class Homepage extends Component {
                             <span className="new badge" data-badge-caption="Hosted"></span>
 
                           </span>
-                          : ''}
+                          }
 
                       </div>
                     )
@@ -153,4 +158,4 @@ const mapDispatch = (dispatch) => {
   }
 };
 
-export default withRouter(connect(mapState, mapDispatch)(Homepage))
+export default withRouter(connect(mapState, mapDispatch)(Profile))
