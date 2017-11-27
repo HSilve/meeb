@@ -44,6 +44,37 @@ class Profile extends Component {
       <div className="row">
         <h2>Welcome, {this.props.user.name}</h2>
 
+        <div className="row">
+          <div className="col s12"></div>
+          <div className="grid-example col s10">
+            <h5 className="grey-text text-darken-3">Today's Remaining Brainstorms</h5>
+            <div className="collection">
+              {
+                this.props.allRooms.filter(room => room.date == newdate && room.startTime > newtime)
+                  .map(result => {
+                    const user = this.props.user
+                    return (
+                      <div key={result.id} className="collection-item">
+                        <NavLink className="blue-text text-darken-4" to={`/whiteboards/${result.id}`}>{result.name}</NavLink>
+                        {user.name == result.host ?
+                          <span>
+                            <span className="badge" >
+                              <a className="waves-effect waves-light"><i onClick={event => this.props.deleteARoom(result.id)}
+                                className="material-icons icon-grey">delete</i>
+                              </a>
+                            </span>
+                            <span className="new badge" data-badge-caption="Hosted"></span>
+
+                          </span>
+                          : ''}
+                      </div>
+                    )
+                  })
+              }
+            </div>
+          </div>
+        </div>
+
         <div className="grid-example col s12">
           <div className="grid-example col s4">
             <h5 className="grey-text text-darken-3">Past Brainstorms</h5>
@@ -85,8 +116,7 @@ class Profile extends Component {
             <ul className="collection">
               {
                 this.props.allRooms.filter(room => {
-                  return room.date > newdate ||
-                    (room.date == newdate && room.startTime >= newtime)
+                  return room.date > newdate
                 })
                   .map(result => {
                     const user = this.props.user
@@ -94,8 +124,8 @@ class Profile extends Component {
                       <div key={result.id} className="collection-item dataRow">
 
                         <div className="blue-text text-darken-4" to={`/whiteboards/${result.id}`}>{result.name}</div>
-                        <div style={{float: 'right'}}>
-                        {result.date}
+                        <div style={{ float: 'right' }}>
+                          {result.date}
                         </div>
                         <hr />
                         <label> Time: </label>
@@ -109,7 +139,7 @@ class Profile extends Component {
                             <span className="new badge" data-badge-caption="Hosted"></span>
 
                           </span>
-                          }
+                        }
 
                       </div>
                     )
