@@ -143,6 +143,8 @@ class Whiteboard extends Component {
       data = this.props.notes
     }
     return (
+      <div>
+
       <div id="whiteboard">
        <svg id="basket" width="300" height="250">
       <g>
@@ -236,6 +238,7 @@ class Whiteboard extends Component {
              : null
           }
         </div>
+      </div>
       </div>
     );
   }
