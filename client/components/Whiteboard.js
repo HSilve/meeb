@@ -94,6 +94,7 @@ class Whiteboard extends Component {
     evt.preventDefault();
     this.props.deleteNote(evt.target.value, this.props.boardId);
   }
+
   handleVote(evt) {
     evt.preventDefault();
     this.props.castVote(evt.target.value)
@@ -104,7 +105,7 @@ class Whiteboard extends Component {
     let content = {...this.state.content}
     content[this.state.selectedNote] = evt.target.value
     this.setState({ content })
-    this.changed(this.state.selectedNote, { text: evt.target.value })
+    if (evt.target.value !== '') this.changed(this.state.selectedNote, { text: evt.target.value })
     // this.setState({ content: '' })
   }
 
@@ -196,7 +197,7 @@ class Whiteboard extends Component {
                   }
                     { note.text &&
                       <ContentEditable
-                        onClick={() => this.setState({ selectedNote: note.id })}
+                        onClick={() => {this.setState({ selectedNote: note.id, pos: {x: null, y: null} }); console.log(this.state.selectedNote)}}
                         className="card-content"
                         html={this.state.content[note.id] || note.text}
                         disabled={userId !== note.userId && userId !== hostId}

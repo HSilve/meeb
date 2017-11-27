@@ -39,4 +39,5 @@ Attendees.afterBulkCreate(group => {
           })
     })
   })
+
   module.exports = Attendees

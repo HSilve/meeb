@@ -75,7 +75,7 @@ export class NewSessionForm extends Component {
   render() {
     return (
       <div className="row">
-        <form className="col s6" id="formBox" onSubmit={this.handleSubmit}>
+        <form className="col s9" id="formBox" onSubmit={this.handleSubmit}>
           Room Name:
          <input name="roomName" type="text" onChange={this.changeName} placeholder="Enter a name" />
           Date:
@@ -89,11 +89,11 @@ export class NewSessionForm extends Component {
               <tbody>
                 <tr>
                   <th><label>Text:</label></th>
-                  <td><input type="text" name="noteText" /></td>
+                  <td className="col s9 " ><input type="text" name="noteText" /></td>
                 </tr>
                 <tr>
                   <th><label>Image</label></th>
-                  <td><input name="file" type="file" onChange={this.handleFileUpload} /></td>
+                  <td className="col s6" ><input name="file" type="file" onChange={this.handleFileUpload} /></td>
                 </tr>
                 <tr>
                   <th><label>Link:</label></th>
@@ -102,7 +102,7 @@ export class NewSessionForm extends Component {
               </tbody>
             </table>
           </div>
-          <div className="row .browser-default">
+          <div className="row browser-default">
             Invite Collaborators:
             <Typeahead
               onChange={(selected) => {
