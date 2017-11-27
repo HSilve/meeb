@@ -30,7 +30,7 @@ class Whiteboard extends Component {
     this.handleColorChange = this.handleColorChange.bind(this)
     this.clickConnection = this.clickConnection.bind(this)
     this.handleVote = this.handleVote.bind(this)
-    this.showBranches = this.showBranches.bind(this)
+    // this.showBranches = this.showBranches.bind(this)
   }
 
 
@@ -200,10 +200,7 @@ class Whiteboard extends Component {
       </svg>
       <svg id="svg" width={document.body.getBoundingClientRect().width} height={document.body.getBoundingClientRect().height}>
       </svg>
-      <button
-        onClick={this.showBranches}
-        >Show Branches
-      </button>
+
       {
         data && data.map((note) => {
           {
@@ -295,8 +292,11 @@ class Whiteboard extends Component {
                 : null
             }
           </div>
+          {/* <button
+            onClick={this.showBranches}
+            >Show Branches
+          </button> */}
         </div>
-      </div>
       </div>
     );
   }
