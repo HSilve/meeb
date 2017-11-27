@@ -14,7 +14,7 @@ class Whiteboard extends Component {
     this.state = {
       dragging: false,
       rel: null,
-      pos: {x: null, y: null},
+      pos: { x: null, y: null },
       selectedNote: 0,
       show: false,
       connectionArray: [],
@@ -77,10 +77,10 @@ class Whiteboard extends Component {
   //once mouse is released, the new position of note is updated in db
   //and dragging is set to false
   onMouseUp(evt) {
-    if (this.state.pos.x !== null && this.state.pos.y !== null) this.props.editNote(this.state.selectedNote, {position: [this.state.pos.x, this.state.pos.y]})
+    if (this.state.pos.x !== null && this.state.pos.y !== null) this.props.editNote(this.state.selectedNote, { position: [this.state.pos.x, this.state.pos.y] })
     evt.stopPropagation()
     evt.preventDefault()
-    this.setState({dragging: false})
+    this.setState({ dragging: false })
   }
 
 
@@ -94,7 +94,9 @@ class Whiteboard extends Component {
         y: evt.pageY - this.state.rel.y
       }
     })
-    this.props.editNote(this.state.selectedNote, {position: [this.state.pos.x, this.state.pos.y]})
+
+    this.props.editNote(this.state.selectedNote, { position: [this.state.pos.x, this.state.pos.y] })
+
     evt.stopPropagation()
     evt.preventDefault()
   }
@@ -112,7 +114,7 @@ class Whiteboard extends Component {
 
   handleChange(evt) {
     evt.preventDefault()
-    let content = {...this.state.content}
+    let content = { ...this.state.content }
     content[this.state.selectedNote] = evt.target.value
     this.setState({ content })
     if (evt.target.value !== '') this.changed(this.state.selectedNote, { text: evt.target.value })
@@ -154,24 +156,24 @@ class Whiteboard extends Component {
     if (this.state.connectionArray.length) {
       this.state.connectionArray.forEach(note => {
         document.getElementById(`card${note}`).style.background = color.hex
-        this.props.editNote(note, {color: color.hex})
+        this.props.editNote(note, { color: color.hex })
         let selectedCard = document.getElementById(`card${note}`)
         selectedCard.style.boxShadow = '0 4px 2px -2px gray'
       })
     }
-    this.setState({connectionArray: []})
+    this.setState({ connectionArray: [] })
   }
 
   clickConnection = (evt, note) => {
     if (this.state.connectionArray.indexOf(note.id) === -1 && note.id !== 0) {
-      this.setState({connectionArray: [...this.state.connectionArray, note.id]})
+      this.setState({ connectionArray: [...this.state.connectionArray, note.id] })
       let selectedCard = document.getElementById(`card${note.id}`)
       selectedCard.style.boxShadow = '0 0 20px yellow'
     } else if (note.id !== 0) {
       let array = this.state.connectionArray
       let index = array.indexOf(note.id)
       array.splice(index, 1)
-      this.setState({ connectionArray: array})
+      this.setState({ connectionArray: array })
       let selectedCard = document.getElementById(`card${note.id}`)
       selectedCard.style.boxShadow = '0 4px 2px -2px gray'
     }
@@ -185,6 +187,7 @@ class Whiteboard extends Component {
     }
     return (
       <div>
+
 
       <div id="whiteboard">
        <svg id="basket" width="300" height="250">
@@ -231,66 +234,67 @@ class Whiteboard extends Component {
                         onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt)}}
                         style={{borderRadius: '25px'}}
                     > Drag
+
                     </button>
-                    <button value={note.id} onClick={ (evt) => {this.clickConnection(evt, note)}}>edit</button>
-                    {this.props.vote &&
-                    <div style={{float: 'right'}} >
-                            <button value={note.id} onClick={this.handleVote}>⚡️</button>
-                            {
-                              note.votes > 0 && <a>{note.votes}</a>
-                            }
-                          </div>
-                    }
-                  </span>
-                  }
-                    <button
-                      id={`connect-${note.id}`}
-                      ref={`connect-${note.id}`}
-                      style={{borderRadius: '25px', width: '25px', height: '25px', backgroundColor: 'pink'}}
-                      onClick={evt => { evt.preventDefault(); this.handleConnect(evt, note.id)}}
-                    />
+
+                          <button value={note.id} onClick={(evt) => { this.clickConnection(evt, note) }}>edit</button>
+                          {this.props.vote &&
+                            <div style={{ float: 'right' }} >
+                              <button value={note.id} onClick={this.handleVote}>⚡️</button>
+                              {
+                                note.votes > 0 && <a>{note.votes}</a>
+                              }
+                            </div>
+                          }
+                          <button
+                            id={`connect-${note.id}`}
+                            ref={`connect-${note.id}`}
+                            style={{borderRadius: '25px', width: '25px', height: '25px', backgroundColor: 'pink'}}
+                            onClick={evt => { evt.preventDefault(); this.handleConnect(evt, note.id)}}
+                          />
+                        </span>
+                      }
+                      {note.text &&
+                        <ContentEditable
+                          onClick={() => { this.setState({ selectedNote: note.id, pos: { x: null, y: null } }); console.log(this.state.selectedNote) }}
+                          className="card-content"
+                          html={this.state.content[note.id] || note.text}
+                          disabled={userId !== note.userId && userId !== hostId}
+                          onChange={this.handleChange}
+                          contentEditable="plaintext-only"
+                        />
+                      }
+
+                      {note.image &&
+                        <div className="card-image">
+                          <img onClick={this.clickImage} src={note.image} />
+                        </div>
+                      }
 
 
-                    { note.text &&
-                      <ContentEditable
-                        onClick={() => {this.setState({ selectedNote: note.id, pos: {x: null, y: null} }); console.log(this.state.selectedNote)}}
-                        className="card-content"
-                        html={this.state.content[note.id] || note.text}
-                        disabled={userId !== note.userId && userId !== hostId}
-                        onChange={this.handleChange}
-                        contentEditable="plaintext-only"
-                      />
-                    }
+                      {note.link &&
+                        <div className="card-action">
+                          <a type="text/css" href={note.link}>Go Here </a>
+                        </div>
+                      }
 
-                    {note.image &&
-                      <div className="card-image">
-                        <img onClick={this.clickImage} src={note.image} />
-                      </div>
-                    }
+                    </div>
 
+                  )
+              }
 
-                    {note.link &&
-                      <div className="card-action">
-                        <a type="text/css" href={note.link}>Go Here </a>
-                      </div>
-                    }
-
-                  </div>
-
-                )
-            }
-
-          })
-        }
-        <div className="colorPalette">
-          <button onClick={() => this.setState({ show: !this.state.show })}>
-            <img src="/icons8-fill-color-30.png" align="center" alt="Branch" />
-          </button>
-          {
-            this.state.show ?
-              <TwitterPicker onChange={this.handleColorChange} />
-             : null
+            })
           }
+          <div className="colorPalette">
+            <button onClick={() => this.setState({ show: !this.state.show })}>
+              <img src="/icons8-fill-color-30.png" align="center" alt="Branch" />
+            </button>
+            {
+              this.state.show ?
+                <TwitterPicker onChange={this.handleColorChange} />
+                : null
+            }
+          </div>
         </div>
       </div>
       </div>
