@@ -1,4 +1,3 @@
-const Message = require('../db/models/message')
 
 //
 // let sockets = new Map()
@@ -18,7 +17,18 @@ module.exports = (io) => {
     // sockets.set(socket.id, socket)
 
     console.log(`A socket connection to the server has been made: ${socket.id}`)
-     //Entering A room
+      socket.on('new-room', (whiteboard) => {
+        console.log('a new room has been created.')
+        socket.broadcast.emit('new-room', whiteboard)
+        console.log('broadcast done')
+
+      })
+      socket.on('delete-room', (whiteboardId) => {
+        console.log('a room has been deleted.')
+        socket.broadcast.emit('delete-room', whiteboardId)
+        console.log('broadcast done')
+
+      })
       socket.on('enter-room', (user, whiteboardId) => {
         console.log(user.name, 'joining room', whiteboardId);
         socket.join(whiteboardId)
@@ -37,7 +47,7 @@ module.exports = (io) => {
       })
 
     socket.on('new-message', (message) => {
-      console.log('room', message.whiteboardId,'has a new-message', message)
+      console.log('room', message.whiteboardId, 'has a new-message', message)
       socket.broadcast.to(message.whiteboardId).emit('new-message', message);
       // broadcast(socket, 'new-message', message)
       console.log('broadcast done')

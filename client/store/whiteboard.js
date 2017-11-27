@@ -18,8 +18,8 @@ const DELETE_ROOM = 'DELETE_ROOM'
  * ACTION CREATORS
  */
 const findAllRooms = rooms => ({ type: FIND_ALL_ROOMS, rooms })
-const createRoom = room => ({ type: CREATE_ROOM, room })
-const deleteRoom = id => ({ type: DELETE_ROOM, id })
+export const createRoom = room => ({ type: CREATE_ROOM, room })
+export const deleteRoom = id => ({ type: DELETE_ROOM, id })
 
 // THUNK CREATORS
 
@@ -58,16 +58,21 @@ export const newRoom = (roomName, host, attendeeId, date, time, note) => dispatc
       note.userId = host.id
       note.host = host.name;
       note.position = [1320, 130];
-      axios.post('/api/notes', { note })
+      return axios.post('/api/notes', { note })
       // history.push(`/profile/${res.data.id}`);
-
+    })
+    .then(newNote => {
+      socket.emit('new-note', newNote.data)
     })
     .catch(err => console.error('Could not create room!', err));
 };
 
 export const removeRoom = (id) => dispatch => {
   axios.delete(`/api/whiteboards/${id}`)
-    .then(dispatch(deleteRoom(id)))
+    .then(_ => {
+      dispatch(deleteRoom(id))
+      socket.emit('delete-room', id)
+    })
     .catch(err => console.error(`Could not remove ${id}!`, err));
 }
 
