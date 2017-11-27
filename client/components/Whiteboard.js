@@ -6,6 +6,7 @@ import { withRouter } from 'react-router'
 import { TwitterPicker } from 'react-color'
 import ContentEditable from 'react-contenteditable'
 import debounce from 'lodash/debounce'
+import * as d3 from 'd3'
 
 class Whiteboard extends Component {
   constructor(props) {
@@ -18,6 +19,7 @@ class Whiteboard extends Component {
       show: false,
       connectionArray: [],
       content: {},
+      branches: []
     }
     this.onMouseDown = this.onMouseDown.bind(this)
     this.onMouseUp = this.onMouseUp.bind(this)
@@ -108,6 +110,40 @@ class Whiteboard extends Component {
     // this.setState({ content: '' })
   }
 
+  handleConnect(evt, noteId) {
+    let newSelectedNote = {}
+    newSelectedNote[noteId] = evt.target.getBoundingClientRect()
+    this.setState({ branches: [...this.state.branches, evt.target.getBoundingClientRect()] })
+
+
+    if (this.state.branches.length >= 2) {
+      console.log(this.state.branches)
+      let firstConnect = this.state.branches[0]
+      let secondConnect = this.state.branches[1]
+      let bodyRect = document.body.getBoundingClientRect()
+      console.log(bodyRect)
+      console.log(firstConnect)
+      console.log(secondConnect)
+      d3.select('#svg').append('line')
+        .attr("x1", firstConnect.x)
+        .attr("y1", firstConnect.y)
+        .attr("x2", secondConnect.x)
+        .attr("y2", secondConnect.y)
+        .attr("stroke-width", 2)
+        .attr("stroke", "black")
+      // var newLine = document.createElementNS('http://www.w3.org/2000/svg','line');
+      //   newLine.setAttribute('id','line2');
+      //   newLine.setAttribute('x1', firstConnect.x / 2);
+      //   newLine.setAttribute('y1', firstConnect.y);
+      //   newLine.setAttribute('x2', secondConnect.x / 2);
+      //   newLine.setAttribute('y2', secondConnect.y);
+      //   newLine.setAttribute("stroke", "black")
+      //   document.getElementById("svg").append(newLine);
+      let newArr = this.state.branches.slice(2)
+      this.setState({ branches: newArr })
+    }
+  }
+
   handleColorChange = (color) => {
     if (this.state.connectionArray.length) {
       this.state.connectionArray.forEach(note => {
@@ -151,6 +187,8 @@ class Whiteboard extends Component {
         <text x="4" y="50" fontFamily="Verdana" fontSize="35" fill="blue">Idea Basket</text>
       </g>
       </svg>
+      <svg id="svg" width={document.body.getBoundingClientRect().width} height={document.body.getBoundingClientRect().height}>
+      </svg>
       {
         data && data.map((note) => {
           {
@@ -165,7 +203,6 @@ class Whiteboard extends Component {
                     top: this.state.selectedNote === note.id && this.state.pos.y || note.position[1],
                     cursor: 'pointer' }}
                 >
-
 
                     {/* style = {{position: 'absolute', left: this.state.selectedNote === note.id && this.state.pos.x || note.position[0], top: this.state.selectedNote === note.id && this.state.pos.y || note.position[1], cursor: 'pointer' }}
                     onMouseMove={this.onMouseMove}
@@ -194,6 +231,11 @@ class Whiteboard extends Component {
                     }
                   </span>
                   }
+                    <button
+                      style={{borderRadius: '25px', width: '25px', height: '25px', backgroundColor: 'pink'}}
+                      onClick={evt => { evt.preventDefault(); this.handleConnect(evt, note.id)}}
+                    />
+
                     { note.text &&
                       <ContentEditable
                         onClick={() => this.setState({ selectedNote: note.id })}
