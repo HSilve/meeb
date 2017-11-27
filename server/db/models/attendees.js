@@ -29,8 +29,8 @@ Attendees.afterBulkCreate(group => {
               sendmail({
                 from: 'IdeaStorm@stormail.com',
                 to: userData.dataValues.email,
-                subject: 'An Invite',
-                html: "you've been invited to collaboarate on a new board.",
+                subject: 'An invite to brainstorm',
+                html: host + ' has invited you to collaborate on ' + boardName + ' on: ' + boardDate + ' at: ' + boardTime + ".",
               }, function(err, reply) {
                 console.log(err && err.stack);
                 console.dir(reply);
