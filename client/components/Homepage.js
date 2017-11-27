@@ -93,7 +93,7 @@ class Homepage extends Component {
                     return (
                       <div key={result.id} className="collection-item dataRow">
 
-                        <NavLink className="blue-text text-darken-4" to={`/whiteboards/${result.id}`}>{result.name}</NavLink>
+                        <div className="blue-text text-darken-4" to={`/whiteboards/${result.id}`}>{result.name}</div>
                         <div style={{float: 'right'}}>
                         {result.date}
                         </div>
