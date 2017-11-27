@@ -131,14 +131,6 @@ class Whiteboard extends Component {
         .attr("y2", secondConnect.y)
         .attr("stroke-width", 2)
         .attr("stroke", "black")
-      // var newLine = document.createElementNS('http://www.w3.org/2000/svg','line');
-      //   newLine.setAttribute('id','line2');
-      //   newLine.setAttribute('x1', firstConnect.x / 2);
-      //   newLine.setAttribute('y1', firstConnect.y);
-      //   newLine.setAttribute('x2', secondConnect.x / 2);
-      //   newLine.setAttribute('y2', secondConnect.y);
-      //   newLine.setAttribute("stroke", "black")
-      //   document.getElementById("svg").append(newLine);
       let newArr = this.state.branches.slice(2)
       this.setState({ branches: newArr })
     }
