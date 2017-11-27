@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { Whiteboard, User, Note } = require('../db/models')
+const { Whiteboard, User, Note, Attendees } = require('../db/models')
 module.exports = router
 
 router.get('/', (req, res, next) => {
@@ -79,11 +79,21 @@ router.post('/', (req, res, next) => {
 
 router.delete('/:whiteboardId', (req, res, next) => {
   const id = req.params.whiteboardId;
-  Note.destroy({
-    where: {whiteboardId: id}
+  Attendees.findAll({where: {whiteboardId: id}})
+  // .then(group => {
+  //   group.forEach(pair => {
+  //     console.log("this is just 1 pair", pair.dataValues)
+  //     let person = User.findById(pair.dataValues.userId);
+  //     person.sendDeleteEmail("Me", "Myboard", '2017-11-27', '04:30');
+  //   })
+  //   // board.dataValues
+  // })
+  .then(_ => {
+    Note.destroy({
+      where: {whiteboardId: id}
+    })
   })
   .then(_ => {
-    console.log("got here bro")
       return Whiteboard.destroy({
           where: {id}
         })
