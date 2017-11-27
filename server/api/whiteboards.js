@@ -1,5 +1,7 @@
 const router = require('express').Router()
 const { Whiteboard, User, Note, Attendees } = require('../db/models')
+const sendmail = require('sendmail')();
+
 module.exports = router
 
 router.get('/', (req, res, next) => {
@@ -79,15 +81,23 @@ router.post('/', (req, res, next) => {
 
 router.delete('/:whiteboardId', (req, res, next) => {
   const id = req.params.whiteboardId;
-  Attendees.findAll({where: {whiteboardId: id}})
-  // .then(group => {
-  //   group.forEach(pair => {
-  //     console.log("this is just 1 pair", pair.dataValues)
-  //     let person = User.findById(pair.dataValues.userId);
-  //     person.sendDeleteEmail("Me", "Myboard", '2017-11-27', '04:30');
-  //   })
-  //   // board.dataValues
-  // })
+  Whiteboard.findById(id,
+    {
+    include: [{all: true}]
+  })
+  .then(group => {
+    group.users.forEach(data => {
+      sendmail({
+        from: 'IdeaStorm@stormail.com',
+        to: data.dataValues.email,
+        subject: 'A brainStorm has been canceled',
+        html: group.dataValues.host + ' no longer requires your collaboration on ' + group.dataValues.name + ' which was previously scheduled for: ' + group.dataValues.date + ' at: ' + group.dataValues.startTime + ".",
+      }, function(err, reply) {
+        console.log(err && err.stack);
+        console.dir(reply);
+    });
+    })
+  })
   .then(_ => {
     Note.destroy({
       where: {whiteboardId: id}
