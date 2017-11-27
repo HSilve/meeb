@@ -2,13 +2,7 @@ import React, { Component } from 'react'
 import { withRouter } from 'react-router'
 import { connect } from 'react-redux'
 
-class Swimlane extends Component{
-  constructor(props){
-    super(props)
-    this.state = {
-      lane:[],
-    }
-  }
+class VerticalSwimlane extends Component{
   render(){
     return(
       <div>
@@ -37,4 +31,4 @@ class Swimlane extends Component{
 const mapState = null
 const mapDispatch = null
 
-export default withRouter(connect(mapState, mapDispatch)(Swimlane))
+export default withRouter(connect(mapState, mapDispatch)(VerticalSwimlane))
