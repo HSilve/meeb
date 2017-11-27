@@ -1,5 +1,5 @@
 import io from 'socket.io-client'
-import store, { postMessage, insertNote, updateNote, removeNote, createRoom, updateRoom, enterCollaborator, destroyRoom} from './store';
+import store, { postMessage, insertNote, updateNote, removeNote, createRoom, updateRoom, enterCollaborator, destroyRoom, deleteRoom} from './store';
 
 const socket = io(window.location.origin)
 
@@ -10,6 +10,18 @@ socket.on('connect', () => {
 socket.on('disconnect', () =>
   console.log('server did disconnect.')
 )
+socket.on('new-room', room => {
+  console.log('a new room has been created.', room)
+  store.dispatch(createRoom(room))
+  console.log('New room has been posted')
+
+})
+socket.on('delete-room', roomId => {
+  console.log(roomId, 'has been deleted')
+  store.dispatch(deleteRoom(roomId))
+  console.log('room has been deleted')
+
+})
 
 socket.on('new-message', message => {
   console.log('front end new message')
@@ -32,16 +44,6 @@ socket.on('delete-note', id =>  {
   console.log('Note Removed');
 })
 
-socket.on('new-room', room => {
-  console.log('A new room has been made', room);
-  store.dispatch(createRoom(room));
-  console.log('New room has been posted');
-})
-// socket.on('edit-room', (id, data) => {
-//   console.log('A room has been edited', data)
-//   store.dispatch(updateRoom(id, data));
-//   console.log('Edits have been reflected');
-// })
 socket.on('enter-room', (user) => {
   console.log(user.name, 'joining room');
   store.dispatch(enterCollaborator(user));

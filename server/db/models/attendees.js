@@ -9,8 +9,14 @@ const Attendees = db.define('attendees', {
   attended: {
     type: Sequelize.BOOLEAN,
     defaultValue: false
+  },
+  id: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
   }
 })
+
 
 Attendees.afterBulkCreate(group => {
   let host, boardName, boardDate, boardTime;
