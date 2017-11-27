@@ -86,6 +86,7 @@ class Whiteboard extends Component {
         y: evt.pageY - this.state.rel.y
       }
     })
+    this.props.editNote(this.state.selectedNote, {position: [this.state.pos.x, this.state.pos.y]})
     evt.stopPropagation()
     evt.preventDefault()
   }
