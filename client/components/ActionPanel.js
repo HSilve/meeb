@@ -197,9 +197,11 @@ const mapDispatch = dispatch => {
       evt.preventDefault()
       whiteboardId = whiteboardId.toString()
       userId = userId.toString()
-      const text = evt.target.text && evt.target.text.value
-      const link = evt.target.link && evt.target.link.value
-      const position = [1315 + (noteIdx * 5), 125 + (noteIdx * 5)]
+      const text = evt.target.text && evt.target.text.value;
+      const link = evt.target.link && evt.target.link.value;
+      let data = document.getElementById('basket').getBoundingClientRect();
+      console.log("the data", data)
+      const position = [data.x + (noteIdx * 5), data.y + (noteIdx * 5)];
 
       if (imageName || text || link) {
         //ONLY WORKS IF USER IS LOGGED IN FIRST
@@ -215,11 +217,9 @@ const mapDispatch = dispatch => {
 
     },
     letsVote(whiteboardId, voting) {
-      console.log("i'm try8ijng to open the vboting")
       dispatch(openVote(whiteboardId, !voting))
     },
     closeVote(whiteboardId, voting) {
-      console.log("i'm try8ijng to close the vboting")
       dispatch(openVote(whiteboardId, !voting))
       document.getElementById('theVoteResult').style.display = 'block';
     },

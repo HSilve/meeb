@@ -154,18 +154,21 @@ class Whiteboard extends Component {
       data = this.props.notes
     }
     return (
-      <div>
 
-
-        <div id="whiteboard">
-          <svg id="basket" width="300" height="250">
-            <g>
-              <rect
-                width="300" height="250"
-                style={{ fill: 'white', stroke: 'black', strokeWidth: 5, opacity: 0.5 }} />
-              <text x="4" y="50" fontFamily="Verdana" fontSize="35" fill="blue">Idea Basket</text>
-            </g>
-          </svg>
+      <div id="whiteboard">
+       {/* <svg id="basket" width="300" height="250">
+      <g>
+        <rect
+           width="300" height="250"
+        style = {{fill: 'white', stroke: 'black', strokeWidth: 5, opacity: 0.5}} />
+        <text x="4" y="50" fontFamily="Verdana" fontSize="35" fill="blue">Idea Basket</text>
+      </g>
+      </svg> */}
+      <div id="basket" style ={{float: 'right'}}>
+        <b>{this.props.name}</b>
+      </div>
+      {
+        data && data.map((note) => {
           {
             data && data.map((note) => {
               {
@@ -258,7 +261,8 @@ const mapStateToProps = (state) => ({
   hostId: state.singleWhiteboard.userId,
   userId: state.user.id,
   open: !state.singleWhiteboard.closed,
-  vote: state.singleWhiteboard.voteable
+  vote: state.singleWhiteboard.voteable,
+  name: state.singleWhiteboard.name
 })
 
 const mapDispatchToProps = { editNote, fetchNotes, deleteNote, castVote, fetchRoom, updateNoteArray }
