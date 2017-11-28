@@ -12,6 +12,7 @@ class Whiteboard extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      loaded: false,
       dragging: false,
       rel: null,
       pos: { x: null, y: null },
@@ -171,6 +172,7 @@ class Whiteboard extends Component {
   }
 
   showBranches() {
+    this.setState({ loaded: true })
     this.props.branches && this.props.branches.map(branch => {
       let firstPoints = d3.select(`#card${branch.noteId}`).node().getBoundingClientRect()
       let secondPoints = d3.select(`#card${branch.endNoteId}`).node().getBoundingClientRect()
@@ -221,6 +223,12 @@ class Whiteboard extends Component {
     if (this.props.notes) {
       data = this.props.notes
     }
+
+    if (this.props.branches && !this.state.loaded) {
+      console.log(this.props.branches)
+      this.showBranches()
+    }
+
     return (
       <div>
 
@@ -231,12 +239,12 @@ class Whiteboard extends Component {
         <rect
            width="300" height="250"
         style = {{fill: 'white', stroke: 'black', strokeWidth: 5, opacity: 0.5}} />
-        <text x="4" y="50" fontFamily="Verdana" fontSize="35" fill="blue">Idea Basket</text>
+        <text x="4" y="50" fontFamily="Arial" fontSize="35" fill="blue">Your Ideas</text>
       </g>
       </svg>
       <svg
         id="svg"
-        width={document.body.getBoundingClientRect().width} height="1000"
+        width={document.body.getBoundingClientRect().width} height={document.body.getBoundingClientRect().width}
         // style={{ position: 'fixed'}}
         ><g id="svg-g"></g>
       </svg>
@@ -284,7 +292,7 @@ class Whiteboard extends Component {
                           <button
                             id={`connect-${note.id}`}
                             ref={`connect-${note.id}`}
-                            style={{borderRadius: '25px', width: '25px', height: '25px', backgroundColor: 'pink'}}
+                            style={{borderRadius: '25px', width: '25px', height: '25px', backgroundColor: 'black'}}
                             onClick={evt => { evt.preventDefault(); this.handleConnect(evt, note.id)}}
                           />
                           {
@@ -333,10 +341,10 @@ class Whiteboard extends Component {
                 : null
             }
           </div>
-          <button
+          {/* <button
             onClick={this.showBranches}
             >Show Branches
-          </button>
+          </button> */}
         </div>
       </div>
     );
