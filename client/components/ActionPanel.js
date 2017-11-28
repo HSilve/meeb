@@ -44,18 +44,18 @@ class ActionPanel extends React.Component {
         type: imageFile.type
       })
     }
-    this.onClickVertical = this.onClickVertical.bind(this)
+    // this.onClickVertical = this.onClickVertical.bind(this)
 
   }
 
-  onClickVertical(evt) {
-    evt.preventDefault()
-    if (this.props.getRoom.swimlaneArray.length) {
-      this.props.editState({ swimlaneArray: [] })
-    }
-    this.props.editState({ verticalSwimlane: !this.state.verticalSwimlane })
-    this.props.lanes(3)
-  }
+  // onClickVertical(evt) {
+  //   evt.preventDefault()
+  //   if (this.props.getRoom.swimlaneArray.length) {
+  //     this.props.editState({ swimlaneArray: [] })
+  //   }
+  //   this.props.editState({ verticalSwimlane: !this.state.verticalSwimlane })
+  //   this.props.lanes(3)
+  // }
 
   render() {
     return (
@@ -91,7 +91,7 @@ class ActionPanel extends React.Component {
             <span>
               <ul>
                 <li>
-                  <a className=" btn-floating" id="myBtn" onClick={(evt) => this.onClickVertical(evt)}><i className="material-icons">
+                  <a className=" btn-floating" id="myBtn" onClick={this.props.toggle}><i className="material-icons">
                     view_column
                     </i></a>
                 </li>
@@ -163,9 +163,7 @@ const mapState = (state, ownProps) => {
     user: state.user,
     notes: state.notes,
     whiteboard: state.singleWhiteboard,
-    editRoom: ownProps.editState,
-    getRoom: ownProps.getState,
-    lanes: ownProps.multiLanes
+    toggle: ownProps.toggleIt
   }
 }
 
