@@ -150,8 +150,8 @@ class Whiteboard extends Component {
       <div>
 
 
-      <div id="whiteboard">
-       {/* <svg id="basket" width="300" height="250">
+        <div id="whiteboard">
+          {/* <svg id="basket" width="300" height="250">
       <g>
         <rect
            width="300" height="250"
@@ -159,32 +159,34 @@ class Whiteboard extends Component {
         <text x="4" y="50" fontFamily="Verdana" fontSize="35" fill="blue">Idea Basket</text>
       </g>
       </svg> */}
-      <div id="basket" style ={{float: 'right'}}>
-        <b>{this.props.name}</b>
-      </div>
-      {
-        data && data.map((note) => {
+          <div id="basket" style={{ float: 'right' }}>
+            <b>{this.props.name}</b>
+          </div>
           {
-            return note.position &&
-             (
-                  <div
-                    className="card"
-                    id={`card${note.id}`}
-                    key={note.id}
-                    style = {{position: 'absolute', background: note.color,
-                    left: this.state.selectedNote === note.id && this.state.pos.x || note.position[0],
-                    top: this.state.selectedNote === note.id && this.state.pos.y || note.position[1],
-                    cursor: 'pointer' }}
-                >
-                  {this.props.open &&
-                  <span>
-                    <button style={{float: 'left'}} value={note.id} onClick={this.handleDelete}>x</button>
-                    <button
-                        onMouseMove={this.onMouseMove}
-                        onMouseUp={this.onMouseUp}
-                        onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt)}}
-                        style={{borderRadius: '25px'}}
-                    > Drag
+            data && data.map((note) => {
+              {
+                return note.position &&
+                  (
+                    <div
+                      className="card"
+                      id={`card${note.id}`}
+                      key={note.id}
+                      style={{
+                        position: 'absolute', background: note.color,
+                        left: this.state.selectedNote === note.id && this.state.pos.x || note.position[0],
+                        top: this.state.selectedNote === note.id && this.state.pos.y || note.position[1],
+                        cursor: 'pointer'
+                      }}
+                    >
+                      {this.props.open &&
+                        <span>
+                          <button style={{ float: 'left' }} value={note.id} onClick={this.handleDelete}>x</button>
+                          <button
+                            onMouseMove={this.onMouseMove}
+                            onMouseUp={this.onMouseUp}
+                            onMouseDown={(evt) => { this.setState({ selectedNote: note.id }); this.onMouseDown(evt) }}
+                            style={{ borderRadius: '25px' }}
+                          > Drag
 
                     </button>
                           <button value={note.id} onClick={(evt) => { this.clickConnection(evt, note) }}>edit</button>
@@ -195,8 +197,8 @@ class Whiteboard extends Component {
                             </div>
                           }
                           {
-                                note.votes > 0 && <a style={{ float: 'right' }}>{note.votes}</a>
-                              }
+                            note.votes > 0 && <a style={{ float: 'right' }}>{note.votes}</a>
+                          }
                         </span>
                       }
                       {note.text &&
@@ -230,16 +232,6 @@ class Whiteboard extends Component {
 
             })
           }
-          <div className="colorPalette">
-            <button onClick={() => this.setState({ show: !this.state.show })}>
-              <img src="/icons8-fill-color-30.png" align="center" alt="Branch" />
-            </button>
-            {
-              this.state.show ?
-                <TwitterPicker onChange={this.handleColorChange} />
-                : null
-            }
-          </div>
         </div>
       </div>
     );
