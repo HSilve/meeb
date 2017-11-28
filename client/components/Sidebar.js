@@ -15,19 +15,10 @@ class Sidebar extends Component {
   render() {
     const { show } = this.state
     return (
-      <div className="sidebar">
-        <button onClick={() => this.setState({ show: !show })}>-</button>
+      <div className="sidebar white">
+        <div className="btn black" style={{borderCornerShape: 'circle'}} onClick={() => this.setState({ show: !show })}>^Messages^</div>
           {
-            show ?
-            <span>
-              {/* <h5 href="#">
-              <div>Attendees</div>
-              <i alt="Brand" className="glyphicon glyphicon-comment">
-              </i>
-              </h5>
-              <Attendees /> */}
-              <Chatbox />
-            </span> : null
+            show && <Chatbox />
           }
       </div>
     );
