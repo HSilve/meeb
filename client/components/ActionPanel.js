@@ -93,7 +93,12 @@ class ActionPanel extends React.Component {
                   }
                 </li>
               </ul>
-              <form onSubmit={(evt) => { evt.preventDefault(); this.props.handleSubmit(evt, this.state.file, this.state.name, this.state.type, this.props.user.id, this.props.match.params.id, this.props.notes.length) }} style={{ bottom: '90px', right: '100px', position: 'fixed' }}>
+              <form
+                    id="actionForm"
+                    onSubmit={(evt) => { evt.preventDefault();
+                        this.props.handleSubmit(evt, this.state.file, this.state.name, this.state.type, this.props.user.id, this.props.match.params.id, this.props.notes.length);
+                        this.setState({ expandToggle: false, textToggle: false, imageToggle: false, linkToggle: false }) }}
+                      style={{ bottom: '90px', right: '100px', position: 'fixed' }}>
                 {(this.state.textToggle) && <div><input name="text" type="text" /><button type="submit">Insert</button></div>}
                 {(this.state.linkToggle) && <div><input name="link" type="text" /><button type="submit">Insert</button></div>}
                 {this.state.imageToggle &&
@@ -200,8 +205,9 @@ const mapDispatch = dispatch => {
       const text = evt.target.text && evt.target.text.value;
       const link = evt.target.link && evt.target.link.value;
       let data = document.getElementById('basket').getBoundingClientRect();
-      console.log("the data", data)
       const position = [data.x + (noteIdx * 5), data.y + (noteIdx * 5)];
+
+      document.getElementById('actionForm').reset();
 
       if (imageName || text || link) {
         //ONLY WORKS IF USER IS LOGGED IN FIRST
