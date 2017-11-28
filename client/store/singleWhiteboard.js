@@ -37,8 +37,8 @@ export const closeRoom = (id, time) => dispatch => {
     })
     .catch(err => console.error(err));
 }
-export const openVote = (whiteboardId) => dispatch => {
-  axios.put(`/api/whiteboards/${whiteboardId}`, {voteable: true})
+export const openVote = (whiteboardId, newState) => dispatch => {
+  axios.put(`/api/whiteboards/${whiteboardId}`, {voteable: newState})
   .then(res => {
     dispatch(updateRoom(res.data[1]))
     socket.emit('edit-room', res.data[1])
