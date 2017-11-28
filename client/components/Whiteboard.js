@@ -1,9 +1,9 @@
 /* eslint-disable no-lone-blocks */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { editNote, fetchNotes, deleteNote, castVote, fetchRoom } from '../store'
+import { editNote, fetchNotes, deleteNote, castVote, fetchRoom, updateNoteArray } from '../store'
 import { withRouter } from 'react-router'
-import { TwitterPicker } from 'react-color'
+// import { TwitterPicker } from 'react-color'
 import ContentEditable from 'react-contenteditable'
 import debounce from 'lodash/debounce'
 
@@ -25,7 +25,7 @@ class Whiteboard extends Component {
     this.handleDelete = this.handleDelete.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.changed = debounce(this.props.editNote, 250)
-    this.handleColorChange = this.handleColorChange.bind(this)
+    // this.handleColorChange = this.handleColorChange.bind(this)
     this.clickConnection = this.clickConnection.bind(this)
     this.handleVote = this.handleVote.bind(this)
   }
@@ -113,31 +113,38 @@ class Whiteboard extends Component {
     // this.setState({ content: '' })
   }
 
-  handleColorChange = (color) => {
-    if (this.state.connectionArray.length) {
-      this.state.connectionArray.forEach(note => {
-        document.getElementById(`card${note}`).style.background = color.hex
-        this.props.editNote(note, { color: color.hex })
-        let selectedCard = document.getElementById(`card${note}`)
-        selectedCard.style.boxShadow = '0 4px 2px -2px gray'
-      })
-    }
-    this.setState({ connectionArray: [] })
-  }
+  // handleColorChange = (color) => {
+  //   if (this.state.connectionArray.length) {
+  //     this.state.connectionArray.forEach(note => {
+  //       document.getElementById(`card${note}`).style.background = color.hex
+  //       this.props.editNote(note, { color: color.hex })
+  //       let selectedCard = document.getElementById(`card${note}`)
+  //       selectedCard.style.boxShadow = '0 4px 2px -2px gray'
+  //     })
+  //   }
+  //   this.setState({ connectionArray: [] })
+  // }
 
   clickConnection = (evt, note) => {
-    if (this.state.connectionArray.indexOf(note.id) === -1 && note.id !== 0) {
-      this.setState({ connectionArray: [...this.state.connectionArray, note.id] })
+
+    const { connectionArray } = this.state;
+
+    if (connectionArray.indexOf(note.id) === -1) {
+      let tempArr = connectionArray;
+      tempArr.push(note.id);
+      this.setState({ connectionArray: tempArr })
       let selectedCard = document.getElementById(`card${note.id}`)
       selectedCard.style.boxShadow = '0 0 20px yellow'
-    } else if (note.id !== 0) {
-      let array = this.state.connectionArray
-      let index = array.indexOf(note.id)
-      array.splice(index, 1)
-      this.setState({ connectionArray: array })
+    } else if (connectionArray.indexOf(note.id) !== -1) {
+      connectionArray.splice(connectionArray.indexOf(note.id), 1)
+      //let index = array.indexOf(note.id)
+      //array.splice(index, 1)
+      this.setState({ connectionArray })
       let selectedCard = document.getElementById(`card${note.id}`)
       selectedCard.style.boxShadow = '0 4px 2px -2px gray'
     }
+    this.props.updateNoteArray(connectionArray);
+
   }
 
   render() {
@@ -147,8 +154,6 @@ class Whiteboard extends Component {
       data = this.props.notes
     }
     return (
-      <div>
-
 
       <div id="whiteboard">
        {/* <svg id="basket" width="300" height="250">
@@ -165,26 +170,30 @@ class Whiteboard extends Component {
       {
         data && data.map((note) => {
           {
-            return note.position &&
-             (
-                  <div
-                    className="card"
-                    id={`card${note.id}`}
-                    key={note.id}
-                    style = {{position: 'absolute', background: note.color,
-                    left: this.state.selectedNote === note.id && this.state.pos.x || note.position[0],
-                    top: this.state.selectedNote === note.id && this.state.pos.y || note.position[1],
-                    cursor: 'pointer' }}
-                >
-                  {this.props.open &&
-                  <span>
-                    <button style={{float: 'left'}} value={note.id} onClick={this.handleDelete}>x</button>
-                    <button
-                        onMouseMove={this.onMouseMove}
-                        onMouseUp={this.onMouseUp}
-                        onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt)}}
-                        style={{borderRadius: '25px'}}
-                    > Drag
+            data && data.map((note) => {
+              {
+                return note.position &&
+                  (
+                    <div
+                      className="card"
+                      id={`card${note.id}`}
+                      key={note.id}
+                      style={{
+                        position: 'absolute', background: note.color,
+                        left: this.state.selectedNote === note.id && this.state.pos.x || note.position[0],
+                        top: this.state.selectedNote === note.id && this.state.pos.y || note.position[1],
+                        cursor: 'pointer'
+                      }}
+                    >
+                      {this.props.open &&
+                        <span>
+                          <button style={{ float: 'left' }} value={note.id} onClick={this.handleDelete}>x</button>
+                          <button
+                            onMouseMove={this.onMouseMove}
+                            onMouseUp={this.onMouseUp}
+                            onMouseDown={(evt) => { this.setState({ selectedNote: note.id }); this.onMouseDown(evt) }}
+                            style={{ borderRadius: '25px' }}
+                          > Drag
 
                     </button>
                           <button value={note.id} onClick={(evt) => { this.clickConnection(evt, note) }}>edit</button>
@@ -195,8 +204,8 @@ class Whiteboard extends Component {
                             </div>
                           }
                           {
-                                note.votes > 0 && <a style={{ float: 'right' }}>{note.votes}</a>
-                              }
+                            note.votes > 0 && <a style={{ float: 'right' }}>{note.votes}</a>
+                          }
                         </span>
                       }
                       {note.text &&
@@ -230,7 +239,7 @@ class Whiteboard extends Component {
 
             })
           }
-          <div className="colorPalette">
+          {/* <div className="colorPalette">
             <button onClick={() => this.setState({ show: !this.state.show })}>
               <img src="/icons8-fill-color-30.png" align="center" alt="Branch" />
             </button>
@@ -239,7 +248,7 @@ class Whiteboard extends Component {
                 <TwitterPicker onChange={this.handleColorChange} />
                 : null
             }
-          </div>
+          </div> */}
         </div>
       </div>
     );
@@ -256,7 +265,7 @@ const mapStateToProps = (state) => ({
   name: state.singleWhiteboard.name
 })
 
-const mapDispatchToProps = { editNote, fetchNotes, deleteNote, castVote, fetchRoom }
+const mapDispatchToProps = { editNote, fetchNotes, deleteNote, castVote, fetchRoom, updateNoteArray }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Whiteboard));
 
