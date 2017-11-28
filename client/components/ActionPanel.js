@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { addNote, closeRoom, openVote } from '../store'
 import { withRouter } from 'react-router';
-import {VoteResults} from './index';
+import { VoteResults } from './index';
 
 class ActionPanel extends React.Component {
   constructor() {
@@ -44,11 +44,18 @@ class ActionPanel extends React.Component {
         type: imageFile.type
       })
     }
-
+    this.onClickVertical = this.onClickVertical.bind(this)
 
   }
 
-
+  onClickVertical(evt) {
+    evt.preventDefault()
+    if (this.props.getRoom.swimlaneArray.length) {
+      this.props.editState({ swimlaneArray: [] })
+    }
+    this.props.editState({ verticalSwimlane: !this.state.verticalSwimlane })
+    this.props.lanes(3)
+  }
 
   render() {
     return (
@@ -84,68 +91,81 @@ class ActionPanel extends React.Component {
             <span>
               <ul>
                 <li>
+                  <a className=" btn-floating" id="myBtn" onClick={(evt) => this.onClickVertical(evt)}><i className="material-icons">
+                    view_column
+                    </i></a>
+                </li>
+
+
+                {
+                  !this.props.whiteboard.voteable ?
+                    <li>
+                      <a className="btn-floating" id="myBtn" onClick={(evt) => { evt.preventDefault(); this.props.letsVote(this.props.whiteboard.id) }}><i className="material-icons">
+                        thumb_up</i>
+                      </a>
+                    </li>
+                    :
+                    <li>
+                      <a className="btn-floating" id="myBtn" onClick={(evt) => { evt.preventDefault(); this.props.closeVote(this.props.whiteboard.id, this.props.whiteboard.voteable) }}><i className="material-icons">
+                        thumb_down</i>
+                      </a>
+                    </li>
+                }
+                <li>
                   <a className="btn-floating" id="myBtn" onClick={() => { document.getElementById('myModal').style.display = 'block'; }}>
                     <i className="material-icons">
                       close</i>
                   </a>
                 </li>
-                {
-                  !this.props.whiteboard.voteable ?
-                <li>
-                  <a className="btn-floating" id="myBtn" onClick={(evt) => { evt.preventDefault(); this.props.letsVote(this.props.whiteboard.id, this.props.whiteboard.voteable) }}><i className="material-icons">
-                    thumb_up</i>
-                  </a>
-                </li>
-                :
-                <li>
-                <a className="btn-floating" id="myBtn" onClick={(evt) => { evt.preventDefault(); this.props.closeVote(this.props.whiteboard.id, this.props.whiteboard.voteable)}}><i className="material-icons">
-                  thumb_down</i>
-                </a>
-              </li>
-                }
+
               </ul>
             </span>
           </div>
         }
-         {/* <!-- The Modal To End Session--> */}
-         <div id="myModal" className="modal">
+        {/* <!-- The Modal To End Session--> */}
+        <div id="myModal" className="modal">
 
-              {/* <!-- Modal content --> */}
-              <div className="modal-content">
-                <span
-                onClick ={ () => {document.getElementById('myModal').style.display = 'none';
+          {/* <!-- Modal content --> */}
+          <div className="modal-content">
+            <span
+              onClick={() => {
+                document.getElementById('myModal').style.display = 'none';
               }}
-                className="close">&times;</span>
-                <h3>End Session </h3>
-                <p>Are you sure you want to end collaboration on {this.props.whiteboard.name}? Collaborators will no longer be able to send messages or edit the whiteboard.</p>
-                <button onClick={(evt) => {evt.preventDefault(); this.props.handleClose(this.props.whiteboard.id)}}> End Session </button>
-              </div>
-            </div>
-            {/* <!-- The Modal for Voting Results --> */}
-            <div id="theVoteResult" className="modal">
+              className="close">&times;</span>
+            <h3>End Session </h3>
+            <p>Are you sure you want to end collaboration on {this.props.whiteboard.name}? Collaborators will no longer be able to send messages or edit the whiteboard.</p>
+            <button onClick={(evt) => { evt.preventDefault(); this.props.handleClose(this.props.whiteboard.id) }}> End Session </button>
+          </div>
+        </div>
+        {/* <!-- The Modal for Voting Results --> */}
+        <div id="theVoteResult" className="modal">
 
-              {/* <!-- Modal content --> */}
-              <div className="modal-content">
-                <span
-                onClick ={ () => {document.getElementById('theVoteResult').style.display = 'none';
+          {/* <!-- Modal content --> */}
+          <div className="modal-content">
+            <span
+              onClick={() => {
+                document.getElementById('theVoteResult').style.display = 'none';
               }}
-                className="close">&times;</span>
-                <h3>Vote Results </h3>
-                <VoteResults />
-                <button onClick={(evt) => {evt.preventDefault(); this.props.handleClose(this.props.whiteboard.id)}}> End Session </button>
-              </div>
-            </div>
+              className="close">&times;</span>
+            <h3>Vote Results </h3>
+            <VoteResults />
+            <button onClick={(evt) => { evt.preventDefault(); this.props.handleClose(this.props.whiteboard.id) }}> End Session </button>
+          </div>
+        </div>
 
       </div>
     )
   }
 }
 
-const mapState = state => {
+const mapState = (state, ownProps) => {
   return {
     user: state.user,
     notes: state.notes,
-    whiteboard: state.singleWhiteboard
+    whiteboard: state.singleWhiteboard,
+    editRoom: ownProps.editState,
+    getRoom: ownProps.getState,
+    lanes: ownProps.multiLanes
   }
 }
 
