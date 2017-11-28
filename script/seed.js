@@ -24,15 +24,20 @@ async function seed () {
     User.create({email: 'Blanca@email.com', password: '456', name: 'Blanca Sanchez'}),
     User.create({email: 'Maria@email.com', password: '456', name: 'Maria Betances'}),
     User.create({email: 'Erica@email.com', password: '456', name: 'Erica Chai'}),
-    User.create({email: 'Evlis@email.com', password: '456', name: 'Evlis Henry'})
+    User.create({email: 'Evlis@email.com', password: '456', name: 'Evlis Henry'}),
+    User.create({email: 'Demo1@email.com', password: '456', name: 'User A Demo'}),
+    User.create({email: 'Demo2@email.com', password: '456', name: 'User B Demo'})
+
+
   ])
   await Promise.all([
     Whiteboard.create({name: 'Best Dog Treats', host: 'Cody', userId: 1, startTime: '04:30', date: '2017-10-27'}),
     Whiteboard.create({name: 'FullStack', host: 'Murphy', userId: 2, startTime: '04:30', date: '2017-11-25'}),
     Whiteboard.create({name: "Blanca's Room", host: 'Blanca Sanchez', userId: 3, startTime: '02:30', date: '2017-11-27'}),
     Whiteboard.create({name: "Maria's Room", host: 'Maria Betances', userId: 4, startTime: '03:30', date: '2017-11-27'}),
-    Whiteboard.create({name: 'Chai Tea', host: 'Erica Chai', userId: 5, startTime: '04:45', date: '2017-11-27'}),
-    Whiteboard.create({name: 'A Really Awsome Room ', host: 'Evlis Henry', userId: 6, startTime: '06:30', date: '2017-11-27'})
+    Whiteboard.create({name: 'Chai Tea', host: 'Erica Chai', userId: 6, startTime: '04:45', date: '2017-11-27'}),
+    Whiteboard.create({name: 'A Really Awsome Room ', host: 'Evlis Henry', userId: 5, startTime: '06:30', date: '2017-11-27'}),
+    Whiteboard.create({name: 'Family and Friends Demo Room ', host: 'User A Demo', userId: 7, startTime: '06:00', date: '2017-11-27'})
   ])
 
   await Promise.all([
@@ -41,13 +46,21 @@ async function seed () {
     Message.create({text: "I'm just sending this to join the chat ", userId: 6, whiteboardId: 1 }),
     Message.create({text: 'Do you know any good vegan places besides Chipotle?', userId: 5, whiteboardId: 1 }),
     Message.create({text: 'Just some random text to go here', userId: 3, whiteboardId: 1 }),
-    Message.create({text: 'Hey, do not forget about me', userId: 2, whiteboardId: 1 })
+    Message.create({text: "Welcome To GH's Demo Day", userId: 3, whiteboardId: 7 }),
+    Message.create({text: 'Enjoy IdeaStorm.', userId: 4, whiteboardId: 7 }),
+    Message.create({text: "Don't forget to leave feedback!", userId: 5, whiteboardId: 7 }),
+    Message.create({text: "We'd love to know what you think", userId: 6, whiteboardId: 7 })
+
   ])
   await Promise.all([
-    Note.create({text: 'The Best Idea In The World', highlighted: true, link: 'http://www.github.com', userId: 6, whiteboardId: 1}),
-    Note.create({text: 'Just about the worst Idea Ever', userId: 1, whiteboardId: 1 }),
-    Note.create({text: "I'm just a lone note", userId: 2, whiteboardId: 2 }),
-    Note.create({text: 'I wanna be a branch off the best idea', image: 'http://completecarnivore.com/wp-content/uploads/2016/07/short-rib-location.jpg', userId: 4, whiteboardId: 1 })
+    Note.create({text: 'The Best Idea In The World', highlighted: true, link: 'http://www.github.com', userId: 6, whiteboardId: 1, position: [620, 95]}),
+    Note.create({text: 'Just about the worst Idea Ever', userId: 1, whiteboardId: 1, position: [800, 95] }),
+    Note.create({text: "I'm just a lone note", userId: 2, whiteboardId: 2, position: [620, 95]}),
+    Note.create({text: 'I wanna be a branch off the best idea', image: 'http://completecarnivore.com/wp-content/uploads/2016/07/short-rib-location.jpg', userId: 4, whiteboardId: 1, position: [620, 95] }),
+    Note.create({text: 'IdeaStorm', highlighted: true, link: 'https://idea-storm.herokuapp.com/', userId: 6, whiteboardId: 7, position: [620, 95], color: '#fcb900'}),
+    Note.create({text: 'Whiskr', userId: 2, whiteboardId: 7, position: [680, 295], color: '#00d084'}),
+    Note.create({text: 'CodeNames', userId: 2, whiteboardId: 7, position: [120, 335], color: '#00d084'}),
+    Note.create({text: 'Triphub', userId: 2, whiteboardId: 7, position: [800, 500], color: '#00d084'})
   ])
 
   await Promise.all([
@@ -87,7 +100,14 @@ async function seed () {
     Attendees.create({userId: 2, whiteboardId: 6}),
     Attendees.create({userId: 3, whiteboardId: 6}),
     Attendees.create({userId: 5, whiteboardId: 6}),
-    Attendees.create({userId: 6, whiteboardId: 6})
+    Attendees.create({userId: 6, whiteboardId: 6}),
+
+    Attendees.create({userId: 3, whiteboardId: 7}),
+    Attendees.create({userId: 4, whiteboardId: 7}),
+    Attendees.create({userId: 5, whiteboardId: 7}),
+    Attendees.create({userId: 6, whiteboardId: 7}),
+    Attendees.create({userId: 1, whiteboardId: 7}),
+    Attendees.create({userId: 2, whiteboardId: 7})
 
   ])
 
