@@ -58,11 +58,6 @@ class ConferenceRoom extends Component {
           }
           <Whiteboard />
           <ActionPanel toggleIt={this.onClickVertical} />
-          {/* <div className="laneButton">
-            <button onClick={(evt) => this.onClickVertical(evt)}>
-              Swimlane
-            </button>
-          </div> */}
         </div>
       </div>
     )
