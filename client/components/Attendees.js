@@ -16,32 +16,33 @@ class Attendees extends Component {
   render() {
     const foundWhiteboard = this.props.whiteboard
     return (
-      <div id="attendee-box" className="horizontal">
+      <div id="attendee-box">
         <button
 
           onClick={this.showAtt}>
-          <a>Host: {foundWhiteboard.host}</a>
+          <div>Host: </div>
+          <div>{foundWhiteboard.host}</div>
 
         </button>
         {
         this.state.show &&
-        <div id="attendees" >
+        <ul id="attendees" >
           {
             this.props.attendees.map(user => {
               return (
-                <span className="chip" key={user.id}>
+                <li className="chip" style={{fontSize: 12}} key={user.id}>
                 {
                     user.whiteboards[0].attendees.attended ?
                     <img className="circle green" />
                     :
-                    <img className="circle red" />
+                    <img className="circle pink darken-4" />
                 }
-                      <a> {user.name}</a>
-                </span>
+                    {user.name}
+                </li>
                 )
               })
           }
-        </div>
+        </ul>
         }
       </div>
     )
