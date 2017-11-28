@@ -57,8 +57,11 @@ class Whiteboard extends Component {
   //is calculated, the position is set to null
   onMouseDown(evt) {
     if (evt.button !== 0) return
-
     var pos = evt.target.getBoundingClientRect()
+    console.log(`rel: ${this.state.rel}`)
+    console.log(`evt pageX pageY: ${evt.pageX} and ${evt.pageY}`)
+    console.log(`pos: ${pos.left} and ${pos.top}`)
+
     this.setState({
       dragging: true,
       rel: {
@@ -86,24 +89,28 @@ class Whiteboard extends Component {
 
   //when state.pos is set to anything but null, the top and left of card is set to state.pos instead of note.position[0] & note.position[1]
   onMouseMove(evt) {
-    console.log(this.props.branches)
+    console.log(evt.pageX)
     if (!this.state.dragging) return
+
     this.setState({
       pos: {
         x: evt.pageX - this.state.rel.x,
         y: evt.pageY - this.state.rel.y
       }
     }, () => {
-      console.log('in here right now')
+      // console.log('in here right now')
+      console.log(this.state.pos)
+      console.log(this.state.rel)
       this.props.branches
         .filter(branch => {
           return branch.noteId === this.state.selectedNote || branch.endNoteId === this.state.selectedNote})
         .map(branch => {
+          // console.log(document.getElementById(`card${branch.noteId}`).getBoundingClientRect())
           return $(`#line-${branch.id}`).attr({
-              'x1': document.getElementById(`connect-${branch.noteId}`).getBoundingClientRect().x,
-              'y1':  document.getElementById(`connect-${branch.noteId}`).getBoundingClientRect().y,
-              'x2': document.getElementById(`connect-${branch.endNoteId}`).getBoundingClientRect().y,
-              'y2': document.getElementById(`connect-${branch.endNoteId}`).getBoundingClientRect().y
+              'x1': document.getElementById(`card${branch.noteId}`).getBoundingClientRect().x,
+              'y1':  document.getElementById(`card${branch.noteId}`).getBoundingClientRect().y,
+              'x2': document.getElementById(`card${branch.endNoteId}`).getBoundingClientRect().y,
+              'y2': document.getElementById(`card${branch.endNoteId}`).getBoundingClientRect().y
             })
         })
     })
@@ -164,17 +171,18 @@ class Whiteboard extends Component {
   }
 
   showBranches() {
-    console.log(document.getElementById(`connect-5`).getBoundingClientRect())
     this.props.branches && this.props.branches.map(branch => {
-      let firstPoints = d3.select(`#connect-${branch.noteId}`).node().getBoundingClientRect()
-      let secondPoints = d3.select(`#connect-${branch.endNoteId}`).node().getBoundingClientRect()
-      d3.select('#svg').append('line')
-        .attr("x1", firstPoints.x)
-        .attr("y1", firstPoints.y)
-        .attr("x2", secondPoints.x)
-        .attr("y2", secondPoints.y)
+      let firstPoints = d3.select(`#card${branch.noteId}`).node().getBoundingClientRect()
+      let secondPoints = d3.select(`#card${branch.endNoteId}`).node().getBoundingClientRect()
+
+      d3.select('#svg #svg-g').append('line')
+        .attr("x1", firstPoints.left)
+        .attr("y1", firstPoints.top)
+        .attr("x2", secondPoints.left)
+        .attr("y2", secondPoints.top)
         .attr("stroke-width", 2)
         .attr("stroke", "black")
+        // .attr("position", "absolute")
         .attr("id", `line-${branch.id}`)
 
     })
@@ -226,7 +234,11 @@ class Whiteboard extends Component {
         <text x="4" y="50" fontFamily="Verdana" fontSize="35" fill="blue">Idea Basket</text>
       </g>
       </svg>
-      <svg id="svg" width={document.body.getBoundingClientRect().width} height={document.body.getBoundingClientRect().height}>
+      <svg
+        id="svg"
+        width={document.body.getBoundingClientRect().width} height="1000"
+        // style={{ position: 'fixed'}}
+        ><g id="svg-g"></g>
       </svg>
 
       {
