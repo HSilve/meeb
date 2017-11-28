@@ -231,12 +231,12 @@ class Whiteboard extends Component {
           >Show Branches
         </button> */}
 
-        <label>Show Branches</label>
+        {/* <label>Show Branches</label>
         <div className="switch">
           <label>Off<input type="checkbox" onChange={this.showBranches} />
               <span className="lever" />On
           </label>
-        </div>
+        </div> */}
        <svg id="basket" width="300" height="250">
       <g>
         <rect
