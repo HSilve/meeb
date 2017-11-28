@@ -63,6 +63,7 @@ class Whiteboard extends Component {
         y: null
       }
     })
+
     evt.stopPropagation()
     evt.preventDefault()
   }
@@ -87,7 +88,7 @@ class Whiteboard extends Component {
       }
     })
 
-    this.props.editNote(this.state.selectedNote, { position: [this.state.pos.x, this.state.pos.y] })
+    this.props.editNote(evt.target.value, { position: [evt.pageX - this.state.rel.x, evt.pageY - this.state.rel.y] })
 
     evt.stopPropagation()
     evt.preventDefault()
@@ -184,6 +185,7 @@ class Whiteboard extends Component {
                     > Drag
 
                     </button>
+                          value={note.id}
                           <button value={note.id} onClick={(evt) => { this.clickConnection(evt, note) }}>edit</button>
                           {this.props.vote &&
                             <div style={{ float: 'right' }} >
