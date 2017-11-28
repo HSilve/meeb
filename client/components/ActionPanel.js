@@ -92,7 +92,7 @@ class ActionPanel extends React.Component {
                 {
                   !this.props.whiteboard.voteable ?
                 <li>
-                  <a className="btn-floating" id="myBtn" onClick={(evt) => { evt.preventDefault(); this.props.letsVote(this.props.whiteboard.id) }}><i className="material-icons">
+                  <a className="btn-floating" id="myBtn" onClick={(evt) => { evt.preventDefault(); this.props.letsVote(this.props.whiteboard.id, this.props.whiteboard.voteable) }}><i className="material-icons">
                     thumb_up</i>
                   </a>
                 </li>
@@ -172,10 +172,12 @@ const mapDispatch = dispatch => {
       document.getElementById('myModal').style.display = 'none';
 
     },
-    letsVote(whiteboardId) {
-      dispatch(openVote(whiteboardId))
+    letsVote(whiteboardId, voting) {
+      console.log("i'm try8ijng to open the vboting")
+      dispatch(openVote(whiteboardId, !voting))
     },
     closeVote(whiteboardId, voting) {
+      console.log("i'm try8ijng to close the vboting")
       dispatch(openVote(whiteboardId, !voting))
       document.getElementById('theVoteResult').style.display = 'block';
     }
