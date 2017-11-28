@@ -84,3 +84,7 @@ div#auth {
 .actual-form form {
   padding: 5%;
 }
+
+div.SVG-line {
+  /*position: absolute*/
+}

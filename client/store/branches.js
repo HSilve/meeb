@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { getSingleBranch } from '../store'
 
 const defaultBranches = []
 
@@ -13,7 +14,10 @@ const addBranch = branch => ({ type: ADD_BRANCH, branch })
 export const insertBranch = branchData =>
   dispatch =>
     axios.post(`/api/branches`, branchData)
-      .then(branch => dispatch(addBranch(branch.data)))
+      .then(branch => {
+        dispatch(addBranch(branch.data))
+        dispatch(getSingleBranch(branch.data))
+      })
       .catch(err => console.log(err))
 
 export const fetchBranches = whiteBoardId =>

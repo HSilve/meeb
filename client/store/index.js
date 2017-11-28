@@ -9,8 +9,9 @@ import messageEntry from './messageEntry'
 import singleWhiteboard from './singleWhiteboard'
 import attendees from './attendees'
 import branches from './branches'
+import singleBranch from './singleBranch'
 
-const reducer = combineReducers({ user, notes, whiteboard, messageEntry, singleWhiteboard, attendees, branches })
+const reducer = combineReducers({ user, notes, whiteboard, messageEntry, singleWhiteboard, attendees, branches, singleBranch })
 const middleware = composeWithDevTools(applyMiddleware(
   thunkMiddleware,
   createLogger({ collapsed: true })
@@ -25,3 +26,4 @@ export * from './messageEntry'
 export * from './singleWhiteboard'
 export * from './attendees'
 export * from './branches'
+export * from './singleBranch'
