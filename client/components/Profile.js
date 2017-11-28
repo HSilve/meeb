@@ -43,10 +43,10 @@ class Profile extends Component {
     return (
       <div className="row">
         <h2>Welcome, {this.props.user.name}</h2>
-
+      <div className="grid-example col s8">
+      <div className="grid-example">
         <div className="row">
-          <div className="col s12"></div>
-          <div className="grid-example col s10">
+          <div className="grid-example col s8">
             <h5 className="grey-text text-darken-3">Today's Remaining Brainstorms</h5>
             <div className="collection">
               {
@@ -67,7 +67,7 @@ class Profile extends Component {
                         }
 
                         <NavLink className="blue-text text-darken-4" to={`/whiteboards/${result.id}`}>{result.name}</NavLink>
-                        {user.name == result.host ?
+                        {user.name == result.host &&
                           <span>
                             <span className="badge" >
                               <a className="waves-effect waves-light"><i onClick={event => this.props.deleteARoom(result.id)}
@@ -77,7 +77,7 @@ class Profile extends Component {
                             <span className="new badge" data-badge-caption="Hosted"></span>
 
                           </span>
-                          : ''
+
                         }
 
 
@@ -88,9 +88,22 @@ class Profile extends Component {
               }
             </div>
           </div>
+          {/* <div className="grid example col s4">
+            <a className="waves-effect waves-light btn" onClick={() => this.setState({ show: !show })}>Create New Session</a>
+            {
+              show ?
+                <span>
+                  <h5 href="#">
+                    <i alt="Brand" >
+                    </i>
+                  </h5>
+                  <NewSessionForm />
+                </span> : null
+            }
+          </div> */}
         </div>
 
-        <div className="grid-example col s12">
+        <div className="row">
           <div className="grid-example col s4">
             <h5 className="grey-text text-darken-3">Past Brainstorms</h5>
             <div className="collection">
@@ -162,7 +175,11 @@ class Profile extends Component {
               }
             </ul>
           </div>
-          <div className="grid example col s4">
+        </div>
+        </div>
+        </div>
+
+      <div className="grid example col s4">
             <a className="waves-effect waves-light btn" onClick={() => this.setState({ show: !show })}>Create New Session</a>
             {
               show ?
@@ -175,7 +192,6 @@ class Profile extends Component {
                 </span> : null
             }
           </div>
-        </div>
       </div>
     )
   }

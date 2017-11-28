@@ -3,13 +3,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { addNote, closeRoom, openVote } from '../store'
+import { addNote, closeRoom, openVote, editNote } from '../store'
 import { withRouter } from 'react-router';
 import { VoteResults } from './index';
+import { TwitterPicker } from 'react-color'
 
 class ActionPanel extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       expandToggle: false,
       textToggle: false,
@@ -18,9 +19,23 @@ class ActionPanel extends React.Component {
       drawToggle: false,
       file: [],
       name: '',
-      type: ''
+      type: '',
+      show: false
     }
     this.handleFileUpload = this.handleFileUpload.bind(this)
+    this.handleColorChange = this.handleColorChange.bind(this)
+  }
+
+  handleColorChange = (color) => {
+    if (this.props.update.length) {
+      this.props.update.forEach(note => {
+        document.getElementById(`card${note}`).style.background = color.hex
+        this.props.colorUpdate(note, { color: color.hex })
+        let selectedCard = document.getElementById(`card${note}`)
+        selectedCard.style.boxShadow = '0 4px 2px -2px gray'
+      })
+    }
+    this.setState({ connectionArray: [] })
   }
 
   toggle(type) {
@@ -29,7 +44,6 @@ class ActionPanel extends React.Component {
     else if (type === 'image') this.setState({ imageToggle: !this.state.imageToggle })
     else if (type === 'link') this.setState({ linkToggle: !this.state.linkToggle })
     else this.setState({ drawToggle: !this.state.drawToggle })
-    console.log(this.state)
   }
 
   handleFileUpload(evt) {
@@ -44,18 +58,18 @@ class ActionPanel extends React.Component {
         type: imageFile.type
       })
     }
-    this.onClickVertical = this.onClickVertical.bind(this)
+    // this.onClickVertical = this.onClickVertical.bind(this)
 
   }
 
-  onClickVertical(evt) {
-    evt.preventDefault()
-    if (this.props.getRoom.swimlaneArray.length) {
-      this.props.editState({ swimlaneArray: [] })
-    }
-    this.props.editState({ verticalSwimlane: !this.state.verticalSwimlane })
-    this.props.lanes(3)
-  }
+  // onClickVertical(evt) {
+  //   evt.preventDefault()
+  //   if (this.props.getRoom.swimlaneArray.length) {
+  //     this.props.editState({ swimlaneArray: [] })
+  //   }
+  //   this.props.editState({ verticalSwimlane: !this.state.verticalSwimlane })
+  //   this.props.lanes(3)
+  // }
 
   render() {
     return (
@@ -69,6 +83,15 @@ class ActionPanel extends React.Component {
                 <li><a className="btn-floating" onClick={() => this.toggle('text')}><i className="material-icons">format_quote</i></a></li>
                 <li><a className="btn-floating" onClick={() => this.toggle('image')}><i className="material-icons">add_a_photo</i></a></li>
                 <li><a className="btn-floating" onClick={() => this.toggle('link')}><i className="material-icons">insert_link</i></a></li>
+                <li><a className="btn-floating" onClick={() => this.setState({ show: !this.state.show })}>
+                  <img src="/icons8-fill-color-30.png" align="center" alt="Branch" />
+                </a>
+                  {
+                    this.state.show ?
+                      <TwitterPicker onChange={this.handleColorChange} />
+                      : null
+                  }
+                </li>
               </ul>
               <form onSubmit={(evt) => { evt.preventDefault(); this.props.handleSubmit(evt, this.state.file, this.state.name, this.state.type, this.props.user.id, this.props.match.params.id, this.props.notes.length) }} style={{ bottom: '90px', right: '100px', position: 'fixed' }}>
                 {(this.state.textToggle) && <div><input name="text" type="text" /><button type="submit">Insert</button></div>}
@@ -85,13 +108,13 @@ class ActionPanel extends React.Component {
         {
           this.props.user.id == this.props.whiteboard.userId &&
           !this.props.whiteboard.closed &&
-          <div className="fixed-action-btn horizontal" style={{ bottom: '80px', right: '100px' }} >
+          <div className="fixed-action-btn horizontal" style={{ bottom: '45px', right: '100px' }} >
             <a className="btn-floating btn-large" type="submit" ><i className="material-icons">person</i></a>
 
             <span>
               <ul>
                 <li>
-                  <a className=" btn-floating" id="myBtn" onClick={(evt) => this.onClickVertical(evt)}><i className="material-icons">
+                  <a className=" btn-floating" id="myBtn" onClick={this.props.toggle}><i className="material-icons">
                     view_column
                     </i></a>
                 </li>
@@ -163,9 +186,8 @@ const mapState = (state, ownProps) => {
     user: state.user,
     notes: state.notes,
     whiteboard: state.singleWhiteboard,
-    editRoom: ownProps.editState,
-    getRoom: ownProps.getState,
-    lanes: ownProps.multiLanes
+    toggle: ownProps.toggleIt,
+    update: state.update
   }
 }
 
@@ -175,9 +197,11 @@ const mapDispatch = dispatch => {
       evt.preventDefault()
       whiteboardId = whiteboardId.toString()
       userId = userId.toString()
-      const text = evt.target.text && evt.target.text.value
-      const link = evt.target.link && evt.target.link.value
-      const position = [1315 + (noteIdx * 5), 125 + (noteIdx * 5)]
+      const text = evt.target.text && evt.target.text.value;
+      const link = evt.target.link && evt.target.link.value;
+      let data = document.getElementById('basket').getBoundingClientRect();
+      console.log("the data", data)
+      const position = [data.x + (noteIdx * 5), data.y + (noteIdx * 5)];
 
       if (imageName || text || link) {
         //ONLY WORKS IF USER IS LOGGED IN FIRST
@@ -193,13 +217,14 @@ const mapDispatch = dispatch => {
 
     },
     letsVote(whiteboardId, voting) {
-      console.log("i'm try8ijng to open the vboting")
       dispatch(openVote(whiteboardId, !voting))
     },
     closeVote(whiteboardId, voting) {
-      console.log("i'm try8ijng to close the vboting")
       dispatch(openVote(whiteboardId, !voting))
       document.getElementById('theVoteResult').style.display = 'block';
+    },
+    colorUpdate(note, color) {
+      dispatch(editNote(note, color))
     }
   }
 }

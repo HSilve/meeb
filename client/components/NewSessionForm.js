@@ -56,6 +56,7 @@ export class NewSessionForm extends Component {
     evt.preventDefault();
     this.props.newRoom(this.state.roomName, this.props.user, this.state.selected, evt.target.date.value, evt.target.time.value, { file: this.state.file, imageName: this.state.name, fileType: this.state.type, link: evt.target.noteLink.value, text: evt.target.noteText.value }
     )
+    document.getElementById('formBox').reset();
   }
 
   handleFileUpload(evt) {
@@ -75,7 +76,7 @@ export class NewSessionForm extends Component {
   render() {
     return (
       <div className="row">
-        <form className="col s9" id="formBox" onSubmit={this.handleSubmit}>
+        <form  className="col s9" id="formBox" onSubmit={this.handleSubmit}>
           Room Name:
          <input name="roomName" type="text" onChange={this.changeName} placeholder="Enter a name" />
           Date:

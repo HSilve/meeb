@@ -13,7 +13,7 @@ class ConferenceRoom extends Component {
       horizontalSwimlane: false,
       swimlaneArray: [],
     }
-    // this.onClickVertical = this.onClickVertical.bind(this)
+    this.onClickVertical = this.onClickVertical.bind(this)
     this.multipleLanes = this.multipleLanes.bind(this)
   }
   componentWillMount() {
@@ -32,14 +32,14 @@ class ConferenceRoom extends Component {
     }
   }
 
-  // onClickVertical(evt) {
-  //   evt.preventDefault()
-  //   if (this.state.swimlaneArray.leng th){
-  //     this.setStat e({swimlaneArray:  []})
-  //   }
-  //   this.setStat e({verticalSwimlane: !this.state.verticalSwiml ane})
-  //   this.multipleLanes(3)
-  // }
+  onClickVertical(evt) {
+    evt.preventDefault()
+    if (this.state.swimlaneArray.length) {
+      this.setState({ swimlaneArray: [] })
+    }
+    this.setState({ verticalSwimlane: !this.state.verticalSwimlane })
+    this.multipleLanes(3)
+  }
 
   render() {
     if (this.props.person.userName) {
@@ -57,12 +57,7 @@ class ConferenceRoom extends Component {
               : null
           }
           <Whiteboard />
-          <ActionPanel editState={this.setState} getState={this.state} multiLanes={this.multipleLanes} />
-          {/* <div className="laneButton">
-            <button onClick={(evt) => this.onClickVertical(evt)}>
-              Swimlane
-            </button>
-          </div> */}
+          <ActionPanel toggleIt={this.onClickVertical} />
         </div>
       </div>
     )

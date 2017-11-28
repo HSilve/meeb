@@ -222,9 +222,7 @@ class Whiteboard extends Component {
 
     return (
       <div>
-
-
-      <div id="whiteboard">
+        <div id="whiteboard">
         {/* <button
           onClick={this.showBranches}
           style={{ zIndex: '20' }}
@@ -237,55 +235,44 @@ class Whiteboard extends Component {
               <span className="lever" />On
           </label>
         </div> */}
-       <svg id="basket" width="300" height="250">
-      <g>
-        <rect
-           width="300" height="250"
-        style = {{fill: 'white', stroke: 'white', strokeWidth: 5, opacity: 0.5}} />
-        <text x="4" y="50" fontFamily="Arial" fontSize="35" fill="blue">Your Ideas</text>
-      </g>
-      </svg>
-      <div className="SVG-line">
-        <svg
-          id="svg"
-          width={document.body.getBoundingClientRect().width} height={document.body.getBoundingClientRect().width}
-          style={{ zIndex: '-5'}}
-          ><g id="svg-g"></g>
-        </svg>
-      </div>
 
-      {
-        data && data.map((note) => {
+        {/* <svg id="basket" width="300" height="250">
+          <g>
+            <rect
+              width="300" height="250"
+              style = {{fill: 'white', stroke: 'white', strokeWidth: 5, opacity: 0.5}} />
+            <text x="4" y="50" fontFamily="Arial" fontSize="35" fill="blue">Your Ideas</text>
+          </g>
+        </svg> */}
+          <div id="basket" style={{ float: 'right' }}>
+            <b>{this.props.name}</b>
+          </div>
           {
-            return note.position &&
-             (
-                  <div
-                    className="card"
-                    id={`card${note.id}`}
-                    key={note.id}
-                    style = {{position: 'absolute', background: note.color,
-                    left: this.state.selectedNote === note.id && this.state.pos.x || note.position[0],
-                    top: this.state.selectedNote === note.id && this.state.pos.y || note.position[1],
-                    cursor: 'pointer' }}
-                >
-
-                    {/* style = {{position: 'absolute', left: this.state.selectedNote === note.id && this.state.pos.x || note.position[0], top: this.state.selectedNote === note.id && this.state.pos.y || note.position[1], cursor: 'pointer' }}
-                    onMouseMove={this.onMouseMove}
-                    onMouseUp={this.onMouseUp}
-                    onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt)}} > */}
-
-
-                  {this.props.open &&
-                  <span>
-                    <button style={{float: 'left'}} value={note.id} onClick={this.handleDelete}>x</button>
-                    <button
-                        onMouseMove={this.onMouseMove}
-                        onMouseUp={this.onMouseUp}
-                        onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt)}}
-                        style={{borderRadius: '25px'}}
-                    > Drag
-
-                    </button>
+            data && data.map((note) => {
+              {
+                return note.position &&
+                  (
+                    <div
+                      className="card"
+                      id={`card${note.id}`}
+                      key={note.id}
+                      style={{
+                        position: 'absolute', background: note.color,
+                        left: this.state.selectedNote === note.id && this.state.pos.x || note.position[0],
+                        top: this.state.selectedNote === note.id && this.state.pos.y || note.position[1],
+                        cursor: 'pointer'
+                      }}
+                    >
+                      {this.props.open &&
+                        <span>
+                          <button style={{ float: 'left' }} value={note.id} onClick={this.handleDelete}>x</button>
+                          <button
+                            onMouseMove={this.onMouseMove}
+                            onMouseUp={this.onMouseUp}
+                            onMouseDown={(evt) => { this.setState({ selectedNote: note.id }); this.onMouseDown(evt) }}
+                            style={{ borderRadius: '25px' }}
+                          > Drag
+                        </button>
 
                           <button value={note.id} onClick={(evt) => { this.clickConnection(evt, note) }}>edit</button>
                           {this.props.vote &&
@@ -301,8 +288,8 @@ class Whiteboard extends Component {
                             onClick={evt => { evt.preventDefault(); this.handleConnect(evt, note.id)}}
                           />
                           {
-                                note.votes > 0 && <a style={{ float: 'right' }}>{note.votes}</a>
-                              }
+                            note.votes > 0 && <a style={{ float: 'right' }}>{note.votes}</a>
+                          }
                         </span>
                       }
                       {note.text &&
@@ -336,21 +323,9 @@ class Whiteboard extends Component {
 
             })
           }
-
           {this.props.branches &&
             this.showBranches()
           }
-          <div className="colorPalette">
-            <button onClick={() => this.setState({ show: !this.state.show })}>
-              <img src="/icons8-fill-color-30.png" align="center" alt="Branch" />
-            </button>
-            {
-              this.state.show ?
-                <TwitterPicker onChange={this.handleColorChange} />
-                : null
-            }
-          </div>
-
         </div>
       </div>
     );
@@ -365,7 +340,8 @@ const mapStateToProps = (state) => ({
   open: !state.singleWhiteboard.closed,
   vote: state.singleWhiteboard.voteable,
   branches: state.branches,
-  singleBranch: state.singleBranch
+  singleBranch: state.singleBranch,
+  name: state.singleWhiteboard.name
 })
 
 const mapDispatchToProps = { editNote, fetchNotes, deleteNote, castVote, fetchRoom, insertBranch, fetchBranches, fetchSingleBranch  }
