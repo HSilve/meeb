@@ -15,12 +15,12 @@ body {
   }
  button, .btn {
   //  background-color: rgb(3, 3, 82);
-  background-color: black;
+  background-color: #212121;
    color: yellow;
  }
   nav {
     z-index: 1;
-    background-color: black;
+    background-color: #212121;
 
   }
   // #attendee-box {
@@ -39,8 +39,12 @@ body {
     #attendees {
       display: flex;
       flex-direction: column;
-      height: 80px;
+      height: 130px;
       width: 8vw;
+      overflow-y: scroll;
+      .chip {
+        white-space: nowrap;
+      }
     }
   }
 
@@ -107,8 +111,13 @@ body {
     font: 10%;
     transition: all .4s ease-in-out;
     align-self: center;
+    .chat-list {
+      width: 18vw;
+      overflow-wrap: break-word;
+    }
 
   }
+
 
   .card {
     width: 250px;
