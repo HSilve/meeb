@@ -17,7 +17,7 @@ const Main = (props) => {
     <div>
       <nav className="nav">
         <div className="nav-wrapper">
-          <Link to="/home" className="brand-logo"><img className="icon" src="/favicon.ico" /></Link>
+          <Link to="/home" className="brand-logo"><img className="icon" src="/ideastorm.png" /></Link>
           {isLoggedIn ?
             <ul id="nav-mobile" className="right hide-on-med-and-down">
               <li><Link to="/home"> Main </Link></li>

@@ -8,9 +8,8 @@ nav {
 }*/
 
 .icon {
-  margin-top: -3vh;
-  height: 10vh;
-  width: 30%
+  margin-top: -5%;
+  width: 200px
 }
 
 .home-info {
@@ -61,16 +60,27 @@ footer {
   background-color: teal !important
 }
 
-div.auth {
-  background: linear-gradient(rgba(255,255,255,.2), rgba(255,255,255,.2)), url('/meeting-02.jpeg');
+div#auth {
+  /*background: linear-gradient(rgba(255,255,255,.2), rgba(255,255,255,.2)), url('/meeting-02.jpeg');*/
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
   height: 100vh;
-  margin: 0 auto;
+  vertical-align: center
 }
 
 .actual-form {
   background-color: white;
   margin: 0 auto;
+  border-radius: 25px;
+}
+
+.auth-edges {
+  border-radius: 25px;
+  background-color: teal !important;
+  margin: 0 auto
+}
+
+.actual-form form {
+  padding: 5%;
 }

@@ -9,9 +9,10 @@ body {
     display: block;
   }
 
-  nav a {
+  nav a, nav h4 {
     display: inline-block;
     margin: 1em;
+    color: black
   }
  button, .btn {
    background-color: rgb(3, 3, 82);
@@ -19,7 +20,7 @@ body {
  }
   nav {
     z-index: 1;
-    background-color: teal;
+    background-color: white;
 
   }
   #attendee-box {
