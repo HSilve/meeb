@@ -30,7 +30,7 @@ class Whiteboard extends Component {
     this.handleColorChange = this.handleColorChange.bind(this)
     this.clickConnection = this.clickConnection.bind(this)
     this.handleVote = this.handleVote.bind(this)
-    // this.showBranches = this.showBranches.bind(this)
+    this.showBranches = this.showBranches.bind(this)
   }
 
 
@@ -86,16 +86,30 @@ class Whiteboard extends Component {
 
   //when state.pos is set to anything but null, the top and left of card is set to state.pos instead of note.position[0] & note.position[1]
   onMouseMove(evt) {
-    // console.log(evt)
+    console.log(this.props.branches)
     if (!this.state.dragging) return
     this.setState({
       pos: {
         x: evt.pageX - this.state.rel.x,
         y: evt.pageY - this.state.rel.y
       }
+    }, () => {
+      console.log('in here right now')
+      this.props.branches
+        .filter(branch => {
+          return branch.noteId === this.state.selectedNote || branch.endNoteId === this.state.selectedNote})
+        .map(branch => {
+          return $(`#line-${branch.id}`).attr({
+              'x1': document.getElementById(`connect-${branch.noteId}`).getBoundingClientRect().x,
+              'y1':  document.getElementById(`connect-${branch.noteId}`).getBoundingClientRect().y,
+              'x2': document.getElementById(`connect-${branch.endNoteId}`).getBoundingClientRect().y,
+              'y2': document.getElementById(`connect-${branch.endNoteId}`).getBoundingClientRect().y
+            })
+        })
     })
 
-    this.props.editNote(this.state.selectedNote, { position: [this.state.pos.x, this.state.pos.y] })
+
+    // this.props.editNote(this.state.selectedNote, { position: [this.state.pos.x, this.state.pos.y] })
 
     evt.stopPropagation()
     evt.preventDefault()
@@ -141,6 +155,7 @@ class Whiteboard extends Component {
           .attr("y2", secondConnect.y)
           .attr("stroke-width", 2)
           .attr("stroke", "black")
+        //have to add attr to created line
         this.props.insertBranch({noteId: this.state.connectionArray[0].noteId, endNoteId: this.state.connectionArray[1].noteId, whiteboardId: this.props.boardId})
         let newArr = this.state.connectionArray.slice(2)
         this.setState({ connectionArray: newArr })
@@ -148,9 +163,22 @@ class Whiteboard extends Component {
     })
   }
 
-  // showBranches() {
-  //   this.props.branches && this.props.bran
-  // }
+  showBranches() {
+    console.log(document.getElementById(`connect-5`).getBoundingClientRect())
+    this.props.branches && this.props.branches.map(branch => {
+      let firstPoints = d3.select(`#connect-${branch.noteId}`).node().getBoundingClientRect()
+      let secondPoints = d3.select(`#connect-${branch.endNoteId}`).node().getBoundingClientRect()
+      d3.select('#svg').append('line')
+        .attr("x1", firstPoints.x)
+        .attr("y1", firstPoints.y)
+        .attr("x2", secondPoints.x)
+        .attr("y2", secondPoints.y)
+        .attr("stroke-width", 2)
+        .attr("stroke", "black")
+        .attr("id", `line-${branch.id}`)
+
+    })
+  }
 
   handleColorChange = (color) => {
     if (this.state.connectionArray.length) {
@@ -292,10 +320,10 @@ class Whiteboard extends Component {
                 : null
             }
           </div>
-          {/* <button
+          <button
             onClick={this.showBranches}
             >Show Branches
-          </button> */}
+          </button>
         </div>
       </div>
     );
