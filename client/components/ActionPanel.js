@@ -2,8 +2,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
+<<<<<<< HEAD
 import { addNote, closeRoom, openVote } from '../store'
+=======
+import { addNote, closeRoom, openVote} from '../store'
+>>>>>>> origin/master
 import { withRouter } from 'react-router';
+import { VoteResults } from './index'
 
 class ActionPanel extends React.Component {
   constructor() {
@@ -88,12 +93,27 @@ class ActionPanel extends React.Component {
               </div>
             </div>
           </div>}
+
+        {/* <!-- The Modal for Voting Results --> */}
+        <div id="theVoteResult" className="modal">
+
+          {/* <!-- Modal content --> */}
+          <div className="modal-content">
+            <span
+              onClick={() => {
+                document.getElementById('theVoteResult').style.display = 'none';
+              }}
+              className="close">&times;</span>
+            <h3>Vote Results </h3>
+            <VoteResults />
+            <button onClick={(evt) => { evt.preventDefault(); this.props.handleClose(this.props.whiteboard.id) }}> End Session </button>
+          </div>
+        </div>
         {
           this.props.user.id == this.props.whiteboard.userId &&
           !this.props.whiteboard.closed &&
           <div className="fixed-action-btn horizontal" style={{ bottom: '80px', right: '100px' }} >
             <a className="btn-floating btn-large" type="submit" ><i className="material-icons">person</i></a>
-
             <span>
               <ul>
                 <li>
@@ -148,8 +168,12 @@ const mapDispatch = dispatch => {
       document.getElementById('myModal').style.display = 'none';
 
     },
-    letsVote(whiteboardId) {
-      dispatch(openVote(whiteboardId))
+    letsVote(whiteboardId, voting) {
+      dispatch(openVote(whiteboardId, !voting))
+    },
+    closeVote(whiteboardId, voting) {
+      dispatch(openVote(whiteboardId, !voting))
+      document.getElementById('theVoteResult').style.display = 'block';
     }
   }
 }

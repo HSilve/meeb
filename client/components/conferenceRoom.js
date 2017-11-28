@@ -57,7 +57,7 @@ class ConferenceRoom extends Component {
               : null
           }
           <Whiteboard />
-          <ActionPanel />
+          <ActionPanel swim={}/>
           <div className="laneButton">
             <button onClick={(evt) => this.onClickVertical(evt)}>
               Swimlane
@@ -69,7 +69,7 @@ class ConferenceRoom extends Component {
   }
 }
 
-const mapState = (state) => ({
+const mapState = (state, ownProps) => ({
   user: state.user,
   person: state.attendees.justEntered
 })

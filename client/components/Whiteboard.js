@@ -188,11 +188,12 @@ class Whiteboard extends Component {
                           {this.props.vote &&
                             <div style={{ float: 'right' }} >
                               <button value={note.id} onClick={this.handleVote}>⚡️</button>
-                              {
-                                note.votes > 0 && <a>{note.votes}</a>
-                              }
+
                             </div>
                           }
+                          {
+                                note.votes > 0 && <a style={{ float: 'right' }}>{note.votes}</a>
+                              }
                         </span>
                       }
                       {note.text &&
