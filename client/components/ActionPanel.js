@@ -1,9 +1,11 @@
+
 /* eslint-disable max-params */
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { addNote, closeRoom , openVote} from '../store'
+import { addNote, closeRoom, openVote } from '../store'
 import { withRouter } from 'react-router';
+import {VoteResults} from './index';
 
 class ActionPanel extends React.Component {
   constructor() {
@@ -46,44 +48,67 @@ class ActionPanel extends React.Component {
 
   }
 
+
+
   render() {
     return (
-      !this.props.whiteboard.closed &&
-      <div className="fixed-action-btn horizontal click-to-toggle">
-        <button className="btn-floating btn-large" type="submit" onClick={() => this.toggle('expand')}>+</button>
-        {this.state.expandToggle &&
-          <span>
-            <div className="btn-floating" onClick={() => this.toggle('text')}>Text</div>
-            <div className="btn-floating" onClick={() => this.toggle('image')}>Image</div>
-            <div className="btn-floating" onClick={() => this.toggle('link')}>Link</div>
-            <div className="btn-floating">Draw</div>
-            <form onSubmit={(evt) => { evt.preventDefault(); this.props.handleSubmit(evt, this.state.file, this.state.name, this.state.type, this.props.user.id, this.props.match.params.id, this.props.notes.length) }} >
-              {(this.state.textToggle) && <input name="text" type="text" />}
-              {(this.state.linkToggle) && <input name="link" type="text" />}
-              {this.state.imageToggle &&
-                <div>
-                  <input name="file" type="file" onChange={this.handleFileUpload} />
-                </div>
-              }
-              <button type="submit">Insert</button>
-              {
-              this.props.user.id == this.props.whiteboard.userId &&
-                <span>
-                  <button
-                      id="myBtn" onClick={() => {document.getElementById('myModal').style.display = 'block';}}>
-                      End Session
-                  </button>
-                  <button
-                  id="myBtn" onClick={(evt) => {evt.preventDefault(); this.props.letsVote(this.props.whiteboard.id)}}>
-                  Open Vote
-              </button>
-                 </span>
-              }
-            </form>
-          </span>
+      <div>
+        {!this.props.whiteboard.closed &&
+          <div className="fixed-action-btn" style={{ bottom: '45px', right: '24px' }} >
+            <a className="btn-floating btn-large" type="submit" ><i className="material-icons">add</i></a>
+
+            <span>
+              <ul>
+                <li><a className="btn-floating" onClick={() => this.toggle('text')}><i className="material-icons">format_quote</i></a></li>
+                <li><a className="btn-floating" onClick={() => this.toggle('image')}><i className="material-icons">add_a_photo</i></a></li>
+                <li><a className="btn-floating" onClick={() => this.toggle('link')}><i className="material-icons">insert_link</i></a></li>
+              </ul>
+              <form onSubmit={(evt) => { evt.preventDefault(); this.props.handleSubmit(evt, this.state.file, this.state.name, this.state.type, this.props.user.id, this.props.match.params.id, this.props.notes.length) }} style={{ bottom: '90px', right: '100px', position: 'fixed' }}>
+                {(this.state.textToggle) && <div><input name="text" type="text" /><button type="submit">Insert</button></div>}
+                {(this.state.linkToggle) && <div><input name="link" type="text" /><button type="submit">Insert</button></div>}
+                {this.state.imageToggle &&
+                  <div>
+                    <input name="file" type="file" onChange={this.handleFileUpload} /><button type="submit">Insert</button>
+                  </div>
+                }
+              </form>
+            </span>
+
+          </div>}
+        {
+          this.props.user.id == this.props.whiteboard.userId &&
+          !this.props.whiteboard.closed &&
+          <div className="fixed-action-btn horizontal" style={{ bottom: '80px', right: '100px' }} >
+            <a className="btn-floating btn-large" type="submit" ><i className="material-icons">person</i></a>
+
+            <span>
+              <ul>
+                <li>
+                  <a className="btn-floating" id="myBtn" onClick={() => { document.getElementById('myModal').style.display = 'block'; }}>
+                    <i className="material-icons">
+                      close</i>
+                  </a>
+                </li>
+                {
+                  !this.props.whiteboard.voteable ?
+                <li>
+                  <a className="btn-floating" id="myBtn" onClick={(evt) => { evt.preventDefault(); this.props.letsVote(this.props.whiteboard.id, this.props.whiteboard.voteable) }}><i className="material-icons">
+                    thumb_up</i>
+                  </a>
+                </li>
+                :
+                <li>
+                <a className="btn-floating" id="myBtn" onClick={(evt) => { evt.preventDefault(); this.props.closeVote(this.props.whiteboard.id, this.props.whiteboard.voteable)}}><i className="material-icons">
+                  thumb_down</i>
+                </a>
+              </li>
+                }
+              </ul>
+            </span>
+          </div>
         }
-            {/* <!-- The Modal --> */}
-            <div id="myModal" className="modal">
+         {/* <!-- The Modal To End Session--> */}
+         <div id="myModal" className="modal">
 
               {/* <!-- Modal content --> */}
               <div className="modal-content">
@@ -96,7 +121,20 @@ class ActionPanel extends React.Component {
                 <button onClick={(evt) => {evt.preventDefault(); this.props.handleClose(this.props.whiteboard.id)}}> End Session </button>
               </div>
             </div>
+            {/* <!-- The Modal for Voting Results --> */}
+            <div id="theVoteResult" className="modal">
 
+              {/* <!-- Modal content --> */}
+              <div className="modal-content">
+                <span
+                onClick ={ () => {document.getElementById('theVoteResult').style.display = 'none';
+              }}
+                className="close">&times;</span>
+                <h3>Vote Results </h3>
+                <VoteResults />
+                <button onClick={(evt) => {evt.preventDefault(); this.props.handleClose(this.props.whiteboard.id)}}> End Session </button>
+              </div>
+            </div>
 
       </div>
     )
@@ -121,21 +159,27 @@ const mapDispatch = dispatch => {
       const link = evt.target.link && evt.target.link.value
       const position = [1315 + (noteIdx * 5), 125 + (noteIdx * 5)]
 
-      if (imageName || text || link ) {
-      //ONLY WORKS IF USER IS LOGGED IN FIRST
-      dispatch(addNote({ file, imageName, fileType, text, link, whiteboardId, userId, position }))
+      if (imageName || text || link) {
+        //ONLY WORKS IF USER IS LOGGED IN FIRST
+        dispatch(addNote({ file, imageName, fileType, text, link, whiteboardId, userId, position }))
       }
 
     },
     handleClose(whiteboardId) {
       var date = new Date(); // for now
-      let time =  date.getHours() + ':' + date.getMinutes();
+      let time = date.getHours() + ':' + date.getMinutes();
       dispatch(closeRoom(whiteboardId, time))
       document.getElementById('myModal').style.display = 'none';
 
     },
-    letsVote(whiteboardId) {
-      dispatch(openVote(whiteboardId))
+    letsVote(whiteboardId, voting) {
+      console.log("i'm try8ijng to open the vboting")
+      dispatch(openVote(whiteboardId, !voting))
+    },
+    closeVote(whiteboardId, voting) {
+      console.log("i'm try8ijng to close the vboting")
+      dispatch(openVote(whiteboardId, !voting))
+      document.getElementById('theVoteResult').style.display = 'block';
     }
   }
 }

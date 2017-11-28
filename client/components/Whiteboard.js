@@ -278,9 +278,7 @@ class Whiteboard extends Component {
                           {this.props.vote &&
                             <div style={{ float: 'right' }} >
                               <button value={note.id} onClick={this.handleVote}>⚡️</button>
-                              {
-                                note.votes > 0 && <a>{note.votes}</a>
-                              }
+
                             </div>
                           }
                           <button
@@ -289,6 +287,9 @@ class Whiteboard extends Component {
                             style={{borderRadius: '25px', width: '25px', height: '25px', backgroundColor: 'pink'}}
                             onClick={evt => { evt.preventDefault(); this.handleConnect(evt, note.id)}}
                           />
+                          {
+                                note.votes > 0 && <a style={{ float: 'right' }}>{note.votes}</a>
+                              }
                         </span>
                       }
                       {note.text &&
