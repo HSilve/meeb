@@ -8,7 +8,7 @@ export default function LoginSignup () {
 
       let auth = $('#auth')
       let backgrounds = new Array(
-      'url(/meeting-02.jpeg)', 'url(/meeting-01.jpg)', 'url(http://placekitten.com/300)', 'url(http://placekitten.com/400)')
+      'url(/meeting-02.jpeg)', 'url(/meeting-01.jpg)', 'url(/meeting-03.jpg)', 'url(/meeting-04.jpeg)')
 
       var current = 0;
 
