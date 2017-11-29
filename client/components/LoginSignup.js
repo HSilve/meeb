@@ -28,23 +28,24 @@ export default function LoginSignup () {
       <div id="auth">
         <div className="row">
           <br />
-          <div className="col s12 m6 offset-m3">
-            <ul className="tabs auth-edges">
+          <div className="col s12 m4 offset-m4 auth-edges">
+            <ul className="tabs">
               <li className="tab col s3"><a className="active" href="#test1">Login</a></li>
               <li className="tab col s3"><a  href="#test2">Signup</a></li>
             </ul>
+            <div id="test1" className="">
+              <Login />
+            </div>
+            <div id="test2" className="">
+              <Signup />
+            </div>
           </div>
         </div>
-          <div className="row">
-          <div className="col s12 m6 offset-m3">
-          <div id="test1" className="">
-            <Login />
-          </div>
-          <div id="test2" className="">
-            <Signup />
-          </div>
-          </div>
-        </div>
+          {/* <div className="row">
+          <div className="col s12 m6 offset-m3"> */}
+
+          {/* </div>
+        </div> */}
       </div>
     )
 }
