@@ -16,7 +16,7 @@ class Sidebar extends Component {
     const { show } = this.state
     return (
       <div className="sidebar white">
-        <div className="btn grey darken-4" style={{borderCornerShape: 'circle'}} onClick={() => this.setState({ show: !show })}>^Messages^</div>
+        <div className="btn grey darken-4" style={{borderCornerShape: 'circle'}} onClick={() => this.setState({ show: !show })}>↓Messages↓</div>
           {
             show && <Chatbox />
           }

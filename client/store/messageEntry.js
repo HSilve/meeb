@@ -62,8 +62,10 @@ export default function reducer (state = {allMessages: [], id: {}}, action) {
     // case DELETE_MESSAGE:
     //   return state.filter(message => message.id !== action.id);
 
+    // case POST_MESSAGE:
+      // return {...state, allMessages: state.allMessages.concat(action.message)}
     case POST_MESSAGE:
-      return {...state, allMessages: state.allMessages.concat(action.message)}
+      return {...state, allMessages: [action.message, ...state.allMessages]}
 
     default:
       return state;
