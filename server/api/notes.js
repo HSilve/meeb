@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const { Note } = require('../db/models')
-const { AWS_ACCESS_KEY_ID, SECRET_ACCESS_KEY} = require('../../secrets.js')
+const { AWS_ACCESS_KEY_ID, SECRET_ACCESS_KEY } = require('../../secrets.js') || process.env
 const AWS = require('aws-sdk')
 module.exports = router
 
@@ -26,57 +26,57 @@ const s3 = new AWS.S3()
 
 router.post('/', (req, res, next) => {
   Note.create(req.body.note)
-  .then(note => {
-    if (req.body.note.file && req.body.note.file.length !== 0) {
-      s3.putObject({
-        ACL: 'public-read',
-        Bucket: 'meeb-whiteboard',
-        Key: `${note.id}-${req.body.note.imageName}`,
-        Body: new Buffer((req.body.note.file).split(',')[1], 'base64'),
-        ContentType: req.body.note.fileType,
-      }, (err) => {
-          if (err) {console.log(err)}
+    .then(note => {
+      if (req.body.note.file && req.body.note.file.length !== 0) {
+        s3.putObject({
+          ACL: 'public-read',
+          Bucket: 'meeb-whiteboard',
+          Key: `${note.id}-${req.body.note.imageName}`,
+          Body: new Buffer((req.body.note.file).split(',')[1], 'base64'),
+          ContentType: req.body.note.fileType,
+        }, (err) => {
+          if (err) { console.log(err) }
           else {
             console.log('File uploaded to S3')
             note.update({ image: `https://s3.amazonaws.com/meeb-whiteboard/${note.id}-${req.body.note.imageName}` }, {
               returning: true, plain: true
             })
-            .then(result => {
-              res.json(result)
-            })
+              .then(result => {
+                res.json(result)
+              })
           }
         }
-      )
-    } else {
-      res.json(note)
-    }
-  })
+        )
+      } else {
+        res.json(note)
+      }
+    })
 })
 
 router.put('/vote/:id', (req, res, next) => {
   Note.findById(req.params.id)
-  .then(note => {
-    let vts = note.votes + 1;
-    return note.update({votes: vts}, {
-      returning: true,
-      plain: true
+    .then(note => {
+      let vts = note.votes + 1;
+      return note.update({ votes: vts }, {
+        returning: true,
+        plain: true
+      })
     })
-  })
-  .then(data => {
-    res.json(data)
-  })
-  .catch(next);
+    .then(data => {
+      res.json(data)
+    })
+    .catch(next);
 })
 
 router.put('/:id', (req, res, next) => {
   Note.findById(req.params.id)
-  .then(note => {
-    return note.update(req.body, {
-      returning: true,
-      plain: true
+    .then(note => {
+      return note.update(req.body, {
+        returning: true,
+        plain: true
+      })
     })
-  })
-  .then(data => {
+    .then(data => {
       res.json(data)
     })
     .catch(next);
