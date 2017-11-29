@@ -1,3 +1,4 @@
+
 /* eslint-disable max-params */
 import React from 'react'
 import { connect } from 'react-redux'
@@ -8,7 +9,6 @@ import { addNote, closeRoom, openVote, editNote, getBranches,
 import { withRouter } from 'react-router';
 import { VoteResults } from './index';
 import { TwitterPicker } from 'react-color'
-import * as d3 from 'd3'
 
 class ActionPanel extends React.Component {
   constructor(props) {
@@ -19,7 +19,6 @@ class ActionPanel extends React.Component {
       imageToggle: false,
       linkToggle: false,
       drawToggle: false,
-      toggleBranches: true,
       file: [],
       name: '',
       type: '',
@@ -49,14 +48,6 @@ class ActionPanel extends React.Component {
     else if (type === 'image') this.setState({ imageToggle: !this.state.imageToggle })
     else if (type === 'link') this.setState({ linkToggle: !this.state.linkToggle })
     else this.setState({ drawToggle: !this.state.drawToggle })
-  }
-
-  toggleBranches(evt) {
-    evt.preventDefault()
-    this.setState({ toggleBranches: !this.state.toggleBranches }, function() {
-      this.state.toggleBranches ? this.props.showBranches(this.props.whiteboard.id) : this.props.hideBranches()
-      if (!this.state.toggleBranches) d3.selectAll('line').remove()
-    })
   }
 
   handleFileUpload(evt) {
@@ -89,7 +80,7 @@ class ActionPanel extends React.Component {
     return (
       <div>
         {!this.props.whiteboard.closed &&
-          <div className="fixed-action-btn" style={{ bottom: '45px', right: '24px' }} >
+          <div className="fixed-action-btn" style={{ bottom: '25px', right: '24px' }} >
             <a className="btn-floating btn-large" type="submit" ><i className="material-icons">add</i></a>
 
             <span>
@@ -125,7 +116,7 @@ class ActionPanel extends React.Component {
         {
           this.props.user.id == this.props.whiteboard.userId &&
           !this.props.whiteboard.closed &&
-          <div className="fixed-action-btn horizontal" style={{ bottom: '45px', right: '100px' }} >
+          <div className="fixed-action-btn horizontal" style={{ bottom: '25px', right: '100px' }} >
             <a className="btn-floating btn-large" type="submit" ><i className="material-icons">person</i></a>
 
             <span>
@@ -151,15 +142,6 @@ class ActionPanel extends React.Component {
                       </a>
                     </li>
                 }
-
-                { this.props.hostId === this.props.user.id &&
-                  <li>
-                    <a className="btn-floating" id="myBtn" onClick={this.toggleBranches }><i className="material-icons">
-                      device_hub</i>
-                    </a>
-                  </li>
-                }
-
                 <li>
                   <a className="btn-floating" id="myBtn" onClick={() => { document.getElementById('myModal').style.display = 'block'; }}>
                     <i className="material-icons">
@@ -176,11 +158,11 @@ class ActionPanel extends React.Component {
 
           {/* <!-- Modal content --> */}
           <div className="modal-content">
-            <span
+            <button
               onClick={() => {
                 document.getElementById('myModal').style.display = 'none';
               }}
-              className="close">&times;</span>
+              className="close">X</button>
             <h3>End Session </h3>
             <p>Are you sure you want to end collaboration on {this.props.whiteboard.name}? Collaborators will no longer be able to send messages or edit the whiteboard.</p>
             <button onClick={(evt) => { evt.preventDefault(); this.props.handleClose(this.props.whiteboard.id) }}> End Session </button>
@@ -191,11 +173,11 @@ class ActionPanel extends React.Component {
 
           {/* <!-- Modal content --> */}
           <div className="modal-content">
-            <span
+              <button
               onClick={() => {
                 document.getElementById('theVoteResult').style.display = 'none';
               }}
-              className="close">&times;</span>
+              className="close">X</button>
             <h3>Vote Results </h3>
             <VoteResults />
             <button onClick={(evt) => { evt.preventDefault(); this.props.handleClose(this.props.whiteboard.id) }}> End Session </button>
@@ -213,8 +195,7 @@ const mapState = (state, ownProps) => {
     notes: state.notes,
     whiteboard: state.singleWhiteboard,
     toggle: ownProps.toggleIt,
-    update: state.update,
-    hostId: state.singleWhiteboard.userId
+    update: state.update
   }
 }
 
