@@ -3,7 +3,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { addNote, closeRoom, openVote, editNote } from '../store'
+import { addNote, closeRoom, openVote, editNote, fetchBranches, getBranches } from '../store'
 import { withRouter } from 'react-router';
 import { VoteResults } from './index';
 import { TwitterPicker } from 'react-color'
@@ -17,6 +17,7 @@ class ActionPanel extends React.Component {
       imageToggle: false,
       linkToggle: false,
       drawToggle: false,
+      toggleBranches: true,
       file: [],
       name: '',
       type: '',
@@ -24,6 +25,7 @@ class ActionPanel extends React.Component {
     }
     this.handleFileUpload = this.handleFileUpload.bind(this)
     this.handleColorChange = this.handleColorChange.bind(this)
+    this.toggleBranches = this.toggleBranches.bind(this)
   }
 
   handleColorChange = (color) => {
@@ -44,6 +46,13 @@ class ActionPanel extends React.Component {
     else if (type === 'image') this.setState({ imageToggle: !this.state.imageToggle })
     else if (type === 'link') this.setState({ linkToggle: !this.state.linkToggle })
     else this.setState({ drawToggle: !this.state.drawToggle })
+  }
+
+  toggleBranches(evt) {
+    evt.preventDefault()
+    this.setState({ toggleBranches: !this.state.toggleBranches }, function() {
+      this.state.toggleBranches ? this.props.showBranches(this.props.whiteboard.id) : this.props.hideBranches()
+    })
   }
 
   handleFileUpload(evt) {
@@ -137,6 +146,18 @@ class ActionPanel extends React.Component {
                       </a>
                     </li>
                 }
+
+                { this.props.hostId === this.props.user.id &&
+
+                  <li>
+                    <a className="btn-floating" id="myBtn" onClick={this.toggleBranches }><i className="material-icons">
+                      device_hub</i>
+                    </a>
+                  </li>
+
+
+
+                }
                 <li>
                   <a className="btn-floating" id="myBtn" onClick={() => { document.getElementById('myModal').style.display = 'block'; }}>
                     <i className="material-icons">
@@ -190,7 +211,8 @@ const mapState = (state, ownProps) => {
     notes: state.notes,
     whiteboard: state.singleWhiteboard,
     toggle: ownProps.toggleIt,
-    update: state.update
+    update: state.update,
+    hostId: state.singleWhiteboard.userId
   }
 }
 
@@ -229,6 +251,12 @@ const mapDispatch = dispatch => {
     },
     colorUpdate(note, color) {
       dispatch(editNote(note, color))
+    },
+    showBranches(whiteboardId) {
+      dispatch(fetchBranches(whiteboardId))
+    },
+    hideBranches() {
+      dispatch(getBranches([]))
     }
   }
 }
