@@ -117,13 +117,13 @@ class ActionPanel extends React.Component {
                   !this.props.whiteboard.voteable ?
                     <li>
                       <a className="btn-floating" id="myBtn" onClick={(evt) => { evt.preventDefault(); this.props.letsVote(this.props.whiteboard.id) }}><i className="material-icons">
-                        thumb_up</i>
+                        flash_on</i>
                       </a>
                     </li>
                     :
                     <li>
                       <a className="btn-floating" id="myBtn" onClick={(evt) => { evt.preventDefault(); this.props.closeVote(this.props.whiteboard.id, this.props.whiteboard.voteable) }}><i className="material-icons">
-                        thumb_down</i>
+                        flash_off</i>
                       </a>
                     </li>
                 }
