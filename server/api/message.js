@@ -11,15 +11,8 @@ router.get('/:whiteboardId', (req, res, next) => {
     .then(messages => res.json(messages))
     .catch(next)
 })
-// // Not being used at this time
-// router.get('/:id', (req, res, next) => {
-//   Message.findById(req.params.id, { include: [{ all: true }] })
-//     .then(message => res.json(message))
-//     .catch(next);
-// })
 
 router.post('/', (req, res, next) => {
-  console.log('Post Req.Body', req.body)
   Message.create(req.body)
     .then(message => {
       Message.findById(message.id, {include: [{all: true}]})

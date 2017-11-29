@@ -26,8 +26,6 @@ class ConferenceRoom extends Component {
   multipleLanes(num) {
     while (num > 0) {
       num--
-      console.log('while loop', num)
-      console.log('swimlaneArray', this.state.swimlaneArray)
       this.state.swimlaneArray.push(<VerticalSwimlane key={num} />)
     }
   }

@@ -8,9 +8,6 @@ class Chatbox extends Component {
   render(){
     return (
       <div className="chat-box">
-        {/* <div className="chat-header">
-          Messages
-       </div> */}
        <div className="popup-box">
       <MessagesList />
       </div>

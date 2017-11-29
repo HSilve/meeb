@@ -1,7 +1,6 @@
 /* eslint-disable complexity */
 import React, { Component } from 'react'
 import ReactPlayer from 'react-player'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Footer } from './index'
 import { insertNote, removeNote, getNotes } from '../store'
@@ -85,14 +84,10 @@ export class Home extends Component {
     var bodyPos = document.body.getBoundingClientRect()
     var whiteboardPos = document.getElementById('mini-whiteboard').getBoundingClientRect()
     var card = document.body.getElementsByClassName('card')[this.state.selectedNote].getBoundingClientRect()
-    console.log(card)
-    console.log(bodyPos)
-    console.log(whiteboardPos)
 
     let valX = currX
     let valY = currY
     let xLeftLimit = whiteboardPos.width + whiteboardPos.left - card.width
-    console.log(xLeftLimit)
     if (currX < whiteboardPos.left) valX = whiteboardPos.left
     else if (currX > xLeftLimit) valX = xLeftLimit
 
@@ -191,7 +186,6 @@ const mapState = state => ({ whiteboard: state.singleWhiteboard, notes: state.no
 const mapDispatch = dispatch => {
   return {
     createNote(note) {
-      console.log(note)
       dispatch(insertNote(note))
     },
     handleRemove(noteId) {

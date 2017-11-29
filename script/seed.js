@@ -171,8 +171,3 @@ seed()
  */
 console.log('seeding...')
 
-
-//message
-//note
-//user
-//whiteboard

@@ -29,7 +29,6 @@ class Whiteboard extends Component {
     this.handleDelete = this.handleDelete.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.changed = debounce(this.props.editNote, 250)
-    // this.handleColorChange = this.handleColorChange.bind(this)
     this.clickConnection = this.clickConnection.bind(this)
     this.handleVote = this.handleVote.bind(this)
     this.showBranches = this.showBranches.bind(this)
@@ -38,9 +37,7 @@ class Whiteboard extends Component {
 
   componentDidMount() {
     const boardId = this.props.match.params.id
-
     this.props.fetchBranches(boardId)
-    console.log(this.props.branches)
   }
 
   componentDidUpdate(props, state) {
@@ -117,8 +114,6 @@ class Whiteboard extends Component {
     })
 
 
-    // this.props.editNote(this.state.selectedNote, { position: [this.state.pos.x, this.state.pos.y] })
-
     evt.stopPropagation()
     evt.preventDefault()
   }
@@ -140,18 +135,11 @@ class Whiteboard extends Component {
     content[this.state.selectedNote] = evt.target.value
     this.setState({ content })
     if (evt.target.value !== '') this.changed(this.state.selectedNote, { text: evt.target.value })
-    // this.setState({ content: '' })
   }
 
   handleConnect(evt, noteId) {
     this.setState({ connectionArray: [...this.state.connectionArray, { noteId, elem: evt.target.getBoundingClientRect()} ] }, function() {
-        console.log(this.state.connectionArray)
         if (this.state.connectionArray.length >= 2) {
-          let firstConnect = this.state.connectionArray[0].elem
-          let secondConnect = this.state.connectionArray[1].elem
-          // let bodyRect = document.body.getBoundingClientRect()
-
-          //have to add attr to created line
           this.props.insertBranch({noteId: this.state.connectionArray[0].noteId, endNoteId: this.state.connectionArray[1].noteId, whiteboardId: this.props.boardId})
           let newArr = this.state.connectionArray.slice(2)
           this.setState({ connectionArray: newArr })
@@ -169,14 +157,14 @@ class Whiteboard extends Component {
           let secondPoints = d3.select(`#card${branch.endNoteId}`).node().getBoundingClientRect()
           if ($(`#line-${branch.id}`).length <= 0) {
             d3.select('#svg').append('line')
-              .attr("x1", window.scrollX + firstPoints.left)
-              .attr("y1", window.scrollY + firstPoints.top)
-              .attr("x2", window.scrollX + secondPoints.left)
-              .attr("y2", window.scrollY + secondPoints.top)
-              .attr("stroke-width", 2)
-              .attr("stroke", "black")
+              .attr('x1', window.scrollX + firstPoints.left)
+              .attr('y1', window.scrollY + firstPoints.top)
+              .attr('x2', window.scrollX + secondPoints.left)
+              .attr('y2', window.scrollY + secondPoints.top)
+              .attr('stroke-width', 2)
+              .attr('stroke', 'black')
               // .attr("position", "absolute")
-              .attr("id", `line-${branch.id}`)
+              .attr('id', `line-${branch.id}`)
           }
         } else {
           setTimeout(this.showBranches, 250)
@@ -185,18 +173,6 @@ class Whiteboard extends Component {
       })
     }
   }
-
-  // handleColorChange = (color) => {
-  //   if (this.state.connectionArray.length) {
-  //     this.state.connectionArray.forEach(note => {
-  //       document.getElementById(`card${note}`).style.background = color.hex
-  //       this.props.editNote(note, { color: color.hex })
-  //       let selectedCard = document.getElementById(`card${note}`)
-  //       selectedCard.style.boxShadow = '0 4px 2px -2px gray'
-  //     })
-  //   }
-  //   this.setState({ connectionArray: [] })
-  // }
 
   clickConnection = (evt, note) => {
 
@@ -210,8 +186,6 @@ class Whiteboard extends Component {
        selectedCard.style.boxShadow = '0 0 20px yellow'
      } else if (connectionArray.indexOf(note.id) !== -1) {
        connectionArray.splice(connectionArray.indexOf(note.id), 1)
-       //let index = array.indexOf(note.id)
-       //array.splice(index, 1)
        this.setState({ connectionArray })
        let selectedCard = document.getElementById(`card${note.id}`)
        selectedCard.style.boxShadow = '0 4px 2px -2px gray'
@@ -228,36 +202,13 @@ class Whiteboard extends Component {
     }
 
 
-
     return (
       <div>
         <div id="whiteboard">
-        {/* <button
-          onClick={this.showBranches}
-          style={{ zIndex: '20' }}
-          >Show Branches
-        </button> */}
-
-        {/* <label>Show Branches</label>
-        <div className="switch">
-          <label>Off<input type="checkbox" onChange={this.showBranches} />
-              <span className="lever" />On
-          </label>
-        </div> */}
-
-        {/* <svg id="basket" width="300" height="250">
-          <g>
-            <rect
-              width="300" height="250"
-              style = {{fill: 'white', stroke: 'white', strokeWidth: 5, opacity: 0.5}} />
-            <text x="4" y="50" fontFamily="Arial" fontSize="35" fill="blue">Your Ideas</text>
-          </g>
-        </svg> */}
           <div id="basket" style={{ float: 'right' }}>
             <b>{this.props.name}</b>
           </div>
-          <svg id="svg" height="1500" width="1500" >
-          </svg>
+
           {
             data && data.map((note) => {
               {
@@ -309,9 +260,7 @@ class Whiteboard extends Component {
                           className="card-content"
                           html={this.state.content[note.id] || note.text}
                           disabled={(userId !== note.userId && userId !== hostId)}
-                          // || ((userId === note.userId || userId === hostId) && !this.state.edit) }
                           onChange={this.handleChange}
-                          // onDoubleClick={() => this.setState({ edit: !this.state.edit })}
                           contentEditable="plaintext-only"
                         />
                       }

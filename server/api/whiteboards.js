@@ -5,22 +5,18 @@ const sendmail = require('sendmail')();
 module.exports = router
 
 router.get('/', (req, res, next) => {
-  Whiteboard.findAll(
-    // { include: [{ all: true, nested: true }] }
-  )
+  Whiteboard.findAll()
     .then(whiteboards => res.json(whiteboards))
     .catch(next)
 })
 router.get('/myRooms/:id', (req, res, next) => {
   User.findById(req.params.id)
     .then(user => {
-      //get all where the user is an attendee
       return user.getWhiteboards({ include: [{ all: true, nested: true }] })
     })
     .then(whiteboards => {
       res.json(whiteboards)
     })
-
     .catch(next)
 })
 router.get('/:whiteboardId', (req, res, next) => {
@@ -40,24 +36,6 @@ router.put('/:whiteboardId', (req, res, next) => {
   .catch(next)
 })
 
-// router.post('/', (req, res, next) => {
-//   let createdWhiteboard = null;
-//   Promise.all([
-//     User.findById(req.body.userId),
-//     Whiteboard.create({
-//       host: req.body.host,
-//       userId: req.body.userId
-//     })])
-//     .then(result => {
-//       const user = result[0]
-//       createdWhiteboard = result[1]
-//       return createdWhiteboard.addUser(user)
-//     })
-//     .then(response => Whiteboard.findById(createdWhiteboard.id, { include: [{ all: true, nested: true }] }))
-//     .then(found => res.json(found))
-//     .catch(next)
-// })
-
 router.post('/', (req, res, next) => {
   Whiteboard.create({
     name: req.body.name,
@@ -70,12 +48,10 @@ router.post('/', (req, res, next) => {
       req.body.attendees.forEach(attendee => {
         room.addUser(attendee.id)
       })
-
       room.addUser(req.body.userId)
       return room;
     })
     .then(board => res.json(board))
-
     .catch(next)
 })
 
@@ -91,7 +67,7 @@ router.delete('/:whiteboardId', (req, res, next) => {
         from: 'IdeaStorm@stormail.com',
         to: data.dataValues.email,
         subject: 'A brainStorm has been canceled',
-        html: group.dataValues.host + ' no longer requires your collaboration on ' + group.dataValues.name + ' which was previously scheduled for: ' + group.dataValues.date + ' at: ' + group.dataValues.startTime + ".",
+        html: group.dataValues.host + ' no longer requires your collaboration on ' + group.dataValues.name + ' which was previously scheduled for: ' + group.dataValues.date + ' at: ' + group.dataValues.startTime + '.',
       }, function(err, reply) {
         console.log(err && err.stack);
         console.dir(reply);
