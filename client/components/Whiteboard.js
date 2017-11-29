@@ -1,9 +1,8 @@
 /* eslint-disable no-lone-blocks */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { editNote, fetchNotes, deleteNote, castVote, fetchRoom, insertBranch, fetchBranches, fetchSingleBranch } from '../store'
+import { editNote, fetchNotes, deleteNote, castVote, fetchRoom, insertBranch, fetchBranches } from '../store'
 import { withRouter } from 'react-router'
-import { TwitterPicker } from 'react-color'
 import ContentEditable from 'react-contenteditable'
 import debounce from 'lodash/debounce'
 import * as d3 from 'd3'
@@ -61,16 +60,13 @@ class Whiteboard extends Component {
   //is calculated, the position is set to null
   onMouseDown(evt) {
     if (evt.button !== 0) return
-    var pos = evt.target.getBoundingClientRect()
-    console.log(`rel: ${evt.clientX} and ${evt.clientY}`)
-    console.log(`evt pageX pageY: ${evt.pageX} and ${evt.pageY}`)
-    console.log(`pos: ${pos.left} and ${pos.top}`)
 
+    let pos = evt.target.getBoundingClientRect()
     this.setState({
       dragging: true,
       rel: {
-        x: evt.screenX - pos.left,
-        y: evt.screenY - pos.top
+        x: evt.pageX - window.scrollX - pos.left,
+        y: evt.pageY - window.scrollY - pos.top
       },
       pos: {
         x: null,
@@ -94,11 +90,10 @@ class Whiteboard extends Component {
   //when state.pos is set to anything but null, the top and left of card is set to state.pos instead of note.position[0] & note.position[1]
   onMouseMove(evt) {
     if (!this.state.dragging) return
-
     this.setState({
       pos: {
-        x: evt.clientX - this.state.rel.x,
-        y: evt.clientY - this.state.rel.y
+        x: evt.pageX - this.state.rel.x,
+        y: evt.pageY - this.state.rel.y
       }
     }, () => {
       this.props.branches
@@ -106,10 +101,10 @@ class Whiteboard extends Component {
           return branch.noteId === this.state.selectedNote || branch.endNoteId === this.state.selectedNote})
         .map(branch => {
           return $(`#line-${branch.id}`).attr({
-              'x1': document.getElementById(`connect-${branch.noteId}`).getBoundingClientRect().x,
-              'y1':  document.getElementById(`connect-${branch.noteId}`).getBoundingClientRect().y,
-              'x2': document.getElementById(`connect-${branch.endNoteId}`).getBoundingClientRect().x,
-              'y2': document.getElementById(`connect-${branch.endNoteId}`).getBoundingClientRect().y
+              x1: document.getElementById(`connect-${branch.noteId}`).getBoundingClientRect().x,
+              y1:  document.getElementById(`connect-${branch.noteId}`).getBoundingClientRect().y,
+              x2: document.getElementById(`connect-${branch.endNoteId}`).getBoundingClientRect().x,
+              y2: document.getElementById(`connect-${branch.endNoteId}`).getBoundingClientRect().y
             })
         })
     })
@@ -166,7 +161,7 @@ class Whiteboard extends Component {
           let firstPoints = d3.select(`#card${branch.noteId}`).node().getBoundingClientRect()
           let secondPoints = d3.select(`#card${branch.endNoteId}`).node().getBoundingClientRect()
           if ($(`#line-${branch.id}`).length <= 0) {
-            d3.select('#svg #svg-g').append('line')
+            d3.select('#svg').append('line')
               .attr("x1", firstPoints.left)
               .attr("y1", firstPoints.top)
               .attr("x2", secondPoints.left)
@@ -247,6 +242,8 @@ class Whiteboard extends Component {
           <div id="basket" style={{ float: 'right' }}>
             <b>{this.props.name}</b>
           </div>
+          <svg id="svg" height="1500" width="1500" >
+          </svg>
           {
             data && data.map((note) => {
               {
@@ -344,6 +341,6 @@ const mapStateToProps = (state) => ({
   name: state.singleWhiteboard.name
 })
 
-const mapDispatchToProps = { editNote, fetchNotes, deleteNote, castVote, fetchRoom, insertBranch, fetchBranches, fetchSingleBranch  }
+const mapDispatchToProps = { editNote, fetchNotes, deleteNote, castVote, fetchRoom, insertBranch, fetchBranches }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Whiteboard));
