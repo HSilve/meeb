@@ -64,6 +64,57 @@ class ConferenceRoom extends Component {
 
           <ActionPanel toggleIt={this.onClickVertical} />
         </div>
+          {/* <!-- The Intro Modal--> */}
+          <div id="introModal" className="modal" style={{display: 'block'}}>
+
+            {/* <!-- Modal content --> */}
+            <div className="modal-content">
+            <div className="row">
+                <div className= "col s6">
+                  <ul><h5>Legend:</h5>
+                    <li><a><i className="material-icons">
+                      format_quote</i></a> : Insert Text
+                    </li>
+                    <li><a><i className="material-icons">
+                        add_a_photo</i></a> : Insert Images
+                    </li>
+                    <li><a><i className="material-icons">
+                        insert_link</i></a> : Insert Images
+                    </li>
+                    <li><a><img src="/icons8-fill-color-30.png" align="center" alt="Branch" /></a> : Color Notes
+                    </li>
+                    <li><a><i className="material-icons">
+                          ⚡️</i></a> : Vote for note
+                    </li>
+                  </ul>
+                </div>
+                <div className= "col s6">
+                  <ul><h5>Host Legend:</h5>
+                  <li><a><i className="material-icons">
+                      view_column</i></a> : Add swimlanes.
+                  </li>
+                  <li><a><i className="material-icons">
+                        thumb_up</i></a>
+                        : Open voting.
+                  </li>
+                  <li><a><i className="material-icons">
+                        thumb_down</i></a>
+                        : Close voting.
+                  </li>
+                  <li><a><i className="material-icons">
+                      close</i></a> : End Session.
+                  </li>
+                </ul>
+              </div>
+          </div>
+          <span
+                onClick={() => {
+                  document.getElementById('introModal').style.display = 'none';
+                }}
+                className="close btn">Start Brainstorming</span>
+            </div>
+
+          </div>
       </div>
     )
   }

@@ -67,7 +67,7 @@ class Profile extends Component {
                         }
 
                         <NavLink className="blue-text text-darken-4" to={`/whiteboards/${result.id}`}>{result.name}</NavLink>
-                        {user.name == result.host &&
+                        {user.id == result.userId &&
                           <span>
                             <span className="badge" >
                               <a className="waves-effect waves-light"><i onClick={event => this.props.deleteARoom(result.id)}

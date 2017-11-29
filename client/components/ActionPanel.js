@@ -83,9 +83,7 @@ class ActionPanel extends React.Component {
                 <li><a className="btn-floating" onClick={() => this.toggle('text')}><i className="material-icons">format_quote</i></a></li>
                 <li><a className="btn-floating" onClick={() => this.toggle('image')}><i className="material-icons">add_a_photo</i></a></li>
                 <li><a className="btn-floating" onClick={() => this.toggle('link')}><i className="material-icons">insert_link</i></a></li>
-                <li><a className="btn-floating" onClick={() => this.setState({ show: !this.state.show })}>
-                  <img src="/icons8-fill-color-30.png" align="center" alt="Branch" />
-                </a>
+                <li><a className="btn-floating" onClick={() => this.setState({ show: !this.state.show })}><i className="material-icons">brush</i></a>
                   {
                     this.state.show ?
                       <TwitterPicker onChange={this.handleColorChange} />
@@ -94,11 +92,11 @@ class ActionPanel extends React.Component {
                 </li>
               </ul>
               <form
-                    id="actionForm"
-                    onSubmit={(evt) => { evt.preventDefault();
-                        this.props.handleSubmit(evt, this.state.file, this.state.name, this.state.type, this.props.user.id, this.props.match.params.id, this.props.notes.length);
-                        this.setState({ expandToggle: false, textToggle: false, imageToggle: false, linkToggle: false }) }}
-                      style={{ bottom: '90px', right: '100px', position: 'fixed' }}>
+                  id="actionForm"
+                  onSubmit={(evt) => { evt.preventDefault();
+                      this.props.handleSubmit(evt, this.state.file, this.state.name, this.state.type, this.props.user.id, this.props.match.params.id, this.props.notes.length);
+                      this.setState({ expandToggle: false, textToggle: false, imageToggle: false, linkToggle: false }) }}
+                    style={{ bottom: '90px', right: '100px', position: 'fixed' }}>
                 {(this.state.textToggle) && <div><input name="text" type="text" /><button type="submit">Insert</button></div>}
                 {(this.state.linkToggle) && <div><input name="link" type="text" /><button type="submit">Insert</button></div>}
                 {this.state.imageToggle &&

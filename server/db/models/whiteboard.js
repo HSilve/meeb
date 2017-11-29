@@ -1,8 +1,6 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
-const sendmail = require('sendmail')();
-const User = require('./user')
-const Attendees = require('./Attendees');
+
 
 const Whiteboard = db.define('whiteboard', {
   host: {

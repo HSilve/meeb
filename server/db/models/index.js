@@ -5,6 +5,7 @@ const Whiteboard = require('./whiteboard');
 const Note = require('./note')
 const Message = require('./message')
 const Attendees = require('./attendees')
+const Branch = require('./branch')
 
 
 /**
@@ -25,6 +26,9 @@ Whiteboard.hasMany(Drawing);
 Message.belongsTo(User);
 Message.belongsTo(Whiteboard);
 
+Note.belongsToMany(Note, { as: 'endNotes', through: Branch })
+Branch.belongsTo(Whiteboard)
+
 
 /**
  * We'll export all of our models here, so that any time a module needs a model,
@@ -33,5 +37,5 @@ Message.belongsTo(Whiteboard);
  * instead of: const User = require('../db/models/user')
  */
 module.exports = {
-  User, Drawing, Stroke, Whiteboard, Note, Message, Attendees
+  User, Drawing, Stroke, Whiteboard, Note, Message, Attendees, Branch
 }
