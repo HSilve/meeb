@@ -44,13 +44,25 @@ async function seed () {
 
   ])
   await Promise.all([
-    Whiteboard.create({name: 'Best Dog Treats', host: 'Cody', userId: 1, startTime: '04:30', date: '2017-10-27'}),
-    Whiteboard.create({name: 'FullStack', host: 'Murphy', userId: 2, startTime: '04:30', date: '2017-11-25'}),
-    Whiteboard.create({name: "Blanca's Room", host: 'Blanca Sanchez', userId: 3, startTime: '02:30', date: '2017-11-27'}),
-    Whiteboard.create({name: "Maria's Room", host: 'Maria Betances', userId: 4, startTime: '03:30', date: '2017-11-27'}),
-    Whiteboard.create({name: 'Chai Tea', host: 'Erica Chai', userId: 5, startTime: '04:45', date: '2017-11-27'}),
-    Whiteboard.create({name: 'A Really Awsome Room ', host: 'Evlis Henry', userId: 6, startTime: '06:30', date: '2017-11-27'}),
+    Whiteboard.create({name: 'Best Dog Treats', host: 'Cody', userId: 1, startTime: '04:30', date: '2017-10-27'})
+  .then(_ =>
+    Whiteboard.create({name: 'FullStack', host: 'Murphy', userId: 2, startTime: '04:30', date: '2017-11-25'})
+  )
+  .then(_ =>
+    Whiteboard.create({name: "Blanca's Room", host: 'Blanca Sanchez', userId: 3, startTime: '02:30', date: '2017-11-27'})
+  )
+  .then(_ =>
+    Whiteboard.create({name: "Maria's Room", host: 'Maria Betances', userId: 4, startTime: '03:30', date: '2017-11-27'})
+  )
+  .then(_ =>
+    Whiteboard.create({name: 'Chai Tea', host: 'Erica Chai', userId: 5, startTime: '04:45', date: '2017-11-27'})
+  )
+  .then(_ =>
+    Whiteboard.create({name: 'A Really Awsome Room ', host: 'Evlis Henry', userId: 6, startTime: '06:30', date: '2017-11-27'})
+  )
+  .then(_ =>
     Whiteboard.create({name: 'Family and Friends Demo Room ', host: 'User A Demo', userId: 7, startTime: '06:00', date: '2017-11-27'})
+  )
   ])
 
   await Promise.all([
@@ -74,9 +86,9 @@ async function seed () {
     Note.create({text: 'Whiskr', userId: 2, whiteboardId: 7, position: [680, 295], color: '#00d084'}),
     Note.create({text: 'CodeNames', userId: 2, whiteboardId: 7, position: [120, 335], color: '#00d084'}),
     Note.create({text: 'Triphub', userId: 2, whiteboardId: 7, position: [800, 500], color: '#00d084'}),
-    Note.create({text: 'Git It Done', userId: 2, whiteboardId: 7, position: [850, 500], color: '#00d084'}),
-    Note.create({text: 'Global Kitchen', userId: 2, whiteboardId: 7, position: [800, 570], color: '#00d084'}),
-    Note.create({text: 'Cowuill', userId: 2, whiteboardId: 7, position: [800, 93], color: '#00d084'})
+    Note.create({text: 'Git It Done', userId: 2, whiteboardId: 7, position: [880, 45], color: '#00d084'}),
+    Note.create({text: 'Global Kitchen', userId: 2, whiteboardId: 7, position: [800, 600], color: '#00d084'}),
+    Note.create({text: 'Cowuill', userId: 2, whiteboardId: 7, position: [920, 93], color: '#00d084'})
 
 
 
@@ -89,6 +101,7 @@ async function seed () {
     Attendees.create({userId: 5, whiteboardId: 1}),
     Attendees.create({userId: 6, whiteboardId: 1}),
     Attendees.create({userId: 1, whiteboardId: 1}),
+
     Attendees.create({userId: 1, whiteboardId: 2}),
     Attendees.create({userId: 5, whiteboardId: 2}),
     Attendees.create({userId: 3, whiteboardId: 2}),
