@@ -41,11 +41,6 @@ export default function LoginSignup () {
             </div>
           </div>
         </div>
-          {/* <div className="row">
-          <div className="col s12 m6 offset-m3"> */}
-
-          {/* </div>
-        </div> */}
       </div>
     )
 }

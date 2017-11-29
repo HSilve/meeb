@@ -37,18 +37,3 @@ router.put('/:whiteboardId', (req, res, next) => {
   .then(user => res.json(user))
   .catch(next)
 })
-
-// router.put('/:whiteboardId', (req, res, next) => {
-//   User.update({attended: true}, {
-//     where: {
-//       id: req.body.userId
-//     },
-//     returning: true,
-//     plain: true,
-//     include: [{model: Whiteboard, through: Attendees,
-//       where: {id: req.params.whiteboardId}
-//     }],
-//   })
-//   .then(user => res.json(user))
-//   .catch(next)
-// })
