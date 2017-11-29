@@ -1,13 +1,14 @@
+
 /* eslint-disable max-params */
 import React from 'react'
 import { connect } from 'react-redux'
 
-import { addNote, closeRoom, openVote, editNote, getBranches, fetchBranches } from '../store'
+import { addNote, closeRoom, openVote, editNote, getBranches,
+  fetchBranches, modifyRoom } from '../store'
 
 import { withRouter } from 'react-router';
 import { VoteResults } from './index';
 import { TwitterPicker } from 'react-color'
-import * as d3 from 'd3'
 
 class ActionPanel extends React.Component {
   constructor(props) {
@@ -18,7 +19,6 @@ class ActionPanel extends React.Component {
       imageToggle: false,
       linkToggle: false,
       drawToggle: false,
-      toggleBranches: true,
       file: [],
       name: '',
       type: '',
@@ -27,6 +27,7 @@ class ActionPanel extends React.Component {
     this.handleFileUpload = this.handleFileUpload.bind(this)
     this.handleColorChange = this.handleColorChange.bind(this)
     this.toggleBranches = this.toggleBranches.bind(this)
+    this.onClickVertical = this.onClickVertical.bind(this)
   }
 
   handleColorChange = (color) => {
@@ -50,12 +51,12 @@ class ActionPanel extends React.Component {
   }
 
   toggleBranches(evt) {
-    evt.preventDefault()
-    this.setState({ toggleBranches: !this.state.toggleBranches }, function() {
-      this.state.toggleBranches ? this.props.showBranches(this.props.whiteboard.id) : this.props.hideBranches()
-      if (!this.state.toggleBranches) d3.selectAll('line').remove()
-    })
-  }
+      evt.preventDefault()
+      this.setState({ toggleBranches: !this.state.toggleBranches }, function() {
+        this.state.toggleBranches ? this.props.showBranches(this.props.whiteboard.id) : this.props.hideBranches()
+        if (!this.state.toggleBranches) d3.selectAll('line').remove()
+      })
+    }
 
   handleFileUpload(evt) {
     evt.preventDefault()
@@ -72,12 +73,22 @@ class ActionPanel extends React.Component {
 
   }
 
+  onClickVertical(evt, num) {
+    evt.preventDefault()
+    if (this.props.whiteboard.swimlane){
+      num = 0
+    }
+    const newWhiteboard = {...this.props.whiteboard, swimlane: num,
+      categories: Array(num).fill('')}
+    this.props.updateRoom(newWhiteboard)
+  }
+
   render() {
     console.log("props", this.props)
     return (
       <div>
         {!this.props.whiteboard.closed &&
-          <div className="fixed-action-btn" style={{ bottom: '45px', right: '24px' }} >
+          <div className="fixed-action-btn" style={{ bottom: '25px', right: '24px' }} >
             <a className="btn-floating btn-large" type="submit" ><i className="material-icons">add</i></a>
 
             <span>
@@ -113,13 +124,13 @@ class ActionPanel extends React.Component {
         {
           this.props.user.id == this.props.whiteboard.userId &&
           !this.props.whiteboard.closed &&
-          <div className="fixed-action-btn horizontal" style={{ bottom: '45px', right: '100px' }} >
+          <div className="fixed-action-btn horizontal" style={{ bottom: '25px', right: '100px' }} >
             <a className="btn-floating btn-large" type="submit" ><i className="material-icons">person</i></a>
 
             <span>
               <ul>
                 <li>
-                  <a className=" btn-floating" id="myBtn" onClick={this.props.toggle}><i className="material-icons">
+                  <a className=" btn-floating" id="myBtn" onClick={(evt) => this.onClickVertical(evt, 3)}><i className="material-icons">
                     view_column
                     </i></a>
                 </li>
@@ -139,15 +150,6 @@ class ActionPanel extends React.Component {
                       </a>
                     </li>
                 }
-
-                { this.props.hostId === this.props.user.id &&
-                  <li>
-                    <a className="btn-floating" id="myBtn" onClick={this.toggleBranches }><i className="material-icons">
-                      device_hub</i>
-                    </a>
-                  </li>
-                }
-
                 <li>
                   <a className="btn-floating" id="myBtn" onClick={() => { document.getElementById('myModal').style.display = 'block'; }}>
                     <i className="material-icons">
@@ -164,11 +166,11 @@ class ActionPanel extends React.Component {
 
           {/* <!-- Modal content --> */}
           <div className="modal-content">
-            <span
+            <button
               onClick={() => {
                 document.getElementById('myModal').style.display = 'none';
               }}
-              className="close">&times;</span>
+              className="close">X</button>
             <h3>End Session </h3>
             <p>Are you sure you want to end collaboration on {this.props.whiteboard.name}? Collaborators will no longer be able to send messages or edit the whiteboard.</p>
             <button onClick={(evt) => { evt.preventDefault(); this.props.handleClose(this.props.whiteboard.id) }}> End Session </button>
@@ -179,11 +181,11 @@ class ActionPanel extends React.Component {
 
           {/* <!-- Modal content --> */}
           <div className="modal-content">
-            <span
+              <button
               onClick={() => {
                 document.getElementById('theVoteResult').style.display = 'none';
               }}
-              className="close">&times;</span>
+              className="close">X</button>
             <h3>Vote Results </h3>
             <VoteResults />
             <button onClick={(evt) => { evt.preventDefault(); this.props.handleClose(this.props.whiteboard.id) }}> End Session </button>
@@ -201,8 +203,7 @@ const mapState = (state, ownProps) => {
     notes: state.notes,
     whiteboard: state.singleWhiteboard,
     toggle: ownProps.toggleIt,
-    update: state.update,
-    hostId: state.singleWhiteboard.userId
+    update: state.update
   }
 }
 
@@ -247,6 +248,9 @@ const mapDispatch = dispatch => {
     },
     hideBranches() {
       dispatch(getBranches([]))
+    },
+    updateRoom(room){
+      dispatch(modifyRoom(room))
     }
   }
 }

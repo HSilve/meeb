@@ -12,7 +12,7 @@ class VoteResults extends Component {
     let array = [];
     for (var i = 0; i < amount; i++) {
       array.push(
-        <i key = {i}  className="material-icons" style={{float: 'left'}}>brightness_low</i>
+        <i key = {i}  className="material-icons" style={{float: 'left'}}>flash_on</i>
       )
     }
     return array;
