@@ -2,11 +2,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { editNote, fetchNotes, deleteNote, castVote, fetchRoom,
-  insertBranch, fetchBranches, getBranches, getNotes, updateNoteArray } from '../store'
+  insertBranch, fetchBranches, getBranches, getNotes,
+  updateNoteArray, modifyRoom } from '../store'
 import { withRouter } from 'react-router'
 import ContentEditable from 'react-contenteditable'
 import debounce from 'lodash/debounce'
 import * as d3 from 'd3'
+import VerticalSwimlane from './VerticalSwimlane'
 
 class Whiteboard extends Component {
   constructor(props) {
@@ -201,14 +203,30 @@ class Whiteboard extends Component {
       data = this.props.notes
     }
 
+    let swimlaneArray = []
+    const {singleWhiteboard} = this.props
+    for (let i = 0; i < singleWhiteboard.swimlane; i++) {
+        swimlaneArray.push(<VerticalSwimlane category={singleWhiteboard.categories[i]} index={i} key={i} />)
+    }
 
     return (
       <div>
+        <div className="row">
+          <div className="col s1 offset s1"></div>
+        {
+            swimlaneArray ?
+              swimlaneArray.map((element) => {
+              return element
+            }
+          )
+        : null
+      }
+      </div>
         <div id="whiteboard">
           <div id="basket" style={{ float: 'right' }}>
             <b>{this.props.name}</b>
           </div>
-          
+
           {/*  This is for branches */}
           <svg id="svg" height={Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight)} width={document.body.getBoundingClientRect().width} >
           </svg>
@@ -300,6 +318,7 @@ class Whiteboard extends Component {
 }
 
 const mapStateToProps = (state) => ({
+  singleWhiteboard: state.singleWhiteboard,
   notes: state.notes,
   boardId: state.singleWhiteboard.id,
   hostId: state.singleWhiteboard.userId,
@@ -310,6 +329,7 @@ const mapStateToProps = (state) => ({
   name: state.singleWhiteboard.name
 })
 
-const mapDispatchToProps = { editNote, fetchNotes, deleteNote, castVote, fetchRoom, insertBranch, fetchBranches, getBranches, getNotes, updateNoteArray }
+const mapDispatchToProps = { editNote, fetchNotes, deleteNote, castVote, fetchRoom,
+  insertBranch, fetchBranches, getBranches, getNotes, updateNoteArray, modifyRoom }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Whiteboard));

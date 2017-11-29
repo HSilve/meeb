@@ -2,7 +2,10 @@
 /* eslint-disable max-params */
 import React from 'react'
 import { connect } from 'react-redux'
-import { addNote, closeRoom, openVote, editNote } from '../store'
+
+import { addNote, closeRoom, openVote, editNote, getBranches,
+  fetchBranches, modifyRoom } from '../store'
+
 import { withRouter } from 'react-router';
 import { VoteResults } from './index';
 import { TwitterPicker } from 'react-color'
@@ -23,6 +26,8 @@ class ActionPanel extends React.Component {
     }
     this.handleFileUpload = this.handleFileUpload.bind(this)
     this.handleColorChange = this.handleColorChange.bind(this)
+    this.toggleBranches = this.toggleBranches.bind(this)
+    this.onClickVertical = this.onClickVertical.bind(this)
   }
 
   handleColorChange = (color) => {
@@ -45,6 +50,14 @@ class ActionPanel extends React.Component {
     else this.setState({ drawToggle: !this.state.drawToggle })
   }
 
+  toggleBranches(evt) {
+      evt.preventDefault()
+      this.setState({ toggleBranches: !this.state.toggleBranches }, function() {
+        this.state.toggleBranches ? this.props.showBranches(this.props.whiteboard.id) : this.props.hideBranches()
+        if (!this.state.toggleBranches) d3.selectAll('line').remove()
+      })
+    }
+
   handleFileUpload(evt) {
     evt.preventDefault()
     let reader = new FileReader();
@@ -58,6 +71,16 @@ class ActionPanel extends React.Component {
       })
     }
 
+  }
+
+  onClickVertical(evt, num) {
+    evt.preventDefault()
+    if (this.props.whiteboard.swimlane){
+      num = 0
+    }
+    const newWhiteboard = {...this.props.whiteboard, swimlane: num,
+      categories: Array(num).fill('')}
+    this.props.updateRoom(newWhiteboard)
   }
 
   render() {
@@ -107,7 +130,7 @@ class ActionPanel extends React.Component {
             <span>
               <ul>
                 <li>
-                  <a className=" btn-floating" id="myBtn" onClick={this.props.toggle}><i className="material-icons">
+                  <a className=" btn-floating" id="myBtn" onClick={(evt) => this.onClickVertical(evt, 3)}><i className="material-icons">
                     view_column
                     </i></a>
                 </li>
@@ -219,6 +242,15 @@ const mapDispatch = dispatch => {
     },
     colorUpdate(note, color) {
       dispatch(editNote(note, color))
+    },
+    showBranches(whiteboardId) {
+      dispatch(fetchBranches(whiteboardId))
+    },
+    hideBranches() {
+      dispatch(getBranches([]))
+    },
+    updateRoom(room){
+      dispatch(modifyRoom(room))
     }
   }
 }
