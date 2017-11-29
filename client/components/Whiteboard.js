@@ -211,7 +211,7 @@ class Whiteboard extends Component {
 
     return (
       <div>
-        <div className="row">
+        <div className="row" style={{ position: 'absolute', width: '100%', zIndex: '-5' }}>
           <div className="col s1 offset s1"></div>
         {
             swimlaneArray ?
