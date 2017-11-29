@@ -2,7 +2,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import { addNote, closeRoom, openVote, editNote } from '../store'
+import { addNote, closeRoom, openVote, editNote, getBranches, fetchBranches } from '../store'
 
 import { withRouter } from 'react-router';
 import { VoteResults } from './index';

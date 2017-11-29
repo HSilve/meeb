@@ -208,6 +208,11 @@ class Whiteboard extends Component {
           <div id="basket" style={{ float: 'right' }}>
             <b>{this.props.name}</b>
           </div>
+          
+          {/*  This is for branches */}
+          <svg id="svg" height={Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight)} width={document.body.getBoundingClientRect().width} >
+          </svg>
+
 
           {
             data && data.map((note) => {
