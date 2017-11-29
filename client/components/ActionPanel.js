@@ -1,4 +1,3 @@
-
 /* eslint-disable max-params */
 import React from 'react'
 import { connect } from 'react-redux'
@@ -7,6 +6,7 @@ import { addNote, closeRoom, openVote, editNote, fetchBranches, getBranches } fr
 import { withRouter } from 'react-router';
 import { VoteResults } from './index';
 import { TwitterPicker } from 'react-color'
+import * as d3 from 'd3'
 
 class ActionPanel extends React.Component {
   constructor(props) {
@@ -52,6 +52,7 @@ class ActionPanel extends React.Component {
     evt.preventDefault()
     this.setState({ toggleBranches: !this.state.toggleBranches }, function() {
       this.state.toggleBranches ? this.props.showBranches(this.props.whiteboard.id) : this.props.hideBranches()
+      if (!this.state.toggleBranches) d3.selectAll('line').remove()
     })
   }
 
@@ -148,16 +149,13 @@ class ActionPanel extends React.Component {
                 }
 
                 { this.props.hostId === this.props.user.id &&
-
                   <li>
                     <a className="btn-floating" id="myBtn" onClick={this.toggleBranches }><i className="material-icons">
                       device_hub</i>
                     </a>
                   </li>
-
-
-
                 }
+
                 <li>
                   <a className="btn-floating" id="myBtn" onClick={() => { document.getElementById('myModal').style.display = 'block'; }}>
                     <i className="material-icons">
