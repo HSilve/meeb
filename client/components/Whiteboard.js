@@ -187,9 +187,8 @@ class Whiteboard extends Component {
                             onMouseDown={(evt) => { this.setState({ selectedNote: note.id }); this.onMouseDown(evt) }}
                             style={{ borderRadius: '25px' }}
                           > Drag
-
-                    </button>
-                          <button value={note.id} onClick={(evt) => { this.clickConnection(evt, note) }}>edit</button>
+                          </button>
+                          <button value={note.id} onClick={(evt) => { this.clickConnection(evt, note) }}>Select</button>
                           {this.props.vote &&
                             <div style={{ float: 'right' }} >
                               <button value={note.id} onClick={this.handleVote}>⚡️</button>
