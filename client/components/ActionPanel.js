@@ -1,8 +1,9 @@
 /* eslint-disable max-params */
 import React from 'react'
 import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
-import { addNote, closeRoom, openVote, editNote, fetchBranches, getBranches } from '../store'
+
+import { addNote, closeRoom, openVote, editNote } from '../store'
+
 import { withRouter } from 'react-router';
 import { VoteResults } from './index';
 import { TwitterPicker } from 'react-color'
@@ -68,20 +69,11 @@ class ActionPanel extends React.Component {
         type: imageFile.type
       })
     }
-    // this.onClickVertical = this.onClickVertical.bind(this)
 
   }
 
-  // onClickVertical(evt) {
-  //   evt.preventDefault()
-  //   if (this.props.getRoom.swimlaneArray.length) {
-  //     this.props.editState({ swimlaneArray: [] })
-  //   }
-  //   this.props.editState({ verticalSwimlane: !this.state.verticalSwimlane })
-  //   this.props.lanes(3)
-  // }
-
   render() {
+    console.log("props", this.props)
     return (
       <div>
         {!this.props.whiteboard.closed &&
@@ -137,13 +129,13 @@ class ActionPanel extends React.Component {
                   !this.props.whiteboard.voteable ?
                     <li>
                       <a className="btn-floating" id="myBtn" onClick={(evt) => { evt.preventDefault(); this.props.letsVote(this.props.whiteboard.id) }}><i className="material-icons">
-                        thumb_up</i>
+                        flash_on</i>
                       </a>
                     </li>
                     :
                     <li>
                       <a className="btn-floating" id="myBtn" onClick={(evt) => { evt.preventDefault(); this.props.closeVote(this.props.whiteboard.id, this.props.whiteboard.voteable) }}><i className="material-icons">
-                        thumb_down</i>
+                        flash_off</i>
                       </a>
                     </li>
                 }

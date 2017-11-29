@@ -65,41 +65,53 @@ class ConferenceRoom extends Component {
             {/* <!-- Modal content --> */}
             <div className="modal-content">
             <div className="row">
-                <div className= "col s6">
-                  <ul><h5>Legend:</h5>
-                    <li><a><i className="material-icons">
+
+                <div className= "col s4">
+                <table className= "striped bordered">
+                <thead>
+                  <tr><h5><i className="material-icons">add</i>Legend:</h5></tr>
+                </thead>
+                <tbody>
+                    <tr><a><i className="material-icons">
                       format_quote</i></a> : Insert Text
-                    </li>
-                    <li><a><i className="material-icons">
+                    </tr>
+                    <tr><a><i className="material-icons">
                         add_a_photo</i></a> : Insert Images
-                    </li>
-                    <li><a><i className="material-icons">
+                    </tr>
+                    <tr><a><i className="material-icons">
                         insert_link</i></a> : Insert Images
-                    </li>
-                    <li><a><img src="/icons8-fill-color-30.png" align="center" alt="Branch" /></a> : Color Notes
-                    </li>
-                    <li><a><i className="material-icons">
+                    </tr>
+                    <tr><a><i className="material-icons">
+                        brush</i></a> : Color Notes
+                    </tr>
+                    <tr><a><i className="material-icons">
                           ⚡️</i></a> : Vote for note
-                    </li>
-                  </ul>
+                    </tr>
+                </tbody>
+                </table>
                 </div>
-                <div className= "col s6">
-                  <ul><h5>Host Legend:</h5>
-                  <li><a><i className="material-icons">
-                      view_column</i></a> : Add swimlanes.
-                  </li>
-                  <li><a><i className="material-icons">
-                        thumb_up</i></a>
-                        : Open voting.
-                  </li>
-                  <li><a><i className="material-icons">
-                        thumb_down</i></a>
-                        : Close voting.
-                  </li>
-                  <li><a><i className="material-icons">
-                      close</i></a> : End Session.
-                  </li>
-                </ul>
+                <div className= "col s4">
+                <table className= "striped bordered">
+                <thead>
+                  <tr><h5><i className="material-icons">person</i>Host Legend:</h5></tr>
+                </thead>
+                <tbody>
+                  <tr><a><i className="material-icons">
+                      view_column</i></a> : Add swimlanes
+                  </tr>
+                  <tr><a><i className="material-icons">
+                        flash_on</i></a>
+                        : Open voting
+                  </tr>
+                  <tr><a><i className="material-icons">
+                        flash_off</i></a>
+                        : Close voting
+                  </tr>
+                  <tr><a><i className="material-icons">
+                      close</i></a> : End Session
+                  </tr>
+              </tbody>
+              </table>
               </div>
           </div>
           <span
