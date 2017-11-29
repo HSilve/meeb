@@ -19,15 +19,28 @@ async function seed () {
   // executed until that promise resolves!
 
   await Promise.all([
-    User.create({email: 'cody@email.com', password: '123', name: 'Cody D. Dog'}),
-    User.create({email: 'murphy@email.com', password: '123', name: 'Murphy A. Law'}),
-    User.create({email: 'Blanca@email.com', password: '456', name: 'Blanca Sanchez'}),
-    User.create({email: 'Maria@email.com', password: '456', name: 'Maria Betances'}),
-    User.create({email: 'Erica@email.com', password: '456', name: 'Erica Chai'}),
-    User.create({email: 'Evlis@email.com', password: '456', name: 'Evlis Henry'}),
-    User.create({email: 'Demo1@email.com', password: '456', name: 'User A Demo'}),
+    User.create({email: 'cody@email.com', password: '123', name: 'Cody D. Dog'})
+    .then(_ =>
+    User.create({email: 'murphy@email.com', password: '123', name: 'Murphy A. Law'})
+    )
+    .then(_ =>
+    User.create({email: 'Blanca@email.com', password: '456', name: 'Blanca Sanchez'})
+  )
+  .then(_ =>
+    User.create({email: 'Maria@email.com', password: '456', name: 'Maria Betances'})
+  )
+  .then(_ =>
+    User.create({email: 'Erica@email.com', password: '456', name: 'Erica Chai'})
+  )
+  .then(_ =>
+    User.create({email: 'Evlis@email.com', password: '456', name: 'Evlis Henry'})
+  )
+  .then(_ =>
+    User.create({email: 'Demo1@email.com', password: '456', name: 'User A Demo'})
+  )
+  .then(_ =>
     User.create({email: 'Demo2@email.com', password: '456', name: 'User B Demo'})
-
+  )
 
   ])
   await Promise.all([
