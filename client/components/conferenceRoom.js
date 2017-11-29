@@ -76,7 +76,8 @@ class ConferenceRoom extends Component {
                     <li><a><i className="material-icons">
                         insert_link</i></a> : Insert Images
                     </li>
-                    <li><a><img src="/icons8-fill-color-30.png" align="center" alt="Branch" /></a> : Color Notes
+                    <li><a><i className="material-icons">
+                        brush</i></a> : Color Notes
                     </li>
                     <li><a><i className="material-icons">
                           ⚡️</i></a> : Vote for note
