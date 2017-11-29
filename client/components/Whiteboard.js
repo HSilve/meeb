@@ -302,7 +302,6 @@ const mapStateToProps = (state) => ({
   open: !state.singleWhiteboard.closed,
   vote: state.singleWhiteboard.voteable,
   branches: state.branches,
-  singleBranch: state.singleBranch,
   name: state.singleWhiteboard.name
 })
 
