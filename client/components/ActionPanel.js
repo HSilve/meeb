@@ -65,7 +65,7 @@ class ActionPanel extends React.Component {
     return (
       <div>
         {!this.props.whiteboard.closed &&
-          <div className="fixed-action-btn horizontal" style={{ bottom: '80px', right: '100px' }} >
+          <div className="fixed-action-btn" style={{ bottom: '25px', right: '24px' }} >
             <a className="btn-floating btn-large" type="submit" ><i className="material-icons">add</i></a>
 
             <span>
@@ -101,7 +101,7 @@ class ActionPanel extends React.Component {
         {
           this.props.user.id == this.props.whiteboard.userId &&
           !this.props.whiteboard.closed &&
-          <div className="fixed-action-btn" style={{ bottom: '80px', right: '24px' }} >
+          <div className="fixed-action-btn horizontal" style={{ bottom: '25px', right: '100px' }} >
             <a className="btn-floating btn-large" type="submit" ><i className="material-icons">person</i></a>
 
             <span>
