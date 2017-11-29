@@ -1,16 +1,4 @@
 
-//
-// let sockets = new Map()
-// function broadcast(fromSocket, ...msg) {
-//   console.log('broadcast from', fromSocket.id)
-//   for (let sock of sockets.values()) {
-//     console.log('  ...to', sock.id, '?')
-//     if (sock.id !== fromSocket.id) {
-//       console.log('   -> sending', msg)
-//       sock.emit(...msg)
-//     }
-//   }
-// }
 //whiteboards available:
 module.exports = (io) => {
   io.on('connection', (socket) => {
@@ -49,7 +37,6 @@ module.exports = (io) => {
     socket.on('new-message', (message) => {
       console.log('room', message.whiteboardId, 'has a new-message', message)
       socket.broadcast.to(message.whiteboardId).emit('new-message', message);
-      // broadcast(socket, 'new-message', message)
       console.log('broadcast done')
     })
 
@@ -70,10 +57,8 @@ module.exports = (io) => {
     })
     socket.on('end-session', (whiteboard => {
       socket.broadcast.to(whiteboard.id).emit('end-session', whiteboard)
-      // socket.disconnectRoom(whiteboard.id)
     }))
     socket.on('disconnect', () => {
-      // sockets.delete(socket.id)
       console.log(`Connection ${socket.id} has left the building`)
     })
 

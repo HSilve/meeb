@@ -37,8 +37,8 @@ class Profile extends Component {
     var hours = dateObj.getHours();
     var minutes = dateObj.getMinutes();
 
-    var newdate = year + "-" + month + "-" + day;
-    var newtime = hours + ":" + minutes;
+    var newdate = year + '-' + month + '-' + day;
+    var newtime = hours + ':' + minutes;
 
     return (
       <div className="row">
@@ -60,7 +60,7 @@ class Profile extends Component {
                     return (
                       <div key={result.id} className="collection-item">
 
-                        <span></span>
+                        <span />
                         {
                           result.startTime <= newtime && !result.endtime ?
                             <a className="btn btn-floating btn-small center pulse"><i className="material-icons">cloud</i></a> : ''
@@ -70,16 +70,16 @@ class Profile extends Component {
                         {user.id == result.userId &&
                           <span>
                             <span className="badge" >
-                              <a className="waves-effect waves-light"><i onClick={event => this.props.deleteARoom(result.id)}
+                              <a className="waves-effect waves-light"><i
+onClick={event => this.props.deleteARoom(result.id)}
                                 className="material-icons icon-grey">delete</i>
                               </a>
                             </span>
-                            <span className="new badge" data-badge-caption="Hosted"></span>
+                            <span className="new badge" data-badge-caption="Hosted" />
 
                           </span>
 
                         }
-
 
 
                       </div>
@@ -88,19 +88,6 @@ class Profile extends Component {
               }
             </div>
           </div>
-          {/* <div className="grid example col s4">
-            <a className="waves-effect waves-light btn" onClick={() => this.setState({ show: !show })}>Create New Session</a>
-            {
-              show ?
-                <span>
-                  <h5 href="#">
-                    <i alt="Brand" >
-                    </i>
-                  </h5>
-                  <NewSessionForm />
-                </span> : null
-            }
-          </div> */}
         </div>
 
         <div className="row">
@@ -123,11 +110,12 @@ class Profile extends Component {
                         {user.name == result.host ?
                           <span>
                             <span className="badge" >
-                              <a className="waves-effect waves-light"><i onClick={event => this.props.deleteARoom(result.id)}
+                              <a className="waves-effect waves-light"><i
+onClick={event => this.props.deleteARoom(result.id)}
                                 className="material-icons icon-grey">delete</i>
                               </a>
                             </span>
-                            <span className="new badge" data-badge-caption="Hosted"></span>
+                            <span className="new badge" data-badge-caption="Hosted" />
 
                           </span>
                           : ''}
@@ -164,7 +152,7 @@ class Profile extends Component {
                               <a className="waves-effect waves-light"><i onClick={event => this.props.deleteARoom(result.id)} className="material-icons icon-grey">delete</i>
                               </a>
                             </span>
-                            <span className="new badge" data-badge-caption="Hosted"></span>
+                            <span className="new badge" data-badge-caption="Hosted" />
 
                           </span>
                         }
@@ -185,8 +173,7 @@ class Profile extends Component {
               show ?
                 <span>
                   <h5 href="#">
-                    <i alt="Brand" >
-                    </i>
+                    <i alt="Brand"  />
                   </h5>
                   <NewSessionForm />
                 </span> : null

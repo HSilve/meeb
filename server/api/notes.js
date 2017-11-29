@@ -71,7 +71,7 @@ router.put('/vote/:id', (req, res, next) => {
 router.put('/:id', (req, res, next) => {
   Note.findById(req.params.id)
   .then(note => {
-    return note.update(req.body,{
+    return note.update(req.body, {
       returning: true,
       plain: true
     })
@@ -81,8 +81,6 @@ router.put('/:id', (req, res, next) => {
     })
     .catch(next);
 })
-
-
 
 router.delete('/:id', (req, res, next) => {
   const id = req.params.id

@@ -20,15 +20,9 @@ class VoteResults extends Component {
   render() {
       return (
         <div>
-           {/* <table>
-             <tbody> */}
           {
           this.props.notes.map(note => {
             return (
-            // <tr key={note.id}>
-            //   <td>{note.text}</td>
-            //   <td>{this.makeRectangles(note.votes)}</td>
-            // </tr>
             <div key={note.id} className="row" >
               <div className="col s3">{note.text}</div>
               <div>{this.makeRectangles(note.votes)}</div>
@@ -36,9 +30,6 @@ class VoteResults extends Component {
             )
           })
           }
-
-          {/* </tbody>
-        </table> */}
         </div>
       );
     }

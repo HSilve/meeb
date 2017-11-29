@@ -43,32 +43,20 @@ export const addMessage = (message) => dispatch => {
   })
 }
 
-
 export const removeMessage = id => dispatch => {
   dispatch(deleteMessage(id));
   axios.delete(`/api/message/${id}`)
     .catch(err => console.error(`Could not remove ${id}!`, err));
 };
 
-
-// REDUCER
 export default function reducer (state = {allMessages: [], id: {}}, action) {
 
   switch (action.type) {
-
     case GET_MESSAGES:
       return {...state, allMessages: action.messages}
-
-    // case DELETE_MESSAGE:
-    //   return state.filter(message => message.id !== action.id);
-
-    // case POST_MESSAGE:
-      // return {...state, allMessages: state.allMessages.concat(action.message)}
     case POST_MESSAGE:
       return {...state, allMessages: [action.message, ...state.allMessages]}
-
     default:
       return state;
   }
-
 }

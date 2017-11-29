@@ -1,8 +1,5 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
-const sendmail = require('sendmail')();
-const User = require('./user')
-const Attendees = require('./Attendees');
 
 const Whiteboard = db.define('whiteboard', {
   host: {
@@ -35,45 +32,5 @@ const Whiteboard = db.define('whiteboard', {
   }
 
 })
-
-// Whiteboard.beforeBulkDestroy(({where, individualHooks}) => {
-//   console.log("I am trying to delete this board. Here it is", where.id, "and this", individualHooks)
-
-//   let host, boardName, boardDate, boardTime;
-//   const boardId  = where.id;
-//   Whiteboard.findById(boardId, {include: [{all: true, nested: true}]})
-//   .then(board => {
-//     console.log("this is the board", board.dataValues)
-//     let meeting = board.dataValues;
-//     host = meeting.host;
-//     boardName = meeting.name;
-//     boardDate = meeting.date;
-//     boardTime = meeting.startTime;
-//   })
-//   // .then(_ => Attendees.findAll({where: {whiteboardId: boardId}}))
-//   // .then(pairs => {
-//   //   console.log("this is the attendees data", pairs)
-//   // })
-//   // .then(_ => {
-//   //       // group.forEach(pair => {
-//   //       //   User.findById(pair.userId)
-//   //       //   .then(userData => {
-//   //       //     sendmail({
-//   //       //       from: 'IdeaStorm@stormail.com',
-//   //       //       to: userData.dataValues.email,
-//   //       //       subject: 'An invite to brainstorm',
-//   //       //       html: host + ' has invited you to collaborate on ' + boardName + ' on: ' + boardDate + ' at: ' + boardTime + ".",
-//   //       //     }, function(err, reply) {
-//   //       //       console.log(err && err.stack);
-//   //       //       console.dir(reply);
-//   //       //   });
-//   //       //   })
-//   //       // })
-//   // })
-//   .catch(err => {console.log(err)})
-
-
-// })
-
 
 module.exports = Whiteboard

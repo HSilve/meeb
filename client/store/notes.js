@@ -1,6 +1,5 @@
 import axios from 'axios'
 import socket from '../socket';
-import { addNoteToBoard } from './whiteboard'
 
 const GET_NOTES = 'GET_NOTES'
 const INSERT_NOTE = 'ADD_NOTE'
@@ -13,7 +12,6 @@ export const insertNote = note => ({ type: INSERT_NOTE, note })
 export const removeNote = noteId => ({ type: REMOVE_NOTE, noteId })
 export const updateNote = note => ({ type: UPDATE_NOTE, note })
 
-// takes in whiteboardId and returns all notes in the selected whiteboard
 export const fetchNotes = whiteboardId =>
   dispatch =>
     axios.get(`/api/whiteboards/${whiteboardId}`)
@@ -61,7 +59,6 @@ export const castVote = noteId => dispatch => {
 export default function (state = defaultNotes, action) {
   switch (action.type) {
     case GET_NOTES:
-      console.log(action.notes)
       return action.notes
     case INSERT_NOTE:
       return state.concat(action.note)
