@@ -36,19 +36,7 @@ class VerticalSwimlane extends Component{
     let text= ''
     return(
       <div>
-        <div className="row">
-          <div className="col s1"></div>
-          <div className="col s1"></div>
-          <div className="col s1"></div>
-          <div className="col s1"></div>
-          <div className="col s1"></div>
-          <div className="col s1"></div>
-          <div className="col s1"></div>
-          <div className="col s1"></div>
-          <div className="col s1"></div>
-          <div className="col s1"></div>
-          <div className="col s1"></div>
-          <div className="col s12">
+          <div className="col s4">5
             <div className="card-panel teal lighten-5" id="categoryName">
               <form onSubmit={(evt) => this.onSubmit(evt)}>
                 <input type="text" className="center-align"
@@ -67,10 +55,9 @@ class VerticalSwimlane extends Component{
             <div>
             </div>
             </div>
-            <svg className="verticalSwimlane">
-            </svg>
+            <div className="verticalSwimlane">
+            </div>
           </div>
-        </div>
       </div>
     )
   }

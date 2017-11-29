@@ -2,11 +2,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { editNote, fetchNotes, deleteNote, castVote, fetchRoom,
-  insertBranch, fetchBranches, getBranches, getNotes, updateNoteArray } from '../store'
+  insertBranch, fetchBranches, getBranches, getNotes,
+  updateNoteArray, modifyRoom } from '../store'
 import { withRouter } from 'react-router'
 import ContentEditable from 'react-contenteditable'
 import debounce from 'lodash/debounce'
 import * as d3 from 'd3'
+import VerticalSwimlane from './VerticalSwimlane'
 
 class Whiteboard extends Component {
   constructor(props) {
@@ -33,14 +35,14 @@ class Whiteboard extends Component {
     this.clickConnection = this.clickConnection.bind(this)
     this.handleVote = this.handleVote.bind(this)
     this.showBranches = this.showBranches.bind(this)
+    this.onClickVertical = this.onClickVertical.bind(this)
   }
 
 
   componentDidMount() {
     const boardId = this.props.match.params.id
-
     this.props.fetchBranches(boardId)
-    console.log(this.props.branches)
+
   }
 
   componentDidUpdate(props, state) {
@@ -220,6 +222,13 @@ class Whiteboard extends Component {
 
    }
 
+   onClickVertical(evt, num) {
+     evt.preventDefault()
+     const newWhiteboard = {...this.props.singleWhiteboard, swimlane: num,
+       categories: Array(num).fill('')}
+     this.props.modifyRoom(newWhiteboard)
+   }
+
   render() {
     const { userId, hostId } = this.props
     let data = [];
@@ -227,10 +236,25 @@ class Whiteboard extends Component {
       data = this.props.notes
     }
 
+    let swimlaneArray = []
+    const {singleWhiteboard} = this.props
+    for (let i = 0; i < singleWhiteboard.swimlane; i++) {
+        swimlaneArray.push(<VerticalSwimlane category={singleWhiteboard.categories[i]} index={i} key={i} />)
+    }
 
 
     return (
       <div>
+        <div className="row">
+        {
+            swimlaneArray ?
+              swimlaneArray.map((element) => {
+              return element
+            }
+          )
+        : null
+      }
+      </div>
         <div id="whiteboard">
         {/* <button
           onClick={this.showBranches}
@@ -253,10 +277,10 @@ class Whiteboard extends Component {
             <text x="4" y="50" fontFamily="Arial" fontSize="35" fill="blue">Your Ideas</text>
           </g>
         </svg> */}
-          <div id="basket" style={{ float: 'right' }}>
+          <svg id="basket" style={{ float: 'right' }}>
             <b>{this.props.name}</b>
-          </div>
-          <svg id="svg" height="1500" width="1500" >
+          </svg>
+          <svg id="svg" height="500" width="1600" >
           </svg>
           {
             data && data.map((note) => {
@@ -340,12 +364,24 @@ class Whiteboard extends Component {
             this.showBranches()
           }
         </div>
+        <div className="fixed-action-btn horizontal click-to-toggle" id="laneButton">
+          <a className="btn-floating btn-large red">
+            <i className="material-icons">menu</i>
+          </a>
+          <ul>
+            <li><a className="btn-floating red" onClick={(evt) => this.onClickVertical(evt, 3)}><i className="material-icons"></i></a></li>
+            <li><a className="btn-floating yellow darken-1" onClick={(evt) => this.onClickVertical(evt, 4)}><i className="material-icons"></i></a></li>
+            <li><a className="btn-floating green" onClick={(evt) => this.onClickVertical(evt, 2)}><i className="material-icons"></i></a></li>
+            <li><a className="btn-floating pink" onClick={(evt) => this.onClickVertical(evt, 0)}><i className="material-icons"></i></a></li>
+          </ul>
+        </div>
       </div>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
+  singleWhiteboard: state.singleWhiteboard,
   notes: state.notes,
   boardId: state.singleWhiteboard.id,
   hostId: state.singleWhiteboard.userId,
@@ -357,6 +393,7 @@ const mapStateToProps = (state) => ({
   name: state.singleWhiteboard.name
 })
 
-const mapDispatchToProps = { editNote, fetchNotes, deleteNote, castVote, fetchRoom, insertBranch, fetchBranches, getBranches, getNotes, updateNoteArray }
+const mapDispatchToProps = { editNote, fetchNotes, deleteNote, castVote, fetchRoom,
+  insertBranch, fetchBranches, getBranches, getNotes, updateNoteArray, modifyRoom }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Whiteboard));
