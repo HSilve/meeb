@@ -1,7 +1,8 @@
 /* eslint-disable no-lone-blocks */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { editNote, fetchNotes, deleteNote, castVote, fetchRoom, insertBranch, fetchBranches, getBranches, getNotes } from '../store'
+import { editNote, fetchNotes, deleteNote, castVote, fetchRoom,
+  insertBranch, fetchBranches, getBranches, getNotes, updateNoteArray } from '../store'
 import { withRouter } from 'react-router'
 import ContentEditable from 'react-contenteditable'
 import debounce from 'lodash/debounce'
@@ -28,7 +29,7 @@ class Whiteboard extends Component {
     this.handleDelete = this.handleDelete.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.changed = debounce(this.props.editNote, 250)
-    this.handleColorChange = this.handleColorChange.bind(this)
+    // this.handleColorChange = this.handleColorChange.bind(this)
     this.clickConnection = this.clickConnection.bind(this)
     this.handleVote = this.handleVote.bind(this)
     this.showBranches = this.showBranches.bind(this)
@@ -185,32 +186,39 @@ class Whiteboard extends Component {
     }
   }
 
-  handleColorChange = (color) => {
-    if (this.state.connectionArray.length) {
-      this.state.connectionArray.forEach(note => {
-        document.getElementById(`card${note}`).style.background = color.hex
-        this.props.editNote(note, { color: color.hex })
-        let selectedCard = document.getElementById(`card${note}`)
-        selectedCard.style.boxShadow = '0 4px 2px -2px gray'
-      })
-    }
-    this.setState({ connectionArray: [] })
-  }
+  // handleColorChange = (color) => {
+  //   if (this.state.connectionArray.length) {
+  //     this.state.connectionArray.forEach(note => {
+  //       document.getElementById(`card${note}`).style.background = color.hex
+  //       this.props.editNote(note, { color: color.hex })
+  //       let selectedCard = document.getElementById(`card${note}`)
+  //       selectedCard.style.boxShadow = '0 4px 2px -2px gray'
+  //     })
+  //   }
+  //   this.setState({ connectionArray: [] })
+  // }
 
   clickConnection = (evt, note) => {
-    if (this.state.connectionArray.indexOf(note.id) === -1 && note.id !== 0) {
-      this.setState({ connectionArray: [...this.state.connectionArray, note.id] })
-      let selectedCard = document.getElementById(`card${note.id}`)
-      selectedCard.style.boxShadow = '0 0 20px yellow'
-    } else if (note.id !== 0) {
-      let array = this.state.connectionArray
-      let index = array.indexOf(note.id)
-      array.splice(index, 1)
-      this.setState({ connectionArray: array })
-      let selectedCard = document.getElementById(`card${note.id}`)
-      selectedCard.style.boxShadow = '0 4px 2px -2px gray'
-    }
-  }
+
+     const { connectionArray } = this.state;
+
+     if (connectionArray.indexOf(note.id) === -1) {
+       let tempArr = connectionArray;
+       tempArr.push(note.id);
+       this.setState({ connectionArray: tempArr })
+       let selectedCard = document.getElementById(`card${note.id}`)
+       selectedCard.style.boxShadow = '0 0 20px yellow'
+     } else if (connectionArray.indexOf(note.id) !== -1) {
+       connectionArray.splice(connectionArray.indexOf(note.id), 1)
+       //let index = array.indexOf(note.id)
+       //array.splice(index, 1)
+       this.setState({ connectionArray })
+       let selectedCard = document.getElementById(`card${note.id}`)
+       selectedCard.style.boxShadow = '0 4px 2px -2px gray'
+     }
+     this.props.updateNoteArray(connectionArray);
+
+   }
 
   render() {
     const { userId, hostId } = this.props
@@ -349,6 +357,6 @@ const mapStateToProps = (state) => ({
   name: state.singleWhiteboard.name
 })
 
-const mapDispatchToProps = { editNote, fetchNotes, deleteNote, castVote, fetchRoom, insertBranch, fetchBranches, getBranches, getNotes }
+const mapDispatchToProps = { editNote, fetchNotes, deleteNote, castVote, fetchRoom, insertBranch, fetchBranches, getBranches, getNotes, updateNoteArray }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Whiteboard));
