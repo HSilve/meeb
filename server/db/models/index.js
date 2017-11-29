@@ -12,7 +12,6 @@ Whiteboard.belongsToMany(User, { through: Attendees });
 User.belongsToMany(Whiteboard, { through: Attendees });
 Whiteboard.belongsTo(User);
 Whiteboard.hasMany(Note);
-Whiteboard.hasMany(Drawing);
 Message.belongsTo(User);
 Message.belongsTo(Whiteboard);
 
