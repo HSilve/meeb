@@ -48,8 +48,8 @@ async function seed () {
     Whiteboard.create({name: 'FullStack', host: 'Murphy', userId: 2, startTime: '04:30', date: '2017-11-25'}),
     Whiteboard.create({name: "Blanca's Room", host: 'Blanca Sanchez', userId: 3, startTime: '02:30', date: '2017-11-27'}),
     Whiteboard.create({name: "Maria's Room", host: 'Maria Betances', userId: 4, startTime: '03:30', date: '2017-11-27'}),
-    Whiteboard.create({name: 'Chai Tea', host: 'Erica Chai', userId: 6, startTime: '04:45', date: '2017-11-27'}),
-    Whiteboard.create({name: 'A Really Awsome Room ', host: 'Evlis Henry', userId: 5, startTime: '06:30', date: '2017-11-27'}),
+    Whiteboard.create({name: 'Chai Tea', host: 'Erica Chai', userId: 5, startTime: '04:45', date: '2017-11-27'}),
+    Whiteboard.create({name: 'A Really Awsome Room ', host: 'Evlis Henry', userId: 6, startTime: '06:30', date: '2017-11-27'}),
     Whiteboard.create({name: 'Family and Friends Demo Room ', host: 'User A Demo', userId: 7, startTime: '06:00', date: '2017-11-27'})
   ])
 
