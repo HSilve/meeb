@@ -2,11 +2,7 @@ import React, { Component } from 'react'
 import { Sidebar, Whiteboard, ActionPanel, Attendees } from './index'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
-<<<<<<< HEAD
 import {announceCollaborator, fetchCollaborators, fetchRoom, modifyRoom} from '../store'
-=======
-import { announceCollaborator, fetchCollaborators, fetchRoom } from '../store'
->>>>>>> origin/master
 import VerticalSwimlane from './VerticalSwimlane'
 
 class ConferenceRoom extends Component {
