@@ -1,12 +1,14 @@
-
 /* eslint-disable max-params */
 import React from 'react'
 import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
-import { addNote, closeRoom, openVote, editNote } from '../store'
+
+import { addNote, closeRoom, openVote, editNote, getBranches,
+  fetchBranches, modifyRoom } from '../store'
+
 import { withRouter } from 'react-router';
 import { VoteResults } from './index';
 import { TwitterPicker } from 'react-color'
+import * as d3 from 'd3'
 
 class ActionPanel extends React.Component {
   constructor(props) {
@@ -17,6 +19,7 @@ class ActionPanel extends React.Component {
       imageToggle: false,
       linkToggle: false,
       drawToggle: false,
+      toggleBranches: true,
       file: [],
       name: '',
       type: '',
@@ -24,6 +27,8 @@ class ActionPanel extends React.Component {
     }
     this.handleFileUpload = this.handleFileUpload.bind(this)
     this.handleColorChange = this.handleColorChange.bind(this)
+    this.toggleBranches = this.toggleBranches.bind(this)
+    this.onClickVertical = this.onClickVertical.bind(this)
   }
 
   handleColorChange = (color) => {
@@ -46,6 +51,14 @@ class ActionPanel extends React.Component {
     else this.setState({ drawToggle: !this.state.drawToggle })
   }
 
+  toggleBranches(evt) {
+    evt.preventDefault()
+    this.setState({ toggleBranches: !this.state.toggleBranches }, function() {
+      this.state.toggleBranches ? this.props.showBranches(this.props.whiteboard.id) : this.props.hideBranches()
+      if (!this.state.toggleBranches) d3.selectAll('line').remove()
+    })
+  }
+
   handleFileUpload(evt) {
     evt.preventDefault()
     let reader = new FileReader();
@@ -58,20 +71,21 @@ class ActionPanel extends React.Component {
         type: imageFile.type
       })
     }
-    // this.onClickVertical = this.onClickVertical.bind(this)
 
   }
 
-  // onClickVertical(evt) {
-  //   evt.preventDefault()
-  //   if (this.props.getRoom.swimlaneArray.length) {
-  //     this.props.editState({ swimlaneArray: [] })
-  //   }
-  //   this.props.editState({ verticalSwimlane: !this.state.verticalSwimlane })
-  //   this.props.lanes(3)
-  // }
+  onClickVertical(evt, num) {
+    evt.preventDefault()
+    if (this.props.whiteboard.swimlane){
+      num = 0
+    }
+    const newWhiteboard = {...this.props.whiteboard, swimlane: num,
+      categories: Array(num).fill('')}
+    this.props.updateRoom(newWhiteboard)
+  }
 
   render() {
+    console.log("props", this.props)
     return (
       <div>
         {!this.props.whiteboard.closed &&
@@ -117,7 +131,7 @@ class ActionPanel extends React.Component {
             <span>
               <ul>
                 <li>
-                  <a className=" btn-floating" id="myBtn" onClick={this.props.toggle}><i className="material-icons">
+                  <a className=" btn-floating" id="myBtn" onClick={(evt) => this.onClickVertical(evt, 3)}><i className="material-icons">
                     view_column
                     </i></a>
                 </li>
@@ -127,16 +141,25 @@ class ActionPanel extends React.Component {
                   !this.props.whiteboard.voteable ?
                     <li>
                       <a className="btn-floating" id="myBtn" onClick={(evt) => { evt.preventDefault(); this.props.letsVote(this.props.whiteboard.id) }}><i className="material-icons">
-                        thumb_up</i>
+                        flash_on</i>
                       </a>
                     </li>
                     :
                     <li>
                       <a className="btn-floating" id="myBtn" onClick={(evt) => { evt.preventDefault(); this.props.closeVote(this.props.whiteboard.id, this.props.whiteboard.voteable) }}><i className="material-icons">
-                        thumb_down</i>
+                        flash_off</i>
                       </a>
                     </li>
                 }
+
+                { this.props.hostId === this.props.user.id &&
+                  <li>
+                    <a className="btn-floating" id="myBtn" onClick={this.toggleBranches }><i className="material-icons">
+                      device_hub</i>
+                    </a>
+                  </li>
+                }
+
                 <li>
                   <a className="btn-floating" id="myBtn" onClick={() => { document.getElementById('myModal').style.display = 'block'; }}>
                     <i className="material-icons">
@@ -190,7 +213,8 @@ const mapState = (state, ownProps) => {
     notes: state.notes,
     whiteboard: state.singleWhiteboard,
     toggle: ownProps.toggleIt,
-    update: state.update
+    update: state.update,
+    hostId: state.singleWhiteboard.userId
   }
 }
 
@@ -229,6 +253,15 @@ const mapDispatch = dispatch => {
     },
     colorUpdate(note, color) {
       dispatch(editNote(note, color))
+    },
+    showBranches(whiteboardId) {
+      dispatch(fetchBranches(whiteboardId))
+    },
+    hideBranches() {
+      dispatch(getBranches([]))
+    },
+    updateRoom(room){
+      dispatch(modifyRoom(room))
     }
   }
 }

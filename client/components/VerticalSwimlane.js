@@ -36,7 +36,7 @@ class VerticalSwimlane extends Component{
     let text= ''
     return(
       <div>
-          <div className="col s4">5
+          <div className="col s3">
             <div className="card-panel teal lighten-5" id="categoryName">
               <form onSubmit={(evt) => this.onSubmit(evt)}>
                 <input type="text" className="center-align"

@@ -31,18 +31,15 @@ class Whiteboard extends Component {
     this.handleDelete = this.handleDelete.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.changed = debounce(this.props.editNote, 250)
-    // this.handleColorChange = this.handleColorChange.bind(this)
     this.clickConnection = this.clickConnection.bind(this)
     this.handleVote = this.handleVote.bind(this)
     this.showBranches = this.showBranches.bind(this)
-    this.onClickVertical = this.onClickVertical.bind(this)
   }
 
 
   componentDidMount() {
     const boardId = this.props.match.params.id
     this.props.fetchBranches(boardId)
-
   }
 
   componentDidUpdate(props, state) {
@@ -119,8 +116,6 @@ class Whiteboard extends Component {
     })
 
 
-    // this.props.editNote(this.state.selectedNote, { position: [this.state.pos.x, this.state.pos.y] })
-
     evt.stopPropagation()
     evt.preventDefault()
   }
@@ -142,18 +137,11 @@ class Whiteboard extends Component {
     content[this.state.selectedNote] = evt.target.value
     this.setState({ content })
     if (evt.target.value !== '') this.changed(this.state.selectedNote, { text: evt.target.value })
-    // this.setState({ content: '' })
   }
 
   handleConnect(evt, noteId) {
     this.setState({ connectionArray: [...this.state.connectionArray, { noteId, elem: evt.target.getBoundingClientRect()} ] }, function() {
-        console.log(this.state.connectionArray)
         if (this.state.connectionArray.length >= 2) {
-          let firstConnect = this.state.connectionArray[0].elem
-          let secondConnect = this.state.connectionArray[1].elem
-          // let bodyRect = document.body.getBoundingClientRect()
-
-          //have to add attr to created line
           this.props.insertBranch({noteId: this.state.connectionArray[0].noteId, endNoteId: this.state.connectionArray[1].noteId, whiteboardId: this.props.boardId})
           let newArr = this.state.connectionArray.slice(2)
           this.setState({ connectionArray: newArr })
@@ -171,14 +159,14 @@ class Whiteboard extends Component {
           let secondPoints = d3.select(`#card${branch.endNoteId}`).node().getBoundingClientRect()
           if ($(`#line-${branch.id}`).length <= 0) {
             d3.select('#svg').append('line')
-              .attr("x1", window.scrollX + firstPoints.left)
-              .attr("y1", window.scrollY + firstPoints.top)
-              .attr("x2", window.scrollX + secondPoints.left)
-              .attr("y2", window.scrollY + secondPoints.top)
-              .attr("stroke-width", 2)
-              .attr("stroke", "black")
+              .attr('x1', window.scrollX + firstPoints.left)
+              .attr('y1', window.scrollY + firstPoints.top)
+              .attr('x2', window.scrollX + secondPoints.left)
+              .attr('y2', window.scrollY + secondPoints.top)
+              .attr('stroke-width', 2)
+              .attr('stroke', 'black')
               // .attr("position", "absolute")
-              .attr("id", `line-${branch.id}`)
+              .attr('id', `line-${branch.id}`)
           }
         } else {
           setTimeout(this.showBranches, 250)
@@ -187,18 +175,6 @@ class Whiteboard extends Component {
       })
     }
   }
-
-  // handleColorChange = (color) => {
-  //   if (this.state.connectionArray.length) {
-  //     this.state.connectionArray.forEach(note => {
-  //       document.getElementById(`card${note}`).style.background = color.hex
-  //       this.props.editNote(note, { color: color.hex })
-  //       let selectedCard = document.getElementById(`card${note}`)
-  //       selectedCard.style.boxShadow = '0 4px 2px -2px gray'
-  //     })
-  //   }
-  //   this.setState({ connectionArray: [] })
-  // }
 
   clickConnection = (evt, note) => {
 
@@ -212,21 +188,12 @@ class Whiteboard extends Component {
        selectedCard.style.boxShadow = '0 0 20px yellow'
      } else if (connectionArray.indexOf(note.id) !== -1) {
        connectionArray.splice(connectionArray.indexOf(note.id), 1)
-       //let index = array.indexOf(note.id)
-       //array.splice(index, 1)
        this.setState({ connectionArray })
        let selectedCard = document.getElementById(`card${note.id}`)
        selectedCard.style.boxShadow = '0 4px 2px -2px gray'
      }
      this.props.updateNoteArray(connectionArray);
 
-   }
-
-   onClickVertical(evt, num) {
-     evt.preventDefault()
-     const newWhiteboard = {...this.props.singleWhiteboard, swimlane: num,
-       categories: Array(num).fill('')}
-     this.props.modifyRoom(newWhiteboard)
    }
 
   render() {
@@ -242,10 +209,10 @@ class Whiteboard extends Component {
         swimlaneArray.push(<VerticalSwimlane category={singleWhiteboard.categories[i]} index={i} key={i} />)
     }
 
-
     return (
       <div>
         <div className="row">
+          <div className="col s1 offset s1"></div>
         {
             swimlaneArray ?
               swimlaneArray.map((element) => {
@@ -256,32 +223,15 @@ class Whiteboard extends Component {
       }
       </div>
         <div id="whiteboard">
-        {/* <button
-          onClick={this.showBranches}
-          style={{ zIndex: '20' }}
-          >Show Branches
-        </button> */}
-
-        {/* <label>Show Branches</label>
-        <div className="switch">
-          <label>Off<input type="checkbox" onChange={this.showBranches} />
-              <span className="lever" />On
-          </label>
-        </div> */}
-
-        {/* <svg id="basket" width="300" height="250">
-          <g>
-            <rect
-              width="300" height="250"
-              style = {{fill: 'white', stroke: 'white', strokeWidth: 5, opacity: 0.5}} />
-            <text x="4" y="50" fontFamily="Arial" fontSize="35" fill="blue">Your Ideas</text>
-          </g>
-        </svg> */}
-          <svg id="basket" style={{ float: 'right' }}>
+          <div id="basket" style={{ float: 'right' }}>
             <b>{this.props.name}</b>
+          </div>
+
+          {/*  This is for branches */}
+          <svg id="svg" height={Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight)} width={document.body.getBoundingClientRect().width} >
           </svg>
-          <svg id="svg" height="500" width="1600" >
-          </svg>
+
+
           {
             data && data.map((note) => {
               {
@@ -333,9 +283,7 @@ class Whiteboard extends Component {
                           className="card-content"
                           html={this.state.content[note.id] || note.text}
                           disabled={(userId !== note.userId && userId !== hostId)}
-                          // || ((userId === note.userId || userId === hostId) && !this.state.edit) }
                           onChange={this.handleChange}
-                          // onDoubleClick={() => this.setState({ edit: !this.state.edit })}
                           contentEditable="plaintext-only"
                         />
                       }
@@ -364,17 +312,6 @@ class Whiteboard extends Component {
             this.showBranches()
           }
         </div>
-        <div className="fixed-action-btn horizontal click-to-toggle" id="laneButton">
-          <a className="btn-floating btn-large red">
-            <i className="material-icons">menu</i>
-          </a>
-          <ul>
-            <li><a className="btn-floating red" onClick={(evt) => this.onClickVertical(evt, 3)}><i className="material-icons"></i></a></li>
-            <li><a className="btn-floating yellow darken-1" onClick={(evt) => this.onClickVertical(evt, 4)}><i className="material-icons"></i></a></li>
-            <li><a className="btn-floating green" onClick={(evt) => this.onClickVertical(evt, 2)}><i className="material-icons"></i></a></li>
-            <li><a className="btn-floating pink" onClick={(evt) => this.onClickVertical(evt, 0)}><i className="material-icons"></i></a></li>
-          </ul>
-        </div>
       </div>
     );
   }
@@ -389,7 +326,6 @@ const mapStateToProps = (state) => ({
   open: !state.singleWhiteboard.closed,
   vote: state.singleWhiteboard.voteable,
   branches: state.branches,
-  singleBranch: state.singleBranch,
   name: state.singleWhiteboard.name
 })
 

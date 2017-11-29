@@ -1,7 +1,6 @@
 /* eslint-disable complexity */
 import React, { Component } from 'react'
 import ReactPlayer from 'react-player'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Footer } from './index'
 import { insertNote, removeNote, getNotes } from '../store'
@@ -50,8 +49,8 @@ export class Home extends Component {
     if (evt.button !== 0) return
     var pos = evt.target.getBoundingClientRect()
     var bodyPos = document.body.getBoundingClientRect()
-    var whiteboardPos = document.getElementById('mini-whiteboard').getBoundingClientRect()
-    var bodyWhiteboard = Math.abs(bodyPos.top) - whiteboardPos.top
+    // var whiteboardPos = document.getElementById('mini-whiteboard').getBoundingClientRect()
+    // var bodyWhiteboard = Math.abs(bodyPos.top) - whiteboardPos.top
     this.setState({
       dragging: true,
       rel: {
@@ -85,14 +84,10 @@ export class Home extends Component {
     var bodyPos = document.body.getBoundingClientRect()
     var whiteboardPos = document.getElementById('mini-whiteboard').getBoundingClientRect()
     var card = document.body.getElementsByClassName('card')[this.state.selectedNote].getBoundingClientRect()
-    console.log(card)
-    console.log(bodyPos)
-    console.log(whiteboardPos)
 
     let valX = currX
     let valY = currY
     let xLeftLimit = whiteboardPos.width + whiteboardPos.left - card.width
-    console.log(xLeftLimit)
     if (currX < whiteboardPos.left) valX = whiteboardPos.left
     else if (currX > xLeftLimit) valX = xLeftLimit
 
@@ -111,30 +106,56 @@ export class Home extends Component {
 
   render() {
     const { notes, handleRemove } = this.props
+    let auth = $('#home-slider')
+    let backgrounds = new Array(
+    'url(/meeting-02.jpeg)', 'url(/meeting-01.jpg)', 'url(/meeting-03.jpg)', 'url(/meeting-04.jpeg)')
+
+    var current = 0;
+
+    function nextBackground() {
+        current++;
+        current = current % backgrounds.length;
+        auth.css('background-image', `${backgrounds[current]}`)
+    }
+    setInterval(nextBackground, 10000);
+
+    auth.css('background-image', `${backgrounds[0]}`)
+
     return (
       <div className="home-whiteboard">
-        <ReactPlayer
+        <div id="home-slider" style={{ height: '100vh', width: '100vw', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center', textAlign: 'center'}}>
+          <div className="row">
+            <div className="col m6 offset-m3" style={{ backgroundColor: 'rgba(255, 255, 255, 0.5)', width: '70vw', borderRadius: '10px', position: 'absolute', margin: '20% auto' }}>
+            <h4 style={{ textAlign: 'center', color: 'black', font: 'Verdana' }}>Collaborative brainstorming couldn't have been easier</h4>
+            {/* <button className="waves-effect waves-light btn">Sign Up</button> */}
+            </div>
+          </div>
+
+          {/* <button className="waves-effect waves-light btn">Sign Up</button> */}
+        </div>
+        {/* <ReactPlayer
           url="https://www.youtube.com/watch?v=BD1c3XqT4lY"
           playing muted loop
           style={{margin: '0 auto', marginTop: '5vh'}}
           width="1500px"
           height="650px"
-          />
+          /> */}
 
         <div className="home-info">
           <div className="details">
-            <h5>IdeaStorm, brewing your ideas</h5>
+            <h5>IdeaStorm: brewing your ideas</h5>
             <span>
             <p>IdeaStorm is a real-time collaborative tool that facilitates team brainstorming</p>
             <p>We have many features available</p>
 
-            <p>Give It A Try Below!</p>
+            <p>Test it out below!</p>
             </span>
           </div>
         </div>
 
         <div className="children">
           <h3>Interactive Idea Board</h3>
+          <p>Test it out! You can do more with these notes when you sign up today!</p>
           <div id="mini-whiteboard">
               { this.notePositions.length > 0 && notes && notes.map(note => { return (
                 <div
@@ -191,7 +212,6 @@ const mapState = state => ({ whiteboard: state.singleWhiteboard, notes: state.no
 const mapDispatch = dispatch => {
   return {
     createNote(note) {
-      console.log(note)
       dispatch(insertNote(note))
     },
     handleRemove(noteId) {

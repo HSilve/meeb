@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { withRouter, Link } from 'react-router-dom'
+import { withRouter} from 'react-router-dom'
 
 
 const Footer = (props) => {
@@ -9,16 +9,16 @@ const Footer = (props) => {
       <div className="container">
         <div className="row">
           <div className="col l6 s12">
-            <h5 className="white-text">Footer Content</h5>
-            <p className="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+            <h5 className="white-text">IdeaStorm</h5>
+            <p className="grey-text text-lighten-4">A real-time collaboration tool that facilitates brainstorming sessions</p>
           </div>
           <div className="col l4 offset-l2 s12">
-            <h5 className="white-text">Links</h5>
+            <h5 className="white-text">Our LinkedIn</h5>
             <ul>
-              <li><a className="grey-text text-lighten-3" href="#!">Link 1</a></li>
-              <li><a className="grey-text text-lighten-3" href="#!">Link 2</a></li>
-              <li><a className="grey-text text-lighten-3" href="#!">Link 3</a></li>
-              <li><a className="grey-text text-lighten-3" href="#!">Link 4</a></li>
+              <li><a className="grey-text text-lighten-3" href="https://www.linkedin.com/in/mariabetances/">Maria Betances</a></li>
+              <li><a className="grey-text text-lighten-3" href="https://www.linkedin.com/in/ericachai/">Erica Chai</a></li>
+              <li><a className="grey-text text-lighten-3" href="https://www.linkedin.com/in/evlis-henry/">Evlis Henry</a></li>
+              <li><a className="grey-text text-lighten-3" href="https://www.linkedin.com/in/blancasprofile/">Blanca Sanchez</a></li>
             </ul>
           </div>
         </div>
@@ -26,7 +26,7 @@ const Footer = (props) => {
       <div className="footer-copyright">
         <div className="container">
         © 2017 Made by Maria Betances, Erica Chai, Evlis Henry, Blanca Sanchez
-        <a className="grey-text text-lighten-4 right" href="#!">More Links</a>
+        <a className="grey-text text-lighten-4 right" href="https://github.com/EHenry92/meeb">Our Github</a>
         </div>
       </div>
     </footer>
