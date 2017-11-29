@@ -60,7 +60,13 @@ async function seed () {
     Note.create({text: 'IdeaStorm', highlighted: true, link: 'https://idea-storm.herokuapp.com/', userId: 6, whiteboardId: 7, position: [620, 95], color: '#fcb900'}),
     Note.create({text: 'Whiskr', userId: 2, whiteboardId: 7, position: [680, 295], color: '#00d084'}),
     Note.create({text: 'CodeNames', userId: 2, whiteboardId: 7, position: [120, 335], color: '#00d084'}),
-    Note.create({text: 'Triphub', userId: 2, whiteboardId: 7, position: [800, 500], color: '#00d084'})
+    Note.create({text: 'Triphub', userId: 2, whiteboardId: 7, position: [800, 500], color: '#00d084'}),
+    Note.create({text: 'Git It Done', userId: 2, whiteboardId: 7, position: [850, 500], color: '#00d084'}),
+    Note.create({text: 'Global Kitchen', userId: 2, whiteboardId: 7, position: [800, 570], color: '#00d084'}),
+    Note.create({text: 'Cowuill', userId: 2, whiteboardId: 7, position: [800, 93], color: '#00d084'})
+
+
+
   ])
 
   await Promise.all([
