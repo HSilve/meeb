@@ -7,7 +7,7 @@ const GET_BRANCHES = 'GET_BRANCHES'
 const ADD_BRANCH = 'ADD_BRANCH'
 
 
-const getBranches = branches => ({ type: GET_BRANCHES, branches })
+export const getBranches = branches => ({ type: GET_BRANCHES, branches })
 const addBranch = branch => ({ type: ADD_BRANCH, branch })
 
 

@@ -1,7 +1,7 @@
 /* eslint-disable no-lone-blocks */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { editNote, fetchNotes, deleteNote, castVote, fetchRoom, insertBranch, fetchBranches } from '../store'
+import { editNote, fetchNotes, deleteNote, castVote, fetchRoom, insertBranch, fetchBranches, getBranches, getNotes } from '../store'
 import { withRouter } from 'react-router'
 import ContentEditable from 'react-contenteditable'
 import debounce from 'lodash/debounce'
@@ -18,7 +18,8 @@ class Whiteboard extends Component {
       show: false,
       connectionArray: [],
       content: {},
-      branches: []
+      branches: [],
+      edit: false
     }
     this.notLoaded = true
     this.onMouseDown = this.onMouseDown.bind(this)
@@ -55,6 +56,11 @@ class Whiteboard extends Component {
     const boardId = this.props.match.params.id
     this.props.fetchRoom(boardId)
     this.props.fetchNotes(boardId)
+  }
+
+  componentWillUnmount() {
+    this.props.getBranches([])
+    this.props.getNotes([])
   }
   //when user clicks mouse down, dragging state is set to true and new relative position
   //is calculated, the position is set to null
@@ -101,11 +107,11 @@ class Whiteboard extends Component {
           return branch.noteId === this.state.selectedNote || branch.endNoteId === this.state.selectedNote})
         .map(branch => {
           return $(`#line-${branch.id}`).attr({
-              x1: document.getElementById(`connect-${branch.noteId}`).getBoundingClientRect().x,
-              y1:  document.getElementById(`connect-${branch.noteId}`).getBoundingClientRect().y,
-              x2: document.getElementById(`connect-${branch.endNoteId}`).getBoundingClientRect().x,
-              y2: document.getElementById(`connect-${branch.endNoteId}`).getBoundingClientRect().y
-            })
+              x1: window.scrollX + document.getElementById(`connect-${branch.noteId}`).getBoundingClientRect().x,
+              y1:  window.scrollY + document.getElementById(`connect-${branch.noteId}`).getBoundingClientRect().y,
+              x2: window.scrollX + document.getElementById(`connect-${branch.endNoteId}`).getBoundingClientRect().x,
+              y2: window.scrollY + document.getElementById(`connect-${branch.endNoteId}`).getBoundingClientRect().y
+          })
         })
     })
 
@@ -162,10 +168,10 @@ class Whiteboard extends Component {
           let secondPoints = d3.select(`#card${branch.endNoteId}`).node().getBoundingClientRect()
           if ($(`#line-${branch.id}`).length <= 0) {
             d3.select('#svg').append('line')
-              .attr("x1", firstPoints.left)
-              .attr("y1", firstPoints.top)
-              .attr("x2", secondPoints.left)
-              .attr("y2", secondPoints.top)
+              .attr("x1", window.scrollX + firstPoints.left)
+              .attr("y1", window.scrollY + firstPoints.top)
+              .attr("x2", window.scrollX + secondPoints.left)
+              .attr("y2", window.scrollY + secondPoints.top)
               .attr("stroke-width", 2)
               .attr("stroke", "black")
               // .attr("position", "absolute")
@@ -268,7 +274,7 @@ class Whiteboard extends Component {
                             onMouseUp={this.onMouseUp}
                             onMouseDown={(evt) => { this.setState({ selectedNote: note.id }); this.onMouseDown(evt) }}
                             style={{ borderRadius: '25px' }}
-                          > Drag
+                          > ⌖ drag
                         </button>
 
                           <button value={note.id} onClick={(evt) => { this.clickConnection(evt, note) }}>edit</button>
@@ -281,7 +287,7 @@ class Whiteboard extends Component {
                           <button
                             id={`connect-${note.id}`}
                             ref={`connect-${note.id}`}
-                            style={{borderRadius: '25px', width: '25px', height: '25px', backgroundColor: 'pink'}}
+                            style={{borderRadius: '20px', width: '20px', height: '20px', backgroundColor: 'black'}}
                             onClick={evt => { evt.preventDefault(); this.handleConnect(evt, note.id)}}
                           />
                           {
@@ -294,15 +300,17 @@ class Whiteboard extends Component {
                           onClick={() => { this.setState({ selectedNote: note.id, pos: { x: null, y: null } }); console.log(this.state.selectedNote) }}
                           className="card-content"
                           html={this.state.content[note.id] || note.text}
-                          disabled={userId !== note.userId && userId !== hostId}
+                          disabled={(userId !== note.userId && userId !== hostId)}
+                          // || ((userId === note.userId || userId === hostId) && !this.state.edit) }
                           onChange={this.handleChange}
+                          // onDoubleClick={() => this.setState({ edit: !this.state.edit })}
                           contentEditable="plaintext-only"
                         />
                       }
 
                       {note.image &&
                         <div className="card-image">
-                          <img onClick={this.clickImage} src={note.image} />
+                          <img onClick={this.clickImage} src={note.image} style={{ margin: '0 auto'}} />
                         </div>
                       }
 
@@ -341,6 +349,6 @@ const mapStateToProps = (state) => ({
   name: state.singleWhiteboard.name
 })
 
-const mapDispatchToProps = { editNote, fetchNotes, deleteNote, castVote, fetchRoom, insertBranch, fetchBranches }
+const mapDispatchToProps = { editNote, fetchNotes, deleteNote, castVote, fetchRoom, insertBranch, fetchBranches, getBranches, getNotes }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Whiteboard));
