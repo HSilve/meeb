@@ -66,7 +66,7 @@ class ConferenceRoom extends Component {
             <div className="modal-content">
             <div className="row">
                 <div className= "col s6">
-                  <ul><h5>Legend:</h5>
+                  <ul><h5><i className="material-icons">add</i>Legend:</h5>
                     <li><a><i className="material-icons">
                       format_quote</i></a> : Insert Text
                     </li>
@@ -84,7 +84,7 @@ class ConferenceRoom extends Component {
                   </ul>
                 </div>
                 <div className= "col s6">
-                  <ul><h5>Host Legend:</h5>
+                  <ul><h5><i className="material-icons">person</i>Host Legend:</h5>
                   <li><a><i className="material-icons">
                       view_column</i></a> : Add swimlanes.
                   </li>

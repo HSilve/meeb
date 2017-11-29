@@ -2,7 +2,6 @@
 /* eslint-disable max-params */
 import React from 'react'
 import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
 import { addNote, closeRoom, openVote, editNote } from '../store'
 import { withRouter } from 'react-router';
 import { VoteResults } from './index';
@@ -58,18 +57,8 @@ class ActionPanel extends React.Component {
         type: imageFile.type
       })
     }
-    // this.onClickVertical = this.onClickVertical.bind(this)
 
   }
-
-  // onClickVertical(evt) {
-  //   evt.preventDefault()
-  //   if (this.props.getRoom.swimlaneArray.length) {
-  //     this.props.editState({ swimlaneArray: [] })
-  //   }
-  //   this.props.editState({ verticalSwimlane: !this.state.verticalSwimlane })
-  //   this.props.lanes(3)
-  // }
 
   render() {
     return (
