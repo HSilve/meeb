@@ -57,10 +57,16 @@ async function seed () {
     Note.create({text: 'Just about the worst Idea Ever', userId: 1, whiteboardId: 1, position: [800, 95] }),
     Note.create({text: "I'm just a lone note", userId: 2, whiteboardId: 2, position: [620, 95]}),
     Note.create({text: 'I wanna be a branch off the best idea', image: 'http://completecarnivore.com/wp-content/uploads/2016/07/short-rib-location.jpg', userId: 4, whiteboardId: 1, position: [620, 95] }),
-    Note.create({text: 'IdeaStorm', highlighted: true, link: 'https://idea-storm.herokuapp.com/', userId: 6, whiteboardId: 7, position: [620, 95], color: '#fcb900'}),
+    Note.create({text: 'IdeaStorm', highlighted: true, link: 'https://idea-storm.herokuapp.com/', userId: 6, whiteboardId: 7, position: [620, 95], color: '#fcb900', votes: 5}),
     Note.create({text: 'Whiskr', userId: 2, whiteboardId: 7, position: [680, 295], color: '#00d084'}),
     Note.create({text: 'CodeNames', userId: 2, whiteboardId: 7, position: [120, 335], color: '#00d084'}),
-    Note.create({text: 'Triphub', userId: 2, whiteboardId: 7, position: [800, 500], color: '#00d084'})
+    Note.create({text: 'Triphub', userId: 2, whiteboardId: 7, position: [800, 500], color: '#00d084'}),
+    Note.create({text: 'Git It Done', userId: 2, whiteboardId: 7, position: [850, 500], color: '#00d084'}),
+    Note.create({text: 'Global Kitchen', userId: 2, whiteboardId: 7, position: [800, 570], color: '#00d084'}),
+    Note.create({text: 'Cowuill', userId: 2, whiteboardId: 7, position: [800, 93], color: '#00d084'})
+
+
+
   ])
 
   await Promise.all([
