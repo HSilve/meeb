@@ -50,6 +50,14 @@ class ActionPanel extends React.Component {
     else this.setState({ drawToggle: !this.state.drawToggle })
   }
 
+  toggleBranches(evt) {
+      evt.preventDefault()
+      this.setState({ toggleBranches: !this.state.toggleBranches }, function() {
+        this.state.toggleBranches ? this.props.showBranches(this.props.whiteboard.id) : this.props.hideBranches()
+        if (!this.state.toggleBranches) d3.selectAll('line').remove()
+      })
+    }
+
   handleFileUpload(evt) {
     evt.preventDefault()
     let reader = new FileReader();
