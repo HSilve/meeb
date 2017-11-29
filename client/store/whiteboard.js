@@ -49,7 +49,7 @@ export const newRoom = (roomName, host, attendeeId, date, time, note) => dispatc
       note.whiteboardId = res.data.id;
       note.userId = host.id
       note.host = host.name;
-      note.position = [1320, 130];
+      note.position = [620, 95];
       return axios.post('/api/notes', { note })
       // history.push(`/profile/${res.data.id}`);
     })

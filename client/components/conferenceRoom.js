@@ -1,12 +1,16 @@
-import React, {Component} from 'react'
-import { Sidebar, Whiteboard, ActionPanel, Attendees} from './index'
+import React, { Component } from 'react'
+import { Sidebar, Whiteboard, ActionPanel, Attendees } from './index'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
+<<<<<<< HEAD
 import {announceCollaborator, fetchCollaborators, fetchRoom, modifyRoom} from '../store'
+=======
+import { announceCollaborator, fetchCollaborators, fetchRoom } from '../store'
+>>>>>>> origin/master
 import VerticalSwimlane from './VerticalSwimlane'
 
 class ConferenceRoom extends Component {
-  constructor(props){
+  constructor(props) {
     super(props)
     this.onClickVertical = this.onClickVertical.bind(this)
   }
@@ -17,7 +21,6 @@ class ConferenceRoom extends Component {
     this.props.announceCollaborator(this.props.user.id, boardId);
   }
 
-
   onClickVertical(evt, num) {
     evt.preventDefault()
     const newWhiteboard = {...this.props.singleWhiteboard, swimlane: num,
@@ -25,7 +28,7 @@ class ConferenceRoom extends Component {
     this.props.modifyRoom(newWhiteboard)
   }
 
-  render ()  {
+  render() {
     if (this.props.person.userName) {
       Materialize.toast(`${this.props.person.userName}, has entered the session`, 4000) // 4000 is the duration of the toast
     }
@@ -62,6 +65,9 @@ class ConferenceRoom extends Component {
             </ul>
           </div>
           </div>
+
+          <ActionPanel toggleIt={this.onClickVertical} />
+        </div>
       </div>
     )
   }
