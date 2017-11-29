@@ -32,6 +32,12 @@ const Whiteboard = db.define('whiteboard', {
     type: Sequelize.BOOLEAN,
     defaultValue: false,
     allowNull: false
+  },
+  swimlane: {
+    type: Sequelize.INTEGER
+  },
+  categories: {
+    type: Sequelize.ARRAY(Sequelize.TEXT)
   }
 
 })
