@@ -2,12 +2,12 @@ const router = require('express').Router()
 const { Message } = require('../db/models')
 module.exports = router
 
-router.get('/:id', (req, res, next) => {
+router.get('/:whiteboardId', (req, res, next) => {
   Message.findAll({
     where: {
-      whiteboardId: req.params.id
+      whiteboardId: req.params.whiteboardId
     },
-    include: [{ all: true}], order: [['createdAt', 'ASC']] })
+    include: [{ all: true}], order: [['createdAt', 'DESC']] })
     .then(messages => res.json(messages))
     .catch(next)
 })
