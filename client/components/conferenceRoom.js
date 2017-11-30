@@ -44,7 +44,7 @@ class ConferenceRoom extends Component {
                 <div className= "col s4">
                 <table className= "striped bordered">
                 <thead>
-                  <tr><td><h5><i className="material-icons">add</i>Legend:</h5></td></tr>
+                  <tr><td><h5><i className="material-icons">add</i>Actions:</h5></td></tr>
                 </thead>
                 <tbody>
                     <tr><td><a><i className="material-icons">
@@ -68,7 +68,7 @@ class ConferenceRoom extends Component {
                 <div className= "col s4">
                 <table className= "striped bordered">
                 <thead>
-                  <tr><td><h5><i className="material-icons">person</i>Host Legend:</h5></td></tr>
+                  <tr><td><h5><i className="material-icons">settings</i>Host Settings:</h5></td></tr>
                 </thead>
                 <tbody>
                   <tr><td><a><i className="material-icons">

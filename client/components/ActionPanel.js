@@ -124,7 +124,7 @@ class ActionPanel extends React.Component {
           this.props.user.id == this.props.whiteboard.userId &&
           !this.props.whiteboard.closed &&
           <div className="fixed-action-btn horizontal" style={{ bottom: '25px', right: '100px' }} >
-            <a className="btn-floating btn-large" type="submit" ><i className="material-icons">person</i></a>
+            <a className="btn-floating btn-large" type="submit" ><i className="material-icons">settings</i></a>
 
             <span>
               <ul>
