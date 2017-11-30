@@ -2,10 +2,8 @@
 /* eslint-disable max-params */
 import React from 'react'
 import { connect } from 'react-redux'
-
-import { addNote, closeRoom, openVote, editNote, getBranches,
-  fetchBranches, modifyRoom, clearNoteArray, getNoteArray } from '../store'
-
+import * as d3 from 'd3'
+import { addNote, closeRoom, openVote, editNote, getBranches, fetchBranches, modifyRoom, updateNoteArray, clearNoteArray, getNoteArray } from '../store'
 import { withRouter } from 'react-router';
 import { VoteResults } from './index';
 import { TwitterPicker } from 'react-color'
@@ -19,6 +17,7 @@ class ActionPanel extends React.Component {
       imageToggle: false,
       linkToggle: false,
       drawToggle: false,
+      toggleBranches: true,
       file: [],
       name: '',
       type: '',
@@ -31,14 +30,18 @@ class ActionPanel extends React.Component {
   }
 
   handleColorChange = (color) => {
+    console.log(`update: `, this.props.update)
     if (this.props.update.length) {
       this.props.update.forEach(note => {
+        console.log(`note: `, note)
         document.getElementById(`card${note}`).style.background = color.hex
         this.props.colorUpdate(note, { color: color.hex })
         let selectedCard = document.getElementById(`card${note}`)
         selectedCard.style.boxShadow = '0 4px 2px -2px gray'
       })
+      this.props.updateNotesForColor([])
     }
+    this.setState({ connectionArray: [] })
     this.props.clearSelect();
   }
 
@@ -50,13 +53,13 @@ class ActionPanel extends React.Component {
     else this.setState({ drawToggle: !this.state.drawToggle })
   }
 
-  toggleBranches(evt) {
-      evt.preventDefault()
-      this.setState({ toggleBranches: !this.state.toggleBranches }, function() {
-        this.state.toggleBranches ? this.props.showBranches(this.props.whiteboard.id) : this.props.hideBranches()
-        if (!this.state.toggleBranches) d3.selectAll('line').remove()
-      })
-    }
+  toggleBranches(swimlane) {
+    console.log(swimlane)
+    this.setState({ toggleBranches: swimlane > 0 ? false : !this.state.toggleBranches }, function() {
+      this.state.toggleBranches ? this.props.showBranches(this.props.whiteboard.id) : this.props.hideBranches()
+      if (!this.state.toggleBranches) d3.selectAll('line').remove()
+    })
+  }
 
   handleFileUpload(evt) {
     evt.preventDefault()
@@ -81,6 +84,7 @@ class ActionPanel extends React.Component {
     const newWhiteboard = {...this.props.whiteboard, swimlane: num,
       categories: Array(num).fill('')}
     this.props.updateRoom(newWhiteboard)
+    this.toggleBranches(num)
   }
 
   render() {
@@ -109,13 +113,14 @@ class ActionPanel extends React.Component {
                       this.props.handleSubmit(evt, this.state.file, this.state.name, this.state.type, this.props.user.id, this.props.match.params.id, this.props.notes.length);
                       this.setState({ expandToggle: false, textToggle: false, imageToggle: false, linkToggle: false }) }}
                     style={{ bottom: '90px', right: '100px', position: 'fixed' }}>
-                {(this.state.textToggle) && <div><input name="text" type="text" /><button type="submit">Insert</button></div>}
-                {(this.state.linkToggle) && <div><input name="link" type="text" /><button type="submit">Insert</button></div>}
+                {(this.state.textToggle) && <div><input name="text" type="text" /></div>}
+                {(this.state.linkToggle) && <div><input name="link" type="text" /></div>}
                 {this.state.imageToggle &&
                   <div>
-                    <input name="file" type="file" onChange={this.handleFileUpload} /><button type="submit">Insert</button>
+                    <input name="file" type="file" onChange={this.handleFileUpload} />
                   </div>
                 }
+                {(this.state.textToggle || this.state.linkToggle || this.state.imageToggle) && <button type="submit">Insert</button> }
               </form>
             </span>
 
@@ -129,7 +134,7 @@ class ActionPanel extends React.Component {
             <span>
               <ul>
                 <li>
-                  <a className=" btn-floating" id="myBtn" onClick={(evt) => this.onClickVertical(evt, 3)}><i className="material-icons">
+                  <a className=" btn-floating" id="myBtn" onClick={(evt) => { evt.preventDefault(); this.onClickVertical(evt, 3); }}><i className="material-icons">
                     view_column
                     </i></a>
                 </li>
@@ -149,6 +154,11 @@ class ActionPanel extends React.Component {
                       </a>
                     </li>
                 }
+                <li>
+                  <a className="btn-floating" id="myBtn" onClick={() => this.toggleBranches() }><i className="material-icons">
+                    device_hub</i>
+                  </a>
+                </li>
                 <li>
                   <a className="btn-floating" id="myBtn" onClick={() => { document.getElementById('myModal').style.display = 'block'; }}>
                     <i className="material-icons">
@@ -215,7 +225,9 @@ const mapDispatch = dispatch => {
       const text = evt.target.text && evt.target.text.value;
       const link = evt.target.link && evt.target.link.value;
       let data = document.getElementById('basket').getBoundingClientRect();
-      const position = [data.x + (noteIdx * 5), data.y + (noteIdx * 5)];
+      let body = document.body
+      console.log(`body pos: `, body.scrollTop)
+      const position = [data.x + (noteIdx * 5) + window.pageXOffset, data.y + (noteIdx * 5) + window.pageYOffset];
 
       document.getElementById('actionForm').reset();
 
@@ -250,6 +262,9 @@ const mapDispatch = dispatch => {
     },
     updateRoom(room){
       dispatch(modifyRoom(room))
+    },
+    updateNotesForColor(arr) {
+      dispatch(updateNoteArray(arr))
     },
     clearSelect(){
       dispatch(clearNoteArray());
