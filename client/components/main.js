@@ -20,13 +20,13 @@ const Main = (props) => {
           <Link to="/home" className="brand-logo"><img className="icon" src="/ideastorm.png" /></Link>
           {isLoggedIn ?
             <ul id="nav-mobile" className="right hide-on-med-and-down">
-              <li><Link to="/home"> Main </Link></li>
+              <li><Link to="/"> Main </Link></li>
               <li><Link to="/profile">Profile</Link></li>
               <li><a href="#" onClick={handleClick}>Logout</a></li>
             </ul>
             :
             <ul id="nav-mobile" className="right hide-on-med-and-down">
-              <li><Link to="/home"> Main </Link></li>
+              <li><Link to="/"> Main </Link></li>
               <li><Link to="/login">Login / Signup</Link></li>
             </ul>
           }
