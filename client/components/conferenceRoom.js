@@ -82,6 +82,10 @@ class ConferenceRoom extends Component {
                         flash_off</i></a>
                         : Close voting
                         </td></tr>
+                        <tr><td><a><i className="material-icons">
+                        device_hub</i></a>
+                        : Toggle Branches On/Off
+                        </td></tr>
                   <tr><td><a><i className="material-icons">
                       close</i></a> : End Session
                       </td></tr>

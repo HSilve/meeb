@@ -158,9 +158,9 @@ class Whiteboard extends Component {
     d3.selectAll('line').remove()
     if (this.props.branches.length >= 1) {
       this.props.branches && this.props.branches.map(branch => {
-        if ($(`#card${branch.noteId}`).length > 0 && $(`#card${branch.endNoteId}`).length > 0) {
-          let firstPoints = d3.select(`#card${branch.noteId}`).node().getBoundingClientRect()
-          let secondPoints = d3.select(`#card${branch.endNoteId}`).node().getBoundingClientRect()
+        if ($(`#connect-${branch.noteId}`).length > 0 && $(`#connect-${branch.endNoteId}`).length > 0) {
+          let firstPoints = d3.select(`#connect-${branch.noteId}`).node().getBoundingClientRect()
+          let secondPoints = d3.select(`#connect-${branch.endNoteId}`).node().getBoundingClientRect()
           if ($(`#line-${branch.id}`).length <= 0) {
             d3.select('#svg').append('line')
               .attr('x1', window.scrollX + firstPoints.left)
@@ -268,7 +268,11 @@ class Whiteboard extends Component {
                     >
                       {this.props.open &&
                         <span>
-                          <button style={{ float: 'left' }} value={note.id} onClick={this.handleDelete}>x</button>
+                          {
+                            (note.userId == this.props.userId || this.props.hostId == this.props.userId) &&
+                            <button style={{ float: 'left' }} value={note.id} onClick={this.handleDelete}>x</button>
+                          }
+
                           <button
                             onMouseMove={this.onMouseMove}
                             onMouseUp={this.onMouseUp}

@@ -24,15 +24,15 @@ class Routes extends Component {
           <Switch id="switchSpace">
             {/* Routes placed here are available to all visitors */}
             <Route path="/login" component={LoginSignup} />
-            <Route exact path="/home" component={Home} />
+            <Route exact path="/" component={Home} />
 
             {
               isLoggedIn &&
               <Switch>
-                <Route exact path="/home" component={Home} />
+                <Route exact path="/" component={Home} />
                 <Route path="/whiteboards/:id" component={ConferenceRoom} />
                 <Route exact path="/profile" component={Profile} />
-                <Redirect to="/home" />
+                <Redirect to="/" />
               </Switch>
             }
           </Switch>
