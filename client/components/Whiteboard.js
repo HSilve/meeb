@@ -182,18 +182,36 @@ class Whiteboard extends Component {
 
   clickConnection = (evt, note) => {
 
-     const { update } = this.props;
-     console.log(`connectionArray: `, update)
-     if (update.indexOf(note.id) === -1) {
-       this.props.updateNoteArray([...update, note.id])
+
+//      const { update } = this.props;
+//      console.log(`connectionArray: `, update)
+//      if (update.indexOf(note.id) === -1) {
+//        this.props.updateNoteArray([...update, note.id])
+//        let selectedCard = document.getElementById(`card${note.id}`)
+//        selectedCard.style.boxShadow = '0 0 20px yellow'
+//      } else if (update.indexOf(note.id) !== -1) {
+//        let removeNote = update.splice(update.indexOf(note.id), 1)
+//        this.props.updateNoteArray(removeNote);
+//        let selectedCard = document.getElementById(`card${note.id}`)
+//        selectedCard.style.boxShadow = '0 4px 2px -2px gray'
+//      }
+
+     const { selectedArray } = this.props;
+
+     if (selectedArray.indexOf(note.id) === -1) {
+      //  let tempArr = selectedArray;
+      //  tempArr.push(note.id);
+      //  this.setState({ connectionArray: tempArr })
+      this.props.updateNoteArray(note.id)
        let selectedCard = document.getElementById(`card${note.id}`)
        selectedCard.style.boxShadow = '0 0 20px yellow'
-     } else if (update.indexOf(note.id) !== -1) {
-       let removeNote = update.splice(update.indexOf(note.id), 1)
-       this.props.updateNoteArray(removeNote);
+     } else if (selectedArray.indexOf(note.id) !== -1) {
+      selectedArray.splice(selectedArray.indexOf(note.id), 1)
+       this.setState({ selectedArray })
        let selectedCard = document.getElementById(`card${note.id}`)
        selectedCard.style.boxShadow = '0 4px 2px -2px gray'
      }
+    //  this.props.updateNoteArray(selectedArray);
    }
 
   render() {
@@ -259,7 +277,7 @@ class Whiteboard extends Component {
                           > ⌖ drag
                         </button>
 
-                          <button value={note.id} onClick={(evt) => { this.clickConnection(evt, note) }}>edit</button>
+                          <button value={note.id} onClick={(evt) => { this.clickConnection(evt, note) }}>Select</button>
                           {this.props.vote &&
                             <div style={{ float: 'right' }} >
                               <button value={note.id} onClick={this.handleVote}>⚡️</button>
@@ -327,7 +345,7 @@ const mapStateToProps = (state) => ({
   vote: state.singleWhiteboard.voteable,
   branches: state.branches,
   name: state.singleWhiteboard.name,
-  update: state.update
+  selectedArray: state.update
 })
 
 const mapDispatchToProps = { editNote, fetchNotes, deleteNote, castVote, fetchRoom,

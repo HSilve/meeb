@@ -3,10 +3,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import * as d3 from 'd3'
-
-import { addNote, closeRoom, openVote, editNote, getBranches,
-  fetchBranches, modifyRoom, updateNoteArray } from '../store'
-
+import { addNote, closeRoom, openVote, editNote, getBranches, fetchBranches, modifyRoom, updateNoteArray, clearNoteArray, getNoteArray } from '../store'
 import { withRouter } from 'react-router';
 import { VoteResults } from './index';
 import { TwitterPicker } from 'react-color'
@@ -44,7 +41,8 @@ class ActionPanel extends React.Component {
       })
       this.props.updateNotesForColor([])
     }
-    this.setState({ connectionArray: [] }, () => { console.log(this.state.connectionArray)})
+    this.setState({ connectionArray: [] })
+    this.props.clearSelect();
   }
 
   toggle(type) {
@@ -90,7 +88,6 @@ class ActionPanel extends React.Component {
   }
 
   render() {
-    console.log("props", this.props)
     return (
       <div>
         {!this.props.whiteboard.closed &&
@@ -132,7 +129,7 @@ class ActionPanel extends React.Component {
           this.props.user.id == this.props.whiteboard.userId &&
           !this.props.whiteboard.closed &&
           <div className="fixed-action-btn horizontal" style={{ bottom: '25px', right: '100px' }} >
-            <a className="btn-floating btn-large" type="submit" ><i className="material-icons">person</i></a>
+            <a className="btn-floating btn-large" type="submit" ><i className="material-icons">settings</i></a>
 
             <span>
               <ul>
@@ -268,6 +265,12 @@ const mapDispatch = dispatch => {
     },
     updateNotesForColor(arr) {
       dispatch(updateNoteArray(arr))
+    },
+    clearSelect(){
+      dispatch(clearNoteArray());
+    },
+    getSelected() {
+      dispatch(getNoteArray());
     }
   }
 }
