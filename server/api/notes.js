@@ -1,7 +1,9 @@
 const router = require('express').Router()
 const { Note, Branch } = require('../db/models')
-const { AWS_ACCESS_KEY_ID, SECRET_ACCESS_KEY } = require('../../secrets.js') || process.env
+const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID || require('../../secrets.js').AWS_ACCESS_KEY_ID
+const SECRET_ACCESS_KEY = process.env.SECRET_ACCESS_KEY || require('../../secrets.js').SECRET_ACCESS_KEY
 const AWS = require('aws-sdk')
+
 module.exports = router
 
 router.get('/', (req, res, next) => {
