@@ -19,7 +19,7 @@ export class MessagesList extends Component {
       <div id="live-chat">
           <ul className="collection">
         {
-          messageEntry.allMessages.length && messageEntry.allMessages.map(message => {
+           messageEntry.allMessages.map(message => {
             return (
               <li className="collection-item avatar chat-list" key={message.id}>
                 <img src={message.user.image} alt="" className="circle" />
