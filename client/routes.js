@@ -25,14 +25,14 @@ class Routes extends Component {
             {/* Routes placed here are available to all visitors */}
             <Route path="/login" component={LoginSignup} />
             <Route exact path="/" component={Home} />
-            <Redirect to="/" />
+
 
             {
               isLoggedIn &&
               <Switch>
                 <Route exact path="/" component={Home} />
                 <Route path="/whiteboards/:id" component={ConferenceRoom} />
-                <Route exact path="/profile" component={Profile} />
+                <Route path="/profile" component={Profile} />
                 <Redirect to="/" />
               </Switch>
             }

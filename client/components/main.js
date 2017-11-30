@@ -17,12 +17,12 @@ const Main = (props) => {
     <div>
       <nav className="nav">
         <div className="nav-wrapper">
-          <Link to="/home" className="brand-logo"><img className="icon" src="/ideastorm.png" /></Link>
+          <Link to="/" className="brand-logo"><img className="icon" src="/ideastorm.png" /></Link>
           {isLoggedIn ?
             <ul id="nav-mobile" className="right hide-on-med-and-down">
               <li><Link to="/"> Main </Link></li>
               <li><Link to="/profile">Profile</Link></li>
-              <li><a href="#" onClick={handleClick}>Logout</a></li>
+              <li><Link to="/" onClick={handleClick}>Logout</Link></li>
             </ul>
             :
             <ul id="nav-mobile" className="right hide-on-med-and-down">
