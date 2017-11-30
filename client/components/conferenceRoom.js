@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Sidebar, Whiteboard, ActionPanel, Attendees } from './index'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
-import {announceCollaborator, fetchCollaborators, fetchRoom, modifyRoom} from '../store'
+import {announceCollaborator, fetchCollaborators, fetchRoom, modifyRoom, denounceCollaborator} from '../store'
 // import VerticalSwimlane from './VerticalSwimlane'
 
 class ConferenceRoom extends Component {
@@ -20,6 +20,7 @@ class ConferenceRoom extends Component {
   render() {
     if (this.props.person.userName) {
       Materialize.toast(`${this.props.person.userName}, has entered the session`, 4000) // 4000 is the duration of the toast
+      this.props.denounceCollaborator();
     }
     // let swimlaneArray  = []
     // const {singleWhiteboard} = this.props
@@ -43,7 +44,7 @@ class ConferenceRoom extends Component {
                 <div className= "col s4">
                 <table className= "striped bordered">
                 <thead>
-                  <tr><td><h5><i className="material-icons">add</i>Legend:</h5></td></tr>
+                  <tr><td><h5><i className="material-icons">add</i>Actions:</h5></td></tr>
                 </thead>
                 <tbody>
                     <tr><td><a><i className="material-icons">
@@ -67,7 +68,7 @@ class ConferenceRoom extends Component {
                 <div className= "col s4">
                 <table className= "striped bordered">
                 <thead>
-                  <tr><td><h5><i className="material-icons">person</i>Host Legend:</h5></td></tr>
+                  <tr><td><h5><i className="material-icons">settings</i>Host Settings:</h5></td></tr>
                 </thead>
                 <tbody>
                   <tr><td><a><i className="material-icons">
@@ -106,6 +107,6 @@ const mapState = (state) => ({
   user: state.user,
   person: state.attendees.justEntered
 })
-const mapDispatch = {announceCollaborator, fetchCollaborators, fetchRoom, modifyRoom}
+const mapDispatch = {announceCollaborator, fetchCollaborators, fetchRoom, modifyRoom, denounceCollaborator}
 
 export default withRouter(connect(mapState, mapDispatch)(ConferenceRoom))

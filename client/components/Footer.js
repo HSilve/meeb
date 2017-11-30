@@ -13,7 +13,7 @@ const Footer = (props) => {
             <p className="grey-text text-lighten-4">A real-time collaboration tool that facilitates brainstorming sessions</p>
           </div>
           <div className="col l4 offset-l2 s12">
-            <h5 className="white-text">Our LinkedIn</h5>
+            <h5 className="white-text">Find us on LinkedIn</h5>
             <ul>
               <li><a className="grey-text text-lighten-3" href="https://www.linkedin.com/in/mariabetances/">Maria Betances</a></li>
               <li><a className="grey-text text-lighten-3" href="https://www.linkedin.com/in/ericachai/">Erica Chai</a></li>
@@ -26,7 +26,7 @@ const Footer = (props) => {
       <div className="footer-copyright">
         <div className="container">
         © 2017 Made by Maria Betances, Erica Chai, Evlis Henry, Blanca Sanchez
-        <a className="grey-text text-lighten-4 right" href="https://github.com/EHenry92/meeb">Our Github</a>
+        <a className="grey-text text-lighten-4 right" href="https://github.com/EHenry92/meeb">Github Repo</a>
         </div>
       </div>
     </footer>
