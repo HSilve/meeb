@@ -268,7 +268,11 @@ class Whiteboard extends Component {
                     >
                       {this.props.open &&
                         <span>
-                          <button style={{ float: 'left' }} value={note.id} onClick={this.handleDelete}>x</button>
+                          {
+                            (note.userId == this.props.userId || this.props.hostId == this.props.userId) &&
+                            <button style={{ float: 'left' }} value={note.id} onClick={this.handleDelete}>x</button>
+                          }
+
                           <button
                             onMouseMove={this.onMouseMove}
                             onMouseUp={this.onMouseUp}
