@@ -17,7 +17,7 @@ class ActionPanel extends React.Component {
       imageToggle: false,
       linkToggle: false,
       drawToggle: false,
-      toggleBranches: false,
+      toggleBranches: true,
       file: [],
       name: '',
       type: '',
