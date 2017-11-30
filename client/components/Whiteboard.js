@@ -178,21 +178,22 @@ class Whiteboard extends Component {
 
   clickConnection = (evt, note) => {
 
-     const { connectionArray } = this.state;
+     const { selectedArray } = this.props;
 
-     if (connectionArray.indexOf(note.id) === -1) {
-       let tempArr = connectionArray;
-       tempArr.push(note.id);
-       this.setState({ connectionArray: tempArr })
+     if (selectedArray.indexOf(note.id) === -1) {
+      //  let tempArr = selectedArray;
+      //  tempArr.push(note.id);
+      //  this.setState({ connectionArray: tempArr })
+      this.props.updateNoteArray(note.id)
        let selectedCard = document.getElementById(`card${note.id}`)
        selectedCard.style.boxShadow = '0 0 20px yellow'
-     } else if (connectionArray.indexOf(note.id) !== -1) {
-       connectionArray.splice(connectionArray.indexOf(note.id), 1)
-       this.setState({ connectionArray })
+     } else if (selectedArray.indexOf(note.id) !== -1) {
+      selectedArray.splice(selectedArray.indexOf(note.id), 1)
+       this.setState({ selectedArray })
        let selectedCard = document.getElementById(`card${note.id}`)
        selectedCard.style.boxShadow = '0 4px 2px -2px gray'
      }
-     this.props.updateNoteArray(connectionArray);
+    //  this.props.updateNoteArray(selectedArray);
 
    }
 
@@ -326,7 +327,8 @@ const mapStateToProps = (state) => ({
   open: !state.singleWhiteboard.closed,
   vote: state.singleWhiteboard.voteable,
   branches: state.branches,
-  name: state.singleWhiteboard.name
+  name: state.singleWhiteboard.name,
+  selectedArray: state.update
 })
 
 const mapDispatchToProps = { editNote, fetchNotes, deleteNote, castVote, fetchRoom,

@@ -4,7 +4,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import { addNote, closeRoom, openVote, editNote, getBranches,
-  fetchBranches, modifyRoom } from '../store'
+  fetchBranches, modifyRoom, clearNoteArray, getNoteArray } from '../store'
 
 import { withRouter } from 'react-router';
 import { VoteResults } from './index';
@@ -39,7 +39,7 @@ class ActionPanel extends React.Component {
         selectedCard.style.boxShadow = '0 4px 2px -2px gray'
       })
     }
-    this.setState({ connectionArray: [] })
+    this.props.clearSelect();
   }
 
   toggle(type) {
@@ -84,7 +84,6 @@ class ActionPanel extends React.Component {
   }
 
   render() {
-    console.log("props", this.props)
     return (
       <div>
         {!this.props.whiteboard.closed &&
@@ -251,6 +250,12 @@ const mapDispatch = dispatch => {
     },
     updateRoom(room){
       dispatch(modifyRoom(room))
+    },
+    clearSelect(){
+      dispatch(clearNoteArray());
+    },
+    getSelected() {
+      dispatch(getNoteArray());
     }
   }
 }
