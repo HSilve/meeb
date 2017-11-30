@@ -169,7 +169,7 @@ body {
 .modal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
+  z-index: 26; /* Sit on top */
   padding-top: 100px; /* Location of the box */
   left: 0;
   top: 0;
@@ -183,10 +183,12 @@ body {
 /* Modal Content */
 .modal-content {
   background-color: #fefefe;
-  margin: auto;
+  // margin: 20 auto;
+  margin-left: 12vw;
   padding: 20px;
   border: 1px solid #888;
   width: 80%;
+  position: fixed;
 }
 
 /* The Close Button */
