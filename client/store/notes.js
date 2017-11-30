@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { removeBranch } from './index'
 import socket from '../socket';
 
 const GET_NOTES = 'GET_NOTES'
@@ -35,6 +36,7 @@ export const deleteNote = (noteId, whiteboardId) =>
     axios.delete(`/api/notes/${noteId}`)
       .then(_ => {
         dispatch(removeNote(noteId))
+        dispatch(removeBranch(noteId))
         socket.emit('delete-note', noteId, whiteboardId)
       })
       .catch(err => console.log(err))

@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { Note } = require('../db/models')
+const { Note, Branch } = require('../db/models')
 const { AWS_ACCESS_KEY_ID, SECRET_ACCESS_KEY } = require('../../secrets.js') || process.env
 const AWS = require('aws-sdk')
 module.exports = router
@@ -85,6 +85,17 @@ router.put('/:id', (req, res, next) => {
 router.delete('/:id', (req, res, next) => {
   const id = req.params.id
   Note.destroy({ where: { id } })
-    .then(() => res.status(204).end())
+    .then(_ => {
+      Branch.destroy({
+        where: {
+          $or: [{
+              noteId: id
+            }, {
+              endNoteId: id
+            }]
+          }
+      })
+      .then(_ => res.status(204).end())
+  })
     .catch(next);
 })
