@@ -61,6 +61,8 @@ class Whiteboard extends Component {
   componentWillUnmount() {
     this.props.getBranches([])
     this.props.getNotes([])
+    this.props.modifyRoom({...this.props.singleWhiteboard, swimlane: 0,
+      categories: Array(0).fill('')})
   }
   //when user clicks mouse down, dragging state is set to true and new relative position
   //is calculated, the position is set to null
@@ -102,6 +104,7 @@ class Whiteboard extends Component {
         y: evt.pageY - this.state.rel.y
       }
     }, () => {
+      console.log(this.props.branches)
       this.props.branches
         .filter(branch => {
           return branch.noteId === this.state.selectedNote || branch.endNoteId === this.state.selectedNote})
@@ -140,11 +143,11 @@ class Whiteboard extends Component {
   }
 
   handleConnect(evt, noteId) {
-    this.setState({ connectionArray: [...this.state.connectionArray, { noteId, elem: evt.target.getBoundingClientRect()} ] }, function() {
-        if (this.state.connectionArray.length >= 2) {
-          this.props.insertBranch({noteId: this.state.connectionArray[0].noteId, endNoteId: this.state.connectionArray[1].noteId, whiteboardId: this.props.boardId})
-          let newArr = this.state.connectionArray.slice(2)
-          this.setState({ connectionArray: newArr })
+    this.setState({ branches: [...this.state.branches, { noteId, elem: evt.target.getBoundingClientRect()} ] }, function() {
+        if (this.state.branches.length >= 2) {
+          this.props.insertBranch({noteId: this.state.branches[0].noteId, endNoteId: this.state.branches[1].noteId, whiteboardId: this.props.boardId})
+          let newArr = this.state.branches.slice(2)
+          this.setState({ branches: newArr })
         }
 
       })
@@ -152,6 +155,7 @@ class Whiteboard extends Component {
 
 
   showBranches() {
+    d3.selectAll('line').remove()
     if (this.props.branches.length >= 1) {
       this.props.branches && this.props.branches.map(branch => {
         if ($(`#card${branch.noteId}`).length > 0 && $(`#card${branch.endNoteId}`).length > 0) {
@@ -178,6 +182,20 @@ class Whiteboard extends Component {
 
   clickConnection = (evt, note) => {
 
+
+//      const { update } = this.props;
+//      console.log(`connectionArray: `, update)
+//      if (update.indexOf(note.id) === -1) {
+//        this.props.updateNoteArray([...update, note.id])
+//        let selectedCard = document.getElementById(`card${note.id}`)
+//        selectedCard.style.boxShadow = '0 0 20px yellow'
+//      } else if (update.indexOf(note.id) !== -1) {
+//        let removeNote = update.splice(update.indexOf(note.id), 1)
+//        this.props.updateNoteArray(removeNote);
+//        let selectedCard = document.getElementById(`card${note.id}`)
+//        selectedCard.style.boxShadow = '0 4px 2px -2px gray'
+//      }
+
      const { selectedArray } = this.props;
 
      if (selectedArray.indexOf(note.id) === -1) {
@@ -194,7 +212,6 @@ class Whiteboard extends Component {
        selectedCard.style.boxShadow = '0 4px 2px -2px gray'
      }
     //  this.props.updateNoteArray(selectedArray);
-
    }
 
   render() {
@@ -212,7 +229,7 @@ class Whiteboard extends Component {
 
     return (
       <div>
-        <div className="row" style={{ position: 'absolute', width: '100%', zIndex: '-5' }}>
+        <div className="row" style={{ position: 'absolute', width: '100%' }}>
           <div className="col s1 offset s1"></div>
         {
             swimlaneArray ?
@@ -298,7 +315,7 @@ class Whiteboard extends Component {
 
                       {note.link &&
                         <div className="card-action">
-                          <a type="text/css" href={note.link}>Go Here </a>
+                          <a type="text/css" target="_blank" href={`http://${note.link}`}>Go Here </a>
                         </div>
                       }
 

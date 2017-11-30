@@ -108,7 +108,7 @@ export class Home extends Component {
     const { notes, handleRemove } = this.props
     let auth = $('#home-slider')
     let backgrounds = new Array(
-    'url(/meeting-02.jpeg)', 'url(/meeting-01.jpg)', 'url(/meeting-03.jpg)', 'url(/meeting-04.jpeg)')
+    'url(/meeting-01.jpg)', 'url(/meeting-03.jpg)', 'url(/meeting-02.jpeg)', 'url(/meeting-04.jpeg)')
 
     var current = 0;
 
@@ -126,7 +126,7 @@ export class Home extends Component {
         <div id="home-slider" style={{ height: '100vh', width: '100vw', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center', textAlign: 'center'}}>
           <div className="row">
             <div className="col m6 offset-m3" style={{ backgroundColor: 'rgba(255, 255, 255, 0.5)', width: '70vw', borderRadius: '10px', position: 'absolute', margin: '20% auto' }}>
-            <h4 style={{ textAlign: 'center', color: 'black', font: 'Verdana' }}>Collaborative brainstorming couldn't have been easier</h4>
+            <h4 style={{ textAlign: 'center', color: 'black', font: 'Verdana' }}>Collaborative brainstorming couldn't be easier</h4>
             {/* <button className="waves-effect waves-light btn">Sign Up</button> */}
             </div>
           </div>
