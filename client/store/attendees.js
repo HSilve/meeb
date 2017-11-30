@@ -8,10 +8,12 @@ let initialState = {
 
 const GET_COLLABORATORS = 'GET_COLLABORATORS'
 const ANNOUNCE_COLLABORATOR = 'ANNOUNCE_COLLABORATOR'
+const DENNOUNCE_COLLABORATOR = 'DENNOUNCE_COLLABORATOR'
 
 
 export const getCollaborators = collaborators => ({ type: GET_COLLABORATORS, collaborators })
 export const enterCollaborator = collaborator => ({type: ANNOUNCE_COLLABORATOR, collaborator})
+export const denounceCollaborator = () => ({type: DENNOUNCE_COLLABORATOR})
 
 export const fetchCollaborators = (whiteboardId) =>
   dispatch =>
@@ -28,6 +30,7 @@ export const announceCollaborator = (userId, whiteboardId) => dispatch => {
     socket.emit('enter-room', user.data, whiteboardId);
   })
 }
+export const dennounceCollaborator = () => dispatch => {dispatch(dennounceCollaborator());}
 
 
 export default function reducer(state = initialState, action) {
@@ -41,6 +44,11 @@ export default function reducer(state = initialState, action) {
       return Object.assign({}, state, {
         list: [...state.list.filter(co => co.id != action.collaborator.id), action.collaborator],
         justEntered: action.collaborator
+      })
+      case DENNOUNCE_COLLABORATOR:
+      return Object.assign({}, state, {
+        list: [...state.list],
+        justEntered: {}
       })
 
     default:
