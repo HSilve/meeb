@@ -62,5 +62,18 @@ module.exports = (io) => {
       console.log(`Connection ${socket.id} has left the building`)
     })
 
+    socket.on('add branch', branch => {
+      socket.broadcast.to(branch.whiteboardId).emit('add branch', branch)
+    })
+
+    socket.on('get branches', (branches, whiteboardId) => {
+      console.log(branches)
+      socket.broadcast.to(whiteboardId).emit('get branches', branches)
+    })
+
+    socket.on('remove branch', (noteId, whiteboardId) => {
+      socket.broadcast.to(whiteboardId).emit('remove branch', noteId)
+    })
+
   })
 }

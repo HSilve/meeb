@@ -1,5 +1,5 @@
 import io from 'socket.io-client'
-import store, { postMessage, insertNote, updateNote, removeNote, createRoom, updateRoom, enterCollaborator, destroyRoom, deleteRoom} from './store';
+import store, { postMessage, insertNote, updateNote, removeNote, createRoom, updateRoom, enterCollaborator, destroyRoom, deleteRoom, getBranches, addBranch, removeBranch } from './store';
 
 const socket = io(window.location.origin)
 
@@ -53,8 +53,22 @@ socket.on('edit-room', (whiteboard) => {
 
 socket.on('leave-room', (userId, roomId) => {
   console.log(userId, 'leaving', roomId);
+})
 
+socket.on('add branch', (branch) => {
+  console.log(`${branch} is added`)
+  store.dispatch(addBranch(branch))
+})
 
+socket.on('get branches', (branches) => {
+  console.log(branches)
+  store.dispatch(getBranches(branches))
+  console.log(`${branches} are fetched`)
+})
+
+socket.on('remove branch', noteId => {
+  store.dispatch(removeBranch(noteId))
+  console.log(`branches connected to noteID ${noteId} are removed`)
 })
 
 export default socket

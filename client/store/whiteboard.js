@@ -45,16 +45,22 @@ export const newRoom = (roomName, host, attendeeId, date, time, note) => dispatc
     .then(res => {
       dispatch(createRoom(res.data))
       socket.emit('new-room', res.data)
-      if (note.link == '') { note.link = null; }
-      note.whiteboardId = res.data.id;
-      note.userId = host.id
-      note.host = host.name;
-      note.position = [620, 95];
-      return axios.post('/api/notes', { note })
-      // history.push(`/profile/${res.data.id}`);
+      return res.data.id
+    })
+    .then(id => {
+      if (note !== null) {
+        if (note.link == '') { note.link = null; }
+        note.whiteboardId = id;
+        note.userId = host.id
+        note.host = host.name;
+        note.position = [620, 95];
+        return axios.post('/api/notes', { note })
+        // history.push(`/profile/${res.data.id}`)
+      }
+      return null;
     })
     .then(newNote => {
-      socket.emit('new-note', newNote.data)
+      if (newNote) {socket.emit('new-note', newNote.data)}
     })
     .catch(err => console.error('Could not create room!', err));
 };
