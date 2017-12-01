@@ -12,28 +12,31 @@ class VoteResults extends Component {
     let array = [];
     for (var i = 0; i < amount; i++) {
       array.push(
-        <i key = {i}  className="material-icons" style={{float: 'left'}}>flash_on</i>
+        <i key={i} className="material-icons" style={{ float: 'left' }}>flash_on</i>
       )
     }
     return array;
   }
   render() {
-      return (
-        <div>
-          {
+    return (
+      <div>
+        {
           this.props.notes.map(note => {
-            return (
-            <div key={note.id} className="row" >
-              <div className="col s3">{note.text}</div>
-              <div>{this.makeRectangles(note.votes)}</div>
-            </div>
-            )
+            if (note.votes !== 0) {
+              return (
+                <div key={note.id} className="row" >
+                  <div className="col s3">{note.text}</div>
+                  <div>{this.makeRectangles(note.votes)}</div>
+                </div>
+
+              )
+            }
           })
-          }
-        </div>
-      );
-    }
+        }
+      </div>
+    );
   }
+}
 
 const mapStateToProps = (state) => ({
   notes: state.notes

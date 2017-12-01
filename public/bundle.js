@@ -28789,20 +28789,22 @@ var VoteResults = function (_Component) {
         'div',
         null,
         this.props.notes.map(function (note) {
-          return _react2.default.createElement(
-            'div',
-            { key: note.id, className: 'row' },
-            _react2.default.createElement(
+          if (note.votes !== 0) {
+            return _react2.default.createElement(
               'div',
-              { className: 'col s3' },
-              note.text
-            ),
-            _react2.default.createElement(
-              'div',
-              null,
-              _this2.makeRectangles(note.votes)
-            )
-          );
+              { key: note.id, className: 'row' },
+              _react2.default.createElement(
+                'div',
+                { className: 'col s3' },
+                note.text
+              ),
+              _react2.default.createElement(
+                'div',
+                null,
+                _this2.makeRectangles(note.votes)
+              )
+            );
+          }
         })
       );
     }
