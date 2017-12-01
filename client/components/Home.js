@@ -39,7 +39,9 @@ export class Home extends Component {
 
   handleSubmit(evt) {
     evt.preventDefault()
-    this.notePositions[++this.noteId] = [680, 1500]
+    let bodyPos = document.body.getBoundingClientRect()
+    let whiteboardPos = document.getElementById('mini-whiteboard').getBoundingClientRect()
+    this.notePositions[++this.noteId] = [680, Math.abs(bodyPos.top) + whiteboardPos.top]
     this.props.createNote({ id: this.noteId, text: evt.target.text.value, position: this.notePositions[this.noteId] })
   }
 

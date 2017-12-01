@@ -56,7 +56,7 @@ class ActionPanel extends React.Component {
   toggleBranches(swimlane) {
     console.log(swimlane)
     this.setState({ toggleBranches: swimlane > 0 ? false : !this.state.toggleBranches }, function() {
-      this.state.toggleBranches ? this.props.showBranches(this.props.whiteboard.id) : this.props.hideBranches()
+      this.state.toggleBranches ? this.props.showBranches(this.props.whiteboard.id) : this.props.hideBranches(this.props.whiteboard.id)
       if (!this.state.toggleBranches) d3.selectAll('line').remove()
     })
   }
@@ -216,7 +216,8 @@ const mapState = (state, ownProps) => {
   }
 }
 
-const mapDispatch = dispatch => {
+const mapDispatch = (dispatch, ownProps) => {
+  console.log(ownProps)
   return {
     handleSubmit(evt, file, imageName, fileType, userId, whiteboardId, noteIdx) {
       evt.preventDefault()
@@ -257,8 +258,8 @@ const mapDispatch = dispatch => {
     showBranches(whiteboardId) {
       dispatch(fetchBranches(whiteboardId))
     },
-    hideBranches() {
-      dispatch(getBranches([]))
+    hideBranches(whiteboardId) {
+      dispatch(getBranches([], whiteboardId))
     },
     updateRoom(room){
       dispatch(modifyRoom(room))

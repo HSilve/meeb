@@ -311,8 +311,8 @@ class Whiteboard extends Component {
                       }
 
                       {note.image &&
-                        <div className="card-image">
-                          <img onClick={this.clickImage} src={note.image} style={{ margin: '0 auto'}} />
+                        <div className="card-image row" >
+                          <img onClick={this.clickImage} src={note.image} className="responsive-img" />
                         </div>
                       }
 
