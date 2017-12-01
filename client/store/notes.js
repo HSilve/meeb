@@ -36,7 +36,7 @@ export const deleteNote = (noteId, whiteboardId) =>
     axios.delete(`/api/notes/${noteId}`)
       .then(_ => {
         dispatch(removeNote(noteId))
-        dispatch(removeBranch(noteId))
+        dispatch(removeBranch(noteId, whiteboardId))
         socket.emit('delete-note', noteId, whiteboardId)
       })
       .catch(err => console.log(err))
