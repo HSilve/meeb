@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { editNote, fetchNotes, deleteNote, castVote, fetchRoom,
   insertBranch, fetchBranches, getBranches, getNotes,
-  updateNoteArray, modifyRoom } from '../store'
+  updateNoteArray, modifyRoom, announceCollaborator, denounceCollaborator} from '../store'
 import { withRouter } from 'react-router'
 import ContentEditable from 'react-contenteditable'
 import debounce from 'lodash/debounce'
@@ -353,6 +353,6 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = { editNote, fetchNotes, deleteNote, castVote, fetchRoom,
-  insertBranch, fetchBranches, getBranches, getNotes, updateNoteArray, modifyRoom }
+  insertBranch, fetchBranches, getBranches, getNotes, updateNoteArray, modifyRoom, announceCollaborator, denounceCollaborator}
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Whiteboard));
