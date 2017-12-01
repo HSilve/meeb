@@ -64,7 +64,7 @@ async function seed() {
         Whiteboard.create({ name: 'Company Logo', host: 'Evlis Henry', userId: 6, startTime: '06:30', date: '2017-11-27' })
       )
       .then(_ =>
-        Whiteboard.create({ name: 'Expanind the Company', host: 'Blanca Sanchez', userId: 3, startTime: '06:00', date: '2018-01-02' })
+        Whiteboard.create({ name: 'Expanding the Company', host: 'Blanca Sanchez', userId: 3, startTime: '06:00', date: '2018-01-02' })
       )
       .then(_ =>
         Whiteboard.create({ name: 'Next Holiday Drink', host: 'Maria Betances', userId: 4, startTime: '06:00', date: '2017-12-01' })
@@ -165,7 +165,21 @@ async function seed() {
     Attendees.create({ userId: 5, whiteboardId: 7 }),
     Attendees.create({ userId: 6, whiteboardId: 7 }),
     Attendees.create({ userId: 1, whiteboardId: 7 }),
-    Attendees.create({ userId: 2, whiteboardId: 7 })
+    Attendees.create({ userId: 2, whiteboardId: 7 }),
+
+    Attendees.create({ userId: 3, whiteboardId: 8 }),
+    Attendees.create({ userId: 4, whiteboardId: 8 }),
+    Attendees.create({ userId: 5, whiteboardId: 8 }),
+    Attendees.create({ userId: 6, whiteboardId: 8 }),
+    Attendees.create({ userId: 1, whiteboardId: 8 }),
+    Attendees.create({ userId: 2, whiteboardId: 8 }),
+
+    Attendees.create({ userId: 3, whiteboardId: 9 }),
+    Attendees.create({ userId: 4, whiteboardId: 9 }),
+    Attendees.create({ userId: 5, whiteboardId: 9 }),
+    Attendees.create({ userId: 6, whiteboardId: 9 }),
+    Attendees.create({ userId: 1, whiteboardId: 9 }),
+    Attendees.create({ userId: 2, whiteboardId: 9 })
 
   ])
 
