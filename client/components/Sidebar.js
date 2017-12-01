@@ -25,11 +25,15 @@ class Sidebar extends Component {
       <div className="sidebar white">
         <div
             className="btn grey darken-4"
-            style={{borderCornerShape: 'circle'}}
             onClick= {this.toggleMessageBox}
-              >↓Messages↓
-              newMessageCount &&
-            <span className="new badge yellow">{newMessageCount}</span></div>
+              >
+              {/* ↓Messages↓ */}
+          {
+            // (newMessageCount > 0 && !this.state.show) &&
+            // <a style={{float: 'right'}} className="new badge red #0277bd"> {newMessageCount} new</a>
+            <a>↓Messages↓ <a className="new badge yellow">{newMessageCount} new</a></a>
+          }
+        </div>
           {
             show && <Chatbox />
           }
