@@ -14,6 +14,7 @@ export const getBranches = (branches, whiteboardId) => {
   return { type: GET_BRANCHES, branches }
 }
 export const addBranch = branch => ({ type: ADD_BRANCH, branch })
+
 export const removeBranch = (noteId, whiteboardId) => {
   socket.emit('remove branch', noteId, whiteboardId)
   return { type: REMOVE_BRANCHES, noteId}
