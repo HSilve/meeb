@@ -30012,6 +30012,7 @@ var editNote = exports.editNote = function editNote(id, data) {
     return _axios2.default.put('/api/notes/' + id, data).then(function (updatedNote) {
       dispatch(updateNote(updatedNote.data));
       _socket2.default.emit('edit-note', updatedNote.data);
+      dispatch((0, _index.fetchBranches)(updatedNote.data.whiteboardId));
     }).catch(function (err) {
       return console.log(err);
     });
