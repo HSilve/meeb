@@ -56,8 +56,8 @@ class Whiteboard extends Component {
     const boardId = this.props.match.params.id
     this.props.fetchRoom(boardId)
     this.props.fetchNotes(boardId)
-    this.props.announceCollaborator(this.props.userId, boardId);
-    this.props.denounceCollaborator();
+    // this.props.announceCollaborator(this.props.userId, boardId);
+    // this.props.denounceCollaborator();
   }
 
   componentWillUnmount() {
