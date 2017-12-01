@@ -131,8 +131,10 @@ body {
   }
   .card {
     width: 250px;
+    min-height: 100px;
+    margin: 0 auto;
     .card-image {
-      width: 60px;
+      max-width: 65%;
       transition: 1s;
     }
     .card-image:hover {

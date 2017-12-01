@@ -42,7 +42,9 @@ class Profile extends Component {
 
     return (
       <div className="row">
-        <h2>Welcome, {this.props.user.name}</h2>
+        <div className="col m12 center-align">
+          <h2>Welcome, {this.props.user.name}</h2>
+        </div>
       <div className="grid-example col s8">
       <div className="grid-example">
         <div className="row">
