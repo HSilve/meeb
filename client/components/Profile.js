@@ -37,6 +37,8 @@ class Profile extends Component {
     var hours = dateObj.getHours();
     var minutes = dateObj.getMinutes();
 
+    if (day < 10) day = '0' + day
+
     var newdate = year + '-' + month + '-' + day;
     var newtime = hours + ':' + minutes;
 
@@ -55,7 +57,7 @@ class Profile extends Component {
 
                 this.props.allRooms.filter(room => {
 
-                  return (room.date === newdate) && (((room.startTime >= newtime) && !room.endTime) || ((room.startTime <= newtime) && !room.endTime))
+                  return (room.date === newdate && !room.endTime)
                 })
                   .map(result => {
                     const user = this.props.user
@@ -134,6 +136,8 @@ onClick={event => this.props.deleteARoom(result.id)}
             <ul className="collection">
               {
                 this.props.allRooms.filter(room => {
+                  console.log(room.date)
+                  console.log(newdate)
                   return room.date > newdate
                 })
                   .map(result => {
