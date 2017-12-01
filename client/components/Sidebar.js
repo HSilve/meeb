@@ -28,11 +28,14 @@ class Sidebar extends Component {
             onClick= {this.toggleMessageBox}
               >
               {/* ↓Messages↓ */}
-          {
-            // (newMessageCount > 0 && !this.state.show) &&
-            // <a style={{float: 'right'}} className="new badge red #0277bd"> {newMessageCount} new</a>
-            <a>↓Messages↓ <a className="new badge yellow">{newMessageCount} new</a></a>
-          }
+
+            <a style={{color: 'yellow'}}>↓Messages↓
+              {
+                (newMessageCount > 0 && !this.state.show) &&
+                <a style={{color: 'white'}} className="new badge">{newMessageCount} new</a>
+              }
+            </a>
+
         </div>
           {
             show && <Chatbox />
