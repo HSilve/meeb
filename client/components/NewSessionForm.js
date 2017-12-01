@@ -54,8 +54,13 @@ export class NewSessionForm extends Component {
 
   handleSubmit(evt) {
     evt.preventDefault();
-    this.props.newRoom(this.state.roomName, this.props.user, this.state.selected, evt.target.date.value, evt.target.time.value, { file: this.state.file, imageName: this.state.name, fileType: this.state.type, link: evt.target.noteLink.value, text: evt.target.noteText.value }
-    )
+    let note = null;
+    const link = evt.target.noteLink.value,
+      text = evt.target.noteText.value,
+      file = this.state.file;
+
+    if (file || link || text) { note = { file, imageName: this.state.name, fileType: this.state.type, link, text}}
+    this.props.newRoom(this.state.roomName, this.props.user, this.state.selected, evt.target.date.value, evt.target.time.value, note)
     document.getElementById('formBox').reset();
   }
 

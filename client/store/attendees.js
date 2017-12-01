@@ -13,7 +13,7 @@ const DENNOUNCE_COLLABORATOR = 'DENNOUNCE_COLLABORATOR'
 
 export const getCollaborators = collaborators => ({ type: GET_COLLABORATORS, collaborators })
 export const enterCollaborator = collaborator => ({type: ANNOUNCE_COLLABORATOR, collaborator})
-export const denounceCollaborator = () => ({type: DENNOUNCE_COLLABORATOR})
+export const clearOldCollaborator = () => ({type: DENNOUNCE_COLLABORATOR})
 
 export const fetchCollaborators = (whiteboardId) =>
   dispatch =>
@@ -30,7 +30,7 @@ export const announceCollaborator = (userId, whiteboardId) => dispatch => {
     socket.emit('enter-room', user.data, whiteboardId);
   })
 }
-export const dennounceCollaborator = () => dispatch => {dispatch(dennounceCollaborator());}
+export const dennounceCollaborator = () => dispatch => {dispatch(clearOldCollaborator());}
 
 
 export default function reducer(state = initialState, action) {

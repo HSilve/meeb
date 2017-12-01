@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { editNote, fetchNotes, deleteNote, castVote, fetchRoom,
   insertBranch, fetchBranches, getBranches, getNotes,
-  updateNoteArray, modifyRoom } from '../store'
+  updateNoteArray, modifyRoom, announceCollaborator, dennounceCollaborator} from '../store'
 import { withRouter } from 'react-router'
 import ContentEditable from 'react-contenteditable'
 import debounce from 'lodash/debounce'
@@ -56,6 +56,8 @@ class Whiteboard extends Component {
     const boardId = this.props.match.params.id
     this.props.fetchRoom(boardId)
     this.props.fetchNotes(boardId)
+    this.props.announceCollaborator(this.props.userId, boardId);
+    this.props.dennounceCollaborator();
   }
 
   componentWillUnmount() {
@@ -353,6 +355,6 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = { editNote, fetchNotes, deleteNote, castVote, fetchRoom,
-  insertBranch, fetchBranches, getBranches, getNotes, updateNoteArray, modifyRoom }
+  insertBranch, fetchBranches, getBranches, getNotes, updateNoteArray, modifyRoom, announceCollaborator, dennounceCollaborator}
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Whiteboard));
