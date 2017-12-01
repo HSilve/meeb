@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { removeBranch } from './index'
+import { removeBranch, fetchBranches } from './index'
 import socket from '../socket';
 
 const GET_NOTES = 'GET_NOTES'
@@ -47,6 +47,7 @@ export const editNote = (id, data) =>
       .then(updatedNote => {
         dispatch(updateNote(updatedNote.data))
         socket.emit('edit-note', updatedNote.data)
+        dispatch(fetchBranches(updatedNote.data.whiteboardId))
       })
       .catch(err => console.log(err))
 

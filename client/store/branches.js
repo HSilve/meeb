@@ -33,8 +33,9 @@ export const insertBranch = branchData =>
 export const fetchBranches = whiteBoardId =>
   dispatch =>
     axios.get(`/api/branches/${whiteBoardId}`)
-      .then(branches => {                             dispatch(getBranches(branches.data))
-      socket.emit('get branches', branches.data, whiteBoardId)
+      .then(branches => {
+        dispatch(getBranches(branches.data))
+        socket.emit('get branches', branches.data, whiteBoardId)
 
       })
       .catch(err => console.log(err))
