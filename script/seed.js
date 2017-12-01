@@ -44,7 +44,6 @@ async function seed() {
 
   ])
   await Promise.all([
-<<<<<<< HEAD
     Whiteboard.create({ name: 'Corporate Holiday Gifts', host: 'Maria', userId: 4, startTime: '04:30', date: '2017-10-27' })
       .then(_ =>
         Whiteboard.create({ name: 'Company Goals For 2018', host: 'Maria', userId: 4, startTime: '04:30', date: '2018-01-01' })
@@ -67,30 +66,9 @@ async function seed() {
       .then(_ =>
         Whiteboard.create({ name: 'Expanind the Company', host: 'Blanca Sanchez', userId: 3, startTime: '06:00', date: '2018-01-02' })
       )
-=======
-    Whiteboard.create({name: 'Best Dog Treats', host: 'Cody', userId: 1, startTime: '04:30', date: '2017-10-27'})
-  .then(_ =>
-    Whiteboard.create({name: 'FullStack', host: 'Murphy', userId: 2, startTime: '04:30', date: '2017-11-25'})
-  )
-  .then(_ =>
-    Whiteboard.create({name: "Blanca's Room", host: 'Blanca Sanchez', userId: 3, startTime: '02:30', date: '2017-11-27'})
-  )
-  .then(_ =>
-    Whiteboard.create({name: "Maria's Room", host: 'Maria Betances', userId: 4, startTime: '03:30', date: '2017-11-27'})
-  )
-  .then(_ =>
-    Whiteboard.create({name: 'Chai Tea', host: 'Erica Chai', userId: 5, startTime: '04:45', date: '2017-11-27'})
-  )
-  .then(_ =>
-    Whiteboard.create({name: 'A Really Awsome Room ', host: 'Evlis Henry', userId: 6, startTime: '06:30', date: '2017-11-27'})
-  )
-  .then(_ =>
-    Whiteboard.create({name: 'Family and Friends Demo Room ', host: 'User A Demo', userId: 7, startTime: '06:00', date: '2017-11-27'})
-  )
-  .then(_ =>
-    Whiteboard.create({name: 'Next Holiday Drink', host: 'Maria Betances', userId: 4, startTime: '06:00', date: '2017-11-30'})
-  )
->>>>>>> 48239855ac5ec24a288adb9f2b344bf68a7470d1
+      .then(_ =>
+        Whiteboard.create({ name: 'Next Holiday Drink', host: 'Maria Betances', userId: 4, startTime: '06:00', date: '2017-12-01' })
+      )
   ])
 
   await Promise.all([
@@ -106,7 +84,6 @@ async function seed() {
 
   ])
   await Promise.all([
-<<<<<<< HEAD
     Note.create({ text: 'The Best Idea In The World', highlighted: true, link: 'http://www.github.com', userId: 6, whiteboardId: 1, position: [620, 95] }),
     Note.create({ text: 'Just about the worst Idea Ever', userId: 1, whiteboardId: 1, position: [800, 95] }),
     Note.create({ text: "I'm just a lone note", userId: 2, whiteboardId: 2, position: [620, 95] }),
@@ -117,46 +94,30 @@ async function seed() {
     Note.create({ text: 'Triphub', userId: 2, whiteboardId: 7, position: [800, 500], color: '#00d084' }),
     Note.create({ text: 'Git It Done', userId: 2, whiteboardId: 7, position: [880, 45], color: '#00d084' }),
     Note.create({ text: 'Global Kitchen', userId: 2, whiteboardId: 7, position: [800, 600], color: '#00d084' }),
-    Note.create({ text: 'Cowuill', userId: 2, whiteboardId: 7, position: [920, 93], color: '#00d084' })
-
-
-
-=======
-    Note.create({text: 'The Best Idea In The World', highlighted: true, link: 'http://www.github.com', userId: 6, whiteboardId: 1, position: [620, 95]}),
-    Note.create({text: 'Just about the worst Idea Ever', userId: 1, whiteboardId: 1, position: [800, 95] }),
-    Note.create({text: "I'm just a lone note", userId: 2, whiteboardId: 2, position: [620, 95]}),
-    Note.create({text: 'I wanna be a branch off the best idea', image: 'http://completecarnivore.com/wp-content/uploads/2016/07/short-rib-location.jpg', userId: 4, whiteboardId: 1, position: [620, 95] }),
-    Note.create({text: 'IdeaStorm', highlighted: true, link: 'https://idea-storm.herokuapp.com/', userId: 6, whiteboardId: 7, position: [620, 95], color: '#fcb900', votes: 5}),
-    Note.create({text: 'Whiskr', userId: 2, whiteboardId: 7, position: [680, 295], color: '#00d084'}),
-    Note.create({text: 'CodeNames', userId: 2, whiteboardId: 7, position: [120, 335], color: '#00d084'}),
-    Note.create({text: 'Triphub', userId: 2, whiteboardId: 7, position: [800, 500], color: '#00d084'}),
-    Note.create({text: 'Git It Done', userId: 2, whiteboardId: 7, position: [880, 45], color: '#00d084'}),
-    Note.create({text: 'Global Kitchen', userId: 2, whiteboardId: 7, position: [800, 600], color: '#00d084'}),
-    Note.create({text: 'Cowuill', userId: 2, whiteboardId: 7, position: [920, 93], color: '#00d084'}),
-    Note.create({text: 'Next Holiday Drink?', userId: 4, whiteboardId: 8, position: [920, 93], color: '#00d084'}),
-    Note.create({text: 'Original Mocha Frappe', userId: 3, whiteboardId: 8, position: [920, 93], color: '#00d084'}),
-    Note.create({text: 'Candy Cane Smoothie', userId: 3, whiteboardId: 8, position: [920, 93], color: '#00d084'}),
-    Note.create({text: 'Hot Chocolate', userId: 5, whiteboardId: 8, position: [920, 93], color: '#00d084'}),
-    Note.create({text: 'Jingle Bells (White Hot Chocolate with Grey Marshmallow)', userId: 2, whiteboardId: 8, position: [920, 93], color: '#00d084'}),
-    Note.create({text: 'Snowflake Latte', userId: 6, whiteboardId: 8, position: [920, 93], color: '#00d084'}),
-    Note.create({text: 'Red Tea', userId: 4, whiteboardId: 8, position: [920, 93], color: '#00d084'}),
-    Note.create({text: 'Peppermint', userId: 5, whiteboardId: 8, position: [920, 93], color: '#00d084'}),
-    Note.create({text: 'Shrimp Margarita', userId: 6, whiteboardId: 8, position: [920, 93], color: '#00d084'}),
-    Note.create({text: 'Gingerbread Cookie', userId: 6, whiteboardId: 8, position: [920, 93], color: '#00d084'}),
-    Note.create({text: 'Strawberry Shortcake', userId: 5, whiteboardId: 8, position: [920, 93], color: '#00d084'}),
-    Note.create({text: 'Gumdrop Toppings', userId: 4, whiteboardId: 8, position: [920, 93], color: '#00d084'}),
-    Note.create({text: 'Candy Cane Cup', userId: 4, whiteboardId: 8, position: [920, 93], color: '#00d084'}),
-    Note.create({text: 'Earl Grey', userId: 3, whiteboardId: 8, position: [920, 93], color: '#00d084'}),
-    Note.create({text: 'Champage Frappe', userId: 3, whiteboardId: 8, position: [920, 93], color: '#00d084'}),
-    Note.create({text: 'Pumpkin Not Spice', userId: 3, whiteboardId: 8, position: [920, 93], color: '#00d084'}),
-    Note.create({text: 'Oreo', userId: 4, whiteboardId: 8, position: [920, 93], color: '#00d084'}),
-    Note.create({text: 'Somoa', userId: 5, whiteboardId: 8, position: [920, 93], color: '#00d084'}),
-    Note.create({text: 'Thin Mint', userId: 5, whiteboardId: 8, position: [920, 93], color: '#00d084'}),
-    Note.create({text: 'Chocolate Chip', userId: 6, whiteboardId: 8, position: [920, 93], color: '#00d084'}),
-    Note.create({text: 'Peppermint Rolls', userId: 4, whiteboardId: 8, position: [920, 93], color: '#00d084'}),
-    Note.create({text: 'Peanut Butter', userId: 5, whiteboardId: 8, position: [920, 93], color: '#00d084'}),
-    Note.create({text: 'Eggnog', userId: 3, whiteboardId: 8, position: [920, 93], color: '#00d084'})
->>>>>>> 48239855ac5ec24a288adb9f2b344bf68a7470d1
+    Note.create({ text: 'Cowuill', userId: 2, whiteboardId: 7, position: [920, 93], color: '#00d084' }),
+    Note.create({ text: 'Next Holiday Drink?', userId: 4, whiteboardId: 9, position: [920, 93], color: '#00d084' }),
+    Note.create({ text: 'Original Mocha Frappe', userId: 3, whiteboardId: 9, position: [920, 93], color: '#00d084' }),
+    Note.create({ text: 'Candy Cane Smoothie', userId: 3, whiteboardId: 9, position: [920, 93], color: '#00d084' }),
+    Note.create({ text: 'Hot Chocolate', userId: 5, whiteboardId: 9, position: [920, 93], color: '#00d084' }),
+    Note.create({ text: 'Jingle Bells (White Hot Chocolate with Grey Marshmallow)', userId: 2, whiteboardId: 9, position: [920, 93], color: '#00d084' }),
+    Note.create({ text: 'Snowflake Latte', userId: 6, whiteboardId: 9, position: [920, 93], color: '#00d084' }),
+    Note.create({ text: 'Red Tea', userId: 4, whiteboardId: 9, position: [920, 93], color: '#00d084' }),
+    Note.create({ text: 'Peppermint', userId: 5, whiteboardId: 9, position: [920, 93], color: '#00d084' }),
+    Note.create({ text: 'Shrimp Margarita', userId: 6, whiteboardId: 9, position: [920, 93], color: '#00d084' }),
+    Note.create({ text: 'Gingerbread Cookie', userId: 6, whiteboardId: 9, position: [920, 93], color: '#00d084' }),
+    Note.create({ text: 'Strawberry Shortcake', userId: 5, whiteboardId: 9, position: [920, 93], color: '#00d084' }),
+    Note.create({ text: 'Gumdrop Toppings', userId: 4, whiteboardId: 9, position: [920, 93], color: '#00d084' }),
+    Note.create({ text: 'Candy Cane Cup', userId: 4, whiteboardId: 9, position: [920, 93], color: '#00d084' }),
+    Note.create({ text: 'Earl Grey', userId: 3, whiteboardId: 9, position: [920, 93], color: '#00d084' }),
+    Note.create({ text: 'Champage Frappe', userId: 3, whiteboardId: 9, position: [920, 93], color: '#00d084' }),
+    Note.create({ text: 'Pumpkin Not Spice', userId: 3, whiteboardId: 9, position: [920, 93], color: '#00d084' }),
+    Note.create({ text: 'Oreo', userId: 4, whiteboardId: 9, position: [920, 93], color: '#00d084' }),
+    Note.create({ text: 'Somoa', userId: 5, whiteboardId: 9, position: [920, 93], color: '#00d084' }),
+    Note.create({ text: 'Thin Mint', userId: 5, whiteboardId: 9, position: [920, 93], color: '#00d084' }),
+    Note.create({ text: 'Chocolate Chip', userId: 6, whiteboardId: 9, position: [920, 93], color: '#00d084' }),
+    Note.create({ text: 'Peppermint Rolls', userId: 4, whiteboardId: 9, position: [920, 93], color: '#00d084' }),
+    Note.create({ text: 'Peanut Butter', userId: 5, whiteboardId: 9, position: [920, 93], color: '#00d084' }),
+    Note.create({ text: 'Eggnog', userId: 3, whiteboardId: 9, position: [920, 93], color: '#00d084' })
   ])
 
   await Promise.all([
