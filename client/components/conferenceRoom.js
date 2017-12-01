@@ -18,11 +18,18 @@ class ConferenceRoom extends Component {
     this.props.announceCollaborator(this.props.user.id, boardId);
   }
 
-  render() {
+  componentDidUpdate() {
     if (this.props.person) {
       Materialize.toast(`${this.props.person}, has entered the session`, 3000) // 4000 is the duration of the toast
       this.props.denounceCollaborator();
-}
+    }
+  }
+
+  render() {
+//     if (this.props.person) {
+//       Materialize.toast(`${this.props.person}, has entered the session`, 3000) // 4000 is the duration of the toast
+//       this.props.denounceCollaborator();
+// }
     // let swimlaneArray  = []
     // const {singleWhiteboard} = this.props
     // for (let i = 0; i < singleWhiteboard.swimlane; i++) {
