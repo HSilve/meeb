@@ -9,12 +9,14 @@ let initialState = {
 const GET_COLLABORATORS = 'GET_COLLABORATORS'
 const ANNOUNCE_COLLABORATOR = 'ANNOUNCE_COLLABORATOR'
 const DENNOUNCE_COLLABORATOR = 'DENNOUNCE_COLLABORATOR'
+const ANNOUNCE_SELF = 'ANNOUNCE_SELF'
+
 
 
 export const getCollaborators = collaborators => ({ type: GET_COLLABORATORS, collaborators })
 export const enterCollaborator = collaborator => ({type: ANNOUNCE_COLLABORATOR, collaborator})
 export const clearOldCollaborator = () => ({type: DENNOUNCE_COLLABORATOR})
-
+export const enterSelf = collaborator => ({type: ANNOUNCE_SELF, collaborator})
 export const fetchCollaborators = (whiteboardId) =>
   dispatch =>
     axios.get(`/api/attendees/${whiteboardId}`)
@@ -30,7 +32,13 @@ export const announceCollaborator = (userId, whiteboardId) => dispatch => {
     socket.emit('enter-room', user.data, whiteboardId);
   })
 }
-export const dennounceCollaborator = () => dispatch => {dispatch(clearOldCollaborator());}
+export const announceSelf = (userId, whiteboardId) => dispatch => {
+  axios.put(`/api/attendees/${whiteboardId}`, {userId})
+  .then(user => {
+      dispatch(enterSelf(user))
+  })
+}
+export const denounceCollaborator = () => dispatch => {dispatch(clearOldCollaborator());}
 
 
 export default function reducer(state = initialState, action) {
