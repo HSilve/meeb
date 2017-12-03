@@ -38,16 +38,17 @@ export const deleteNote = (noteId, whiteboardId) =>
         dispatch(removeNote(noteId))
         dispatch(removeBranch(noteId, whiteboardId))
         socket.emit('delete-note', noteId, whiteboardId)
+        socket.emit('remove branch', noteId, whiteboardId)
       })
       .catch(err => console.log(err))
 
-export const editNote = (id, data) =>
+export const editNote = (id, data, branches) =>
   dispatch =>
     axios.put(`/api/notes/${id}`, data)
       .then(updatedNote => {
         dispatch(updateNote(updatedNote.data))
         socket.emit('edit-note', updatedNote.data)
-        dispatch(fetchBranches(updatedNote.data.whiteboardId))
+        if (branches) dispatch(fetchBranches(updatedNote.data.whiteboardId))
       })
       .catch(err => console.log(err))
 
