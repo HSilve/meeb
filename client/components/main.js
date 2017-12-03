@@ -17,16 +17,16 @@ const Main = (props) => {
     <div>
       <nav className="nav">
         <div className="nav-wrapper">
-          <Link to="/" className="brand-logo"><img className="icon" src="/ideastorm.png" /></Link>
+          <Link to="/" className="left brand-logo"><img className="icon" src="/ideastorm.png" /></Link>
           {isLoggedIn ?
-            <ul id="nav-mobile" className="right hide-on-med-and-down">
-              <li><Link to="/"> Main </Link></li>
+            <ul id="nav-mobile" className="right">
+              <li className="hide-on-med-and-down"><Link to="/"> Main </Link></li>
               <li><Link to="/profile">Profile</Link></li>
               <li><Link to="/" onClick={handleClick}>Logout</Link></li>
             </ul>
             :
-            <ul id="nav-mobile" className="right hide-on-med-and-down">
-              <li><Link to="/"> Main </Link></li>
+            <ul id="nav-mobile" className="right">
+              <li className="hide-on-med-and-down"><Link to="/"> Main </Link></li>
               <li><Link to="/login">Login / Signup</Link></li>
             </ul>
           }
