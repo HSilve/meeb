@@ -64,11 +64,13 @@ module.exports = (io) => {
 
     socket.on('add branch', branch => {
       socket.broadcast.to(branch.whiteboardId).emit('add branch', branch)
+      console.log(branch.whiteboardId)
     })
 
     socket.on('get branches', (branches, whiteboardId) => {
       console.log(branches)
       socket.broadcast.to(whiteboardId).emit('get branches', branches)
+      console.log(whiteboardId)
     })
 
     socket.on('remove branch', (noteId, whiteboardId) => {

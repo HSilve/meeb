@@ -8,18 +8,15 @@ const ADD_BRANCH = 'ADD_BRANCH'
 const REMOVE_BRANCHES = 'REMOVE_BRANCHES'
 
 
-export const getBranches = (branches, whiteboardId) => {
-  console.log(branches)
-  if (branches.length === 0) socket.emit('get branches', branches || [], whiteboardId)
-  return { type: GET_BRANCHES, branches }
-}
+export const getBranches = branches => ({ type: GET_BRANCHES, branches })
 export const addBranch = branch => ({ type: ADD_BRANCH, branch })
+export const removeBranch = noteId => ({ type: REMOVE_BRANCHES, noteId})
 
-export const removeBranch = (noteId, whiteboardId) => {
-  socket.emit('remove branch', noteId, whiteboardId)
-  return { type: REMOVE_BRANCHES, noteId}
-}
-
+export const emptyBranches = whiteboardId =>
+  dispatch => {
+    dispatch(getBranches([]))
+    socket.emit('get branches', [], whiteboardId)
+  }
 
 export const insertBranch = branchData =>
   dispatch =>
@@ -30,13 +27,13 @@ export const insertBranch = branchData =>
       })
       .catch(err => console.log(err))
 
-export const fetchBranches = whiteBoardId =>
+export const fetchBranches = whiteboardId =>
   dispatch =>
-    axios.get(`/api/branches/${whiteBoardId}`)
+    axios.get(`/api/branches/${whiteboardId}`)
       .then(branches => {
+        console.log(whiteboardId)
         dispatch(getBranches(branches.data))
-        socket.emit('get branches', branches.data, whiteBoardId)
-
+        socket.emit('get branches', branches.data, whiteboardId)
       })
       .catch(err => console.log(err))
 
@@ -46,7 +43,7 @@ export default function(state = defaultBranches, action) {
     case ADD_BRANCH:
       return [...state, action.branch]
     case GET_BRANCHES:
-      console.log('in get branches reducer')
+      console.log(action.branches)
       return action.branches
     case REMOVE_BRANCHES:
       return state.filter(branch => branch.noteId !== parseInt(10, action.noteId) && branch.endNoteId !== parseInt(10, action.noteId))

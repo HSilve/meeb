@@ -88,7 +88,8 @@ class Whiteboard extends Component {
   //once mouse is released, the new position of note is updated in db
   //and dragging is set to false
   onMouseUp(evt) {
-    if (this.state.pos.x !== null && this.state.pos.y !== null) this.props.editNote(this.state.selectedNote, { position: [this.state.pos.x, this.state.pos.y] })
+    if (this.state.pos.x !== null && this.state.pos.y !== null) this.props.editNote(this.state.selectedNote, { position: [this.state.pos.x, this.state.pos.y] }, this.props.branches.length > 0)
+
     evt.stopPropagation()
     evt.preventDefault()
     this.setState({ dragging: false })
@@ -104,7 +105,6 @@ class Whiteboard extends Component {
         y: evt.pageY - this.state.rel.y
       }
     }, () => {
-      console.log(this.props.branches)
       this.props.branches
         .filter(branch => {
           return branch.noteId === this.state.selectedNote || branch.endNoteId === this.state.selectedNote})
@@ -169,7 +169,6 @@ class Whiteboard extends Component {
               .attr('y2', window.scrollY + secondPoints.top)
               .attr('stroke-width', 2)
               .attr('stroke', 'black')
-              // .attr("position", "absolute")
               .attr('id', `line-${branch.id}`)
           }
         } else {
@@ -181,27 +180,8 @@ class Whiteboard extends Component {
   }
 
   clickConnection = (evt, note) => {
-
-
-//      const { update } = this.props;
-//      console.log(`connectionArray: `, update)
-//      if (update.indexOf(note.id) === -1) {
-//        this.props.updateNoteArray([...update, note.id])
-//        let selectedCard = document.getElementById(`card${note.id}`)
-//        selectedCard.style.boxShadow = '0 0 20px yellow'
-//      } else if (update.indexOf(note.id) !== -1) {
-//        let removeNote = update.splice(update.indexOf(note.id), 1)
-//        this.props.updateNoteArray(removeNote);
-//        let selectedCard = document.getElementById(`card${note.id}`)
-//        selectedCard.style.boxShadow = '0 4px 2px -2px gray'
-//      }
-
-     const { selectedArray } = this.props;
-
-     if (selectedArray.indexOf(note.id) === -1) {
-      //  let tempArr = selectedArray;
-      //  tempArr.push(note.id);
-      //  this.setState({ connectionArray: tempArr })
+    const { selectedArray } = this.props;
+    if (selectedArray.indexOf(note.id) === -1) {
       this.props.updateNoteArray(note.id)
        let selectedCard = document.getElementById(`card${note.id}`)
        selectedCard.style.boxShadow = '0 0 20px yellow'
@@ -211,8 +191,7 @@ class Whiteboard extends Component {
        let selectedCard = document.getElementById(`card${note.id}`)
        selectedCard.style.boxShadow = '0 4px 2px -2px gray'
      }
-    //  this.props.updateNoteArray(selectedArray);
-   }
+  }
 
   render() {
     const { userId, hostId } = this.props

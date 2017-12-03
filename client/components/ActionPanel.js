@@ -3,7 +3,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import * as d3 from 'd3'
-import { addNote, closeRoom, openVote, editNote, getBranches, fetchBranches, modifyRoom, updateNoteArray, clearNoteArray, getNoteArray } from '../store'
+import { addNote, closeRoom, openVote, editNote, emptyBranches, fetchBranches, modifyRoom, updateNoteArray, clearNoteArray, getNoteArray } from '../store'
 import { withRouter } from 'react-router';
 import { VoteResults } from './index';
 import { TwitterPicker } from 'react-color'
@@ -30,10 +30,8 @@ class ActionPanel extends React.Component {
   }
 
   handleColorChange = (color) => {
-    console.log(`update: `, this.props.update)
     if (this.props.update.length) {
       this.props.update.forEach(note => {
-        console.log(`note: `, note)
         document.getElementById(`card${note}`).style.background = color.hex
         this.props.colorUpdate(note, { color: color.hex })
         let selectedCard = document.getElementById(`card${note}`)
@@ -50,11 +48,9 @@ class ActionPanel extends React.Component {
     else if (type === 'text') this.setState({ textToggle: !this.state.textToggle })
     else if (type === 'image') this.setState({ imageToggle: !this.state.imageToggle })
     else if (type === 'link') this.setState({ linkToggle: !this.state.linkToggle })
-    else this.setState({ drawToggle: !this.state.drawToggle })
   }
 
   toggleBranches(swimlane) {
-    console.log(swimlane)
     this.setState({ toggleBranches: swimlane > 0 ? false : !this.state.toggleBranches }, function() {
       this.state.toggleBranches ? this.props.showBranches(this.props.whiteboard.id) : this.props.hideBranches(this.props.whiteboard.id)
       if (!this.state.toggleBranches) d3.selectAll('line').remove()
@@ -126,7 +122,7 @@ class ActionPanel extends React.Component {
 
           </div>}
         {
-          this.props.user.id == this.props.whiteboard.userId &&
+          this.props.user.id === this.props.whiteboard.userId &&
           !this.props.whiteboard.closed &&
           <div className="fixed-action-btn horizontal" style={{ bottom: '25px', right: '100px' }} >
             <a className="btn-floating btn-large" type="submit" ><i className="material-icons">settings</i></a>
@@ -259,7 +255,7 @@ const mapDispatch = (dispatch, ownProps) => {
       dispatch(fetchBranches(whiteboardId))
     },
     hideBranches(whiteboardId) {
-      dispatch(getBranches([], whiteboardId))
+      dispatch(emptyBranches(whiteboardId))
     },
     updateRoom(room){
       dispatch(modifyRoom(room))
