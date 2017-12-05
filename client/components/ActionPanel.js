@@ -46,7 +46,7 @@ class ActionPanel extends React.Component {
   toggle(type) {
     if (type === 'expand') this.setState({ expandToggle: !this.state.expandToggle })
     else if (type === 'text') this.setState({ textToggle: !this.state.textToggle })
-    else if (type === 'image') this.setState({ imageToggle: !this.state.imageToggle })
+    else if (type === 'image') this.setState({ imageToggle: !this.state.imageToggle, file: [], name: '' })
     else if (type === 'link') this.setState({ linkToggle: !this.state.linkToggle })
   }
 
@@ -107,7 +107,7 @@ class ActionPanel extends React.Component {
                   id="actionForm"
                   onSubmit={(evt) => { evt.preventDefault();
                       this.props.handleSubmit(evt, this.state.file, this.state.name, this.state.type, this.props.user.id, this.props.match.params.id, this.props.notes.length);
-                      this.setState({ expandToggle: false, textToggle: false, imageToggle: false, linkToggle: false }) }}
+                      this.setState({ expandToggle: false, textToggle: false, imageToggle: false, linkToggle: false, file: [], name: '' }); evt.target.file.value = '' }}
                     style={{ bottom: '90px', right: '100px', position: 'fixed' }}>
                 {(this.state.textToggle) && <div><input name="text" type="text" /></div>}
                 {(this.state.linkToggle) && <div><input name="link" type="text" /></div>}
