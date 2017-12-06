@@ -1,5 +1,6 @@
 body {
   font-family: sans-serif;
+  max-width: 100%
 
   a {
     text-decoration: none;
@@ -9,16 +10,51 @@ body {
     display: block;
   }
 
-  nav a {
+  nav a, nav h4 {
     display: inline-block;
     margin: 1em;
-
+    color: black
   }
-
+ button, .btn {
+  //  background-color: rgb(3, 3, 82);
+  background-color: #212121;
+   color: yellow;
+ }
   nav {
-    // height: 60px;
-    // position: fixed;
     z-index: 1;
+    background-color: #ffca28;
+  }
+  // #attendee-box {
+  //   margin-top: 30px;
+  //   #attendees {
+  //     display: inline-block;
+  //     height: 30px;
+  //     overflow-x: auto;
+  //     white-space:nowrap;
+  //     width: 70vw;
+  //   }
+  // }
+
+  #attendee-box {
+    margin-top: 30px;
+    width:10vw;
+    position: fixed;
+    z-index: 25;
+    #attendees {
+      display: flex;
+      flex-direction: column;
+      height: 130px;
+      width: 8vw;
+      margin-top: 65px;
+      overflow-y: scroll;
+      .chip {
+        white-space: nowrap;
+      }
+    }
+    button {
+      width: 7vw;
+      position: fixed
+    }
   }
 
   .sidebar {
@@ -43,13 +79,12 @@ body {
     position: fixed;
     right: 0;
     top: 70;
+    width: 300px;
+    height: 250px;
 
   }
 
   #whiteboard {
-    // width: 70vw;
-    // height: 80vh;
-    width: 100vw;
     overflow: scroll;
   }
   .aUser {
@@ -59,50 +94,61 @@ body {
     border: 5px solid grey;
   }
   #formNote {
-    // border: 5px dotted grey;
     border-top-style: dotted;
     border-bottom-style: dotted;
     border-color: grey;
   }
   .popup-box {
-    // display: none;
-    // position: fixed;
-    // height: 285px;
     height: 40vh;
     float: left;
     overflow-y: scroll;
   }
+
+  .chat-header {
+    background: yellow;
+  	border-radius: 5px 5px 0 0;
+  	color: rgb(3, 3, 82);
+  	cursor: pointer;
+  	padding: 10px 10px;
+  }
+
   .chat-box {
-    background-color: rgb(237, 239, 244);
-    border: 1px solid rgba(29, 49, 91, .3);
+    border: 2px solid black;
     width: 19vw;
     bottom: 0px;
     left: 0px;
-    font: 10%;
     transition: all .4s ease-in-out;
+    align-self: center;
+    .chat-list {
+      width: 18vw;
+      overflow-wrap: break-word;
+    }
 
   }
 
+  div.twitter-picker {
+    width: auto !important;
+  }
   .card {
     width: 250px;
-    // height: 150px;
+    min-height: 100px;
+    margin: 0 auto;
     .card-image {
-      width: 60px;
+      max-width: 65%;
+      transition: 1s;
+    }
+    .card-image:hover {
+      transform: scale(2,2);
     }
   }
-  .blob {
-    background-color:rgb(164, 173, 190);
-    border-radius: 15px;
-    margin:2px;
-    height: 40px;
-  }
 
-  .chat-header {
-    background: #293239;
-  	border-radius: 5px 5px 0 0;
-  	color: #fff;
-  	cursor: pointer;
-  	padding: 10px 10px;
+
+
+  .colorPalette {
+    right: 100px;
+    bottom: 32px;
+    position: absolute;
+    border-radius: 50%;
   }
 
   #mini-whiteboard {
@@ -110,13 +156,76 @@ body {
     height: 50vh;
     background-color: pink;
     margin: 0 auto;
-    margin-bottom: 20%
   }
+
+  i.icon-grey{
+    color: grey;
+}
 
   // .home-whiteboard {
   //   width: 60vw;
   //   height: 60vh;
   //   background-color: pink
   // }
+  /* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 26; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  min-height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  // margin: 20 auto;
+  margin-left: 12vw;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  position: fixed;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  // float: right;
+  font-size: 12px;
+  margin: 10px;
+}
+
+#laneButton {
+  right: 150px;
+  bottom: 32px;
+  position: absolute;
+  border-radius: 50%;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.verticalSwimlane {
+  width: 100%;
+  height: 800px;
+  background: #eceff1;
+  border-radius: 0.5rem;
+}
+
+#categoryName {
+  padding: 10px;
+  font-weight: bold;
+  box-shadow: none;
+}
 
 }

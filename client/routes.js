@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Router } from 'react-router-dom'
-import { Route, Switch, Redirect } from 'react-router-dom'
+import { Route, Switch, Redirect, Router } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import history from './history'
-import { Main, Login, Signup, Home, ConferenceRoom, Homepage, LoginSignup } from './components'
+import { Main, Home, ConferenceRoom, Profile, LoginSignup } from './components'
 import { me } from './store'
 
 
@@ -24,16 +23,17 @@ class Routes extends Component {
         <Main>
           <Switch id="switchSpace">
             {/* Routes placed here are available to all visitors */}
-            <Route path ="/login" component = {LoginSignup} />
-            <Route exact path="/home" component={Home} />
+            <Route path="/login" component={LoginSignup} />
+            <Route exact path="/" component={Home} />
+
 
             {
               isLoggedIn &&
               <Switch>
-                <Route exact path="/home" component={Home} />
+                <Route exact path="/" component={Home} />
                 <Route path="/whiteboards/:id" component={ConferenceRoom} />
-                <Route exact path="/homepage" component={Homepage} />
-                <Redirect to="/homepage" />
+                <Route path="/profile" component={Profile} />
+                <Redirect to="/" />
               </Switch>
             }
           </Switch>

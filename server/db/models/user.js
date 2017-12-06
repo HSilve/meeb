@@ -22,7 +22,8 @@ const User = db.define('user', {
     allowNull: false
   },
   image: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    defaultValue: 'https://s3.amazonaws.com/meeb-whiteboard/19-blank-profile.png'
   },
   userName: {
     type: Sequelize.STRING
@@ -38,8 +39,7 @@ User.prototype.correctPassword = function (candidatePwd) {
   return User.encryptPassword(candidatePwd, this.salt) === this.password
 }
 
-/**
- * classMethods
+ /* classMethods
  */
 User.generateSalt = function () {
   return crypto.randomBytes(16).toString('base64')

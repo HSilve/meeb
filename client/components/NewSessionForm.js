@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {newRoom, addNote} from '../store';
+import { newRoom, addNote } from '../store';
 import axios from 'axios';
 import { Typeahead } from 'react-bootstrap-typeahead';
 
@@ -26,17 +26,17 @@ export class NewSessionForm extends Component {
       closeOnSelect: true // Close upon selecting a date,
     });
 
-  $('.timepicker').pickatime({
-    default: 'now', // Set default time: 'now', '1:30AM', '16:30'
-    fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
-    twelvehour: false, // Use AM/PM or 24-hour format
-    donetext: 'OK', // text for done-button
-    cleartext: 'Clear', // text for clear-button
-    canceltext: 'Cancel', // Text for cancel-button
-    autoclose: false, // automatic close timepicker
-    ampmclickable: true, // make AM PM clickable
-    aftershow: function(){} //Function for after opening timepicker
-  });
+    $('.timepicker').pickatime({
+      default: 'now', // Set default time: 'now', '1:30AM', '16:30'
+      fromnow: 0,       // set default time to * milliseconds from now (using with default = 'now')
+      twelvehour: false, // Use AM/PM or 24-hour format
+      donetext: 'OK', // text for done-button
+      cleartext: 'Clear', // text for clear-button
+      canceltext: 'Cancel', // Text for cancel-button
+      autoclose: false, // automatic close timepicker
+      ampmclickable: true, // make AM PM clickable
+      aftershow: function () { } //Function for after opening timepicker
+    });
 
   }
 
@@ -54,8 +54,14 @@ export class NewSessionForm extends Component {
 
   handleSubmit(evt) {
     evt.preventDefault();
-    this.props.newRoom(this.state.roomName, this.props.user, this.state.selected, evt.target.date.value, evt.target.time.value, {file: this.state.file, imageName: this.state.name, fileType: this.state.type, link: evt.target.noteLink.value, text: evt.target.noteText.value}
-    )
+    let note = null;
+    const link = evt.target.noteLink.value,
+      text = evt.target.noteText.value,
+      file = this.state.file;
+
+    if (file || link || text) { note = { file, imageName: this.state.name, fileType: this.state.type, link, text}}
+    this.props.newRoom(this.state.roomName, this.props.user, this.state.selected, evt.target.date.value, evt.target.time.value, note)
+    document.getElementById('formBox').reset();
   }
 
   handleFileUpload(evt) {
@@ -75,58 +81,58 @@ export class NewSessionForm extends Component {
   render() {
     return (
       <div className="row">
-      <form className="col s4 push-s3" id="formBox" onSubmit={this.handleSubmit}>
-         Room Name:
+        <form  className="col s9" id="formBox" onSubmit={this.handleSubmit}>
+          Room Name:
          <input name="roomName" type="text" onChange={this.changeName} placeholder="Enter a name" />
-         Date:
+          Date:
          <input type="date" name="date" className="datepicker" />
-         Time:
+          Time:
          <input type="time" name="time" className="timepicker" />
 
-        <div className="row" id = "formNote">
-          Central Note
+          <div className="row" id="formNote">
+            Central Note
           <table>
-          <tbody>
-            <tr>
-              <th><label>Text:</label></th>
-              <td><input type="text" name="noteText" /></td>
-            </tr>
-            <tr>
-              <th><label>Image</label></th>
-              <td><input name="file" type="file" onChange={this.handleFileUpload}/></td>
-            </tr>
-            <tr>
-              <th><label>Link:</label></th>
-              <td><input type="link" name="noteLink" /></td>
-            </tr>
-          </tbody>
-          </table>
-        </div>
-        <div className="row .browser-default">
+              <tbody>
+                <tr>
+                  <th><label>Text:</label></th>
+                  <td className="col s9 " ><input type="text" name="noteText" /></td>
+                </tr>
+                <tr>
+                  <th><label>Image</label></th>
+                  <td className="col s6" ><input name="file" type="file" onChange={this.handleFileUpload} /></td>
+                </tr>
+                <tr>
+                  <th><label>Link:</label></th>
+                  <td><input type="link" name="noteLink" /></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div className="row browser-default">
             Invite Collaborators:
             <Typeahead
               onChange={(selected) => {
-                this.setState({selected});
+                this.setState({ selected });
               }}
-              bsSize={{label: 'Small', value: 'small'}}
-              minLength= {3}
-              emptyLabel = "true"
+              bsSize={{ label: 'Small', value: 'small' }}
+              minLength={3}
+              emptyLabel="true"
               selectHintOnEnter
               labelKey="name"
-              multiple = {true}
+              multiple={true}
               options={this.state.users}
               placeholder="Type a name..."
             />
-        </div>
-        <button>Start BrainStorming</button>
-       </form>
-     </div>
+          </div>
+          <button>Create Board</button>
+        </form>
+      </div>
     );
   }
 }
 const mapState = (state) => ({
   user: state.user
 })
-const mapDispatch = {newRoom, addNote};
+const mapDispatch = { newRoom, addNote };
 
 export default connect(mapState, mapDispatch)(NewSessionForm);

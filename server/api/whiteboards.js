@@ -1,23 +1,22 @@
 const router = require('express').Router()
-const { Whiteboard, Message, User, Attendees } = require('../db/models')
+const { Whiteboard, User, Note, Attendees } = require('../db/models')
+const sendmail = require('sendmail')();
+
 module.exports = router
 
 router.get('/', (req, res, next) => {
-  Whiteboard.findAll({ include: [{ all: true, nested: true }] })
+  Whiteboard.findAll()
     .then(whiteboards => res.json(whiteboards))
     .catch(next)
 })
 router.get('/myRooms/:id', (req, res, next) => {
   User.findById(req.params.id)
     .then(user => {
-      //get all where the user is an attendee
       return user.getWhiteboards({ include: [{ all: true, nested: true }] })
     })
     .then(whiteboards => {
-      console.log("WHITEBOARDS--", whiteboards)
       res.json(whiteboards)
     })
-
     .catch(next)
 })
 router.get('/:whiteboardId', (req, res, next) => {
@@ -28,28 +27,14 @@ router.get('/:whiteboardId', (req, res, next) => {
     .catch(next)
 })
 router.put('/:whiteboardId', (req, res, next) => {
-  Whiteboard.findById(req.params.whiteboardId)
-    .then(board => res.json(board.update(req.body)))
-    .catch(next)
+  Whiteboard.update(req.body, {
+    where: {id: req.params.whiteboardId},
+    returning: true,
+    plain: true
+  })
+  .then(board => res.json(board))
+  .catch(next)
 })
-
-// router.post('/', (req, res, next) => {
-//   let createdWhiteboard = null;
-//   Promise.all([
-//     User.findById(req.body.userId),
-//     Whiteboard.create({
-//       host: req.body.host,
-//       userId: req.body.userId
-//     })])
-//     .then(result => {
-//       const user = result[0]
-//       createdWhiteboard = result[1]
-//       return createdWhiteboard.addUser(user)
-//     })
-//     .then(response => Whiteboard.findById(createdWhiteboard.id, { include: [{ all: true, nested: true }] }))
-//     .then(found => res.json(found))
-//     .catch(next)
-// })
 
 router.post('/', (req, res, next) => {
   Whiteboard.create({
@@ -63,19 +48,42 @@ router.post('/', (req, res, next) => {
       req.body.attendees.forEach(attendee => {
         room.addUser(attendee.id)
       })
-
       room.addUser(req.body.userId)
       return room;
     })
     .then(board => res.json(board))
-
     .catch(next)
 })
 
 router.delete('/:whiteboardId', (req, res, next) => {
-  Whiteboard.destroy({
-    where: { id: req.params.whiteboardId }
+  const id = req.params.whiteboardId;
+  Whiteboard.findById(id,
+    {
+    include: [{all: true}]
   })
-    .then(row => res.json(row))
-    .catch(next)
+  .then(group => {
+    group.users.forEach(data => {
+      sendmail({
+        from: 'IdeaStorm@stormail.com',
+        to: data.dataValues.email,
+        subject: 'A brainStorm has been canceled',
+        html: group.dataValues.host + ' no longer requires your collaboration on ' + group.dataValues.name + ' which was previously scheduled for: ' + group.dataValues.date + ' at: ' + group.dataValues.startTime + '.',
+      }, function(err, reply) {
+        console.log(err && err.stack);
+        console.dir(reply);
+    });
+    })
+  })
+  .then(_ => {
+    Note.destroy({
+      where: {whiteboardId: id}
+    })
+  })
+  .then(_ => {
+      return Whiteboard.destroy({
+          where: {id}
+        })
+  })
+  .then(row => res.json(row))
+  .catch(next)
 })

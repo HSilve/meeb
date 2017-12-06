@@ -3,24 +3,109 @@ nav {
   top: 0
 }
 
-.children {
+/*.children {
   margin-top: 10vh
-}
+}*/
 
 .icon {
-  margin-top: -3vh;
-  height: 30%;
-  width: 30%
+  margin-top: -5%;
+  width: 200px
 }
 
 .home-info {
-  margin-top: 5%;
-  height: 35vh;
+  height: 35%;
   width: 100vw;
   background-color: #FBFFB9;
+  margin: 10vh 0;
 }
 
 .details {
+  padding-bottom: 7vh;
+  padding-top: 7vh;
+  margin: 0 auto;
+  width: 50vw;
+  height: 30%;
+  letter-spacing: 1px
+}
+
+.details h5 {
+  color: grey;
+  font-size: 2.5em
+}
+
+.details span {
+  padding: 2vw;
+  font-size: 1.2em
+}
+
+.children h3, .children p {
+  text-align: center;
+  padding: 1vh
+}
+
+/*body {
+  margin-bottom: 25vh !important
+}*/
+
+div.home-toggle {
+  position: absolute;
+  top: 210vh
+}
+
+footer {
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  margin-bottom: 0;
+  margin-top: 50vh;
+  background-color: teal !important
+}
+
+div#auth {
+  /*background: linear-gradient(rgba(255,255,255,.2), rgba(255,255,255,.2)), url('/meeting-02.jpeg');*/
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  height: 100vh;
+  vertical-align: center
+}
+
+.actual-form {
+  /*background-color: white;*/
+  margin: 0 auto;
+  /*border-radius: 25px;*/
+}
+
+.auth-edges {
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.7);
+  margin: 0 auto;
   padding: 50px;
-  margin-left: 30%
+  margin-top: 8%
+}
+
+.actual-form form {
+  padding: 5%;
+}
+
+
+/* div.SVG-line { */
+  /*position: absolute*/
+
+ul.tabs {
+  background: rgba(0, 0, 0, 0);
+  margin-top: 5%
+}
+
+button.auth-button {
+  background-color: teal;
+  color: white;
+  margin: 0 auto;
+  padding: 2%;
+  border-radius: 5px;
+  width: 10vw
+}
+
+.auth-button-div {
+  text-align: center
 }

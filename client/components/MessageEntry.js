@@ -36,11 +36,10 @@ class MessageEntry extends Component {
 
   render() {
     const { text } = this.state
-    const { messageEntry } = this.props
-    console.log('messageEntry', this.props)
     return (
+      !this.props.whiteboard.closed &&
       <form id="new-message-form" onSubmit={this.handleSubmit}>
-        <div className="input-group input-group-lg">
+        <div className="input-group input-group-lg row">
           <input
             className="form-control"
             type="text"
@@ -49,8 +48,8 @@ class MessageEntry extends Component {
             onChange={this.handleChange}
             placeholder="Say something nice..."
           />
-          <span className="input-group-btn">
-            <button className="btn btn-default" type="submit">Chat!</button>
+          <span className="">
+            <button className="black" type="submit">Chat!</button>
           </span>
         </div>
       </form>

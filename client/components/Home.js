@@ -1,22 +1,21 @@
 /* eslint-disable complexity */
 import React, { Component } from 'react'
 import ReactPlayer from 'react-player'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { ActionPanel } from './index'
-import { insertNote, removeNote } from '../store'
+import { Footer } from './index'
+import { insertNote, removeNote, getNotes } from '../store'
 
 export class Home extends Component {
   constructor() {
     super()
     this.notePositions = []
-    this.noteId = 0
+    this.noteId = -1
     this.state = {
       expandToggle: false,
       dragging: false,
       rel: null,
       pos: {x: null, y: null},
-      selectedNote: 0
+      selectedNote: -1
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.onMouseDown = this.onMouseDown.bind(this)
@@ -24,9 +23,25 @@ export class Home extends Component {
     this.onMouseMove = this.onMouseMove.bind(this)
   }
 
+  componentDidMount() {
+    this.props.emptyNotes()
+  }
+
+  componentDidUpdate(props, state) {
+    if (this.state.dragging && !state.dragging) {
+      document.addEventListener('mousemove', this.onMouseMove)
+      document.addEventListener('mouseup', this.onMouseUp)
+    } else if (!this.state.dragging && state.dragging) {
+      document.removeEventListener('mousemove', this.onMouseMove)
+      document.removeEventListener('mouseup', this.onMouseUp)
+    }
+  }
+
   handleSubmit(evt) {
     evt.preventDefault()
-    this.notePositions[++this.noteId] = [680, 450]
+    let bodyPos = document.body.getBoundingClientRect()
+    let whiteboardPos = document.getElementById('mini-whiteboard').getBoundingClientRect()
+    this.notePositions[++this.noteId] = [680, Math.abs(bodyPos.top) + whiteboardPos.top]
     this.props.createNote({ id: this.noteId, text: evt.target.text.value, position: this.notePositions[this.noteId] })
   }
 
@@ -34,13 +49,15 @@ export class Home extends Component {
   //is calculated, the position is set to null
   onMouseDown(evt) {
     if (evt.button !== 0) return
-
     var pos = evt.target.getBoundingClientRect()
+    var bodyPos = document.body.getBoundingClientRect()
+    // var whiteboardPos = document.getElementById('mini-whiteboard').getBoundingClientRect()
+    // var bodyWhiteboard = Math.abs(bodyPos.top) - whiteboardPos.top
     this.setState({
       dragging: true,
       rel: {
         x: evt.pageX - pos.left,
-        y: evt.pageY - pos.top
+        y: evt.pageY - (Math.abs(bodyPos.top) + pos.top)
       },
       pos: {
         x: null,
@@ -54,8 +71,7 @@ export class Home extends Component {
   //once mouse is released, the new position of note is updated in db
   //and dragging is set to false
   onMouseUp(evt) {
-    // this.props.editNote(this.state.selectedNote, {position: [this.state.pos.x, this.state.pos.y]})
-    this.notePositions[this.state.selectedNote] = [this.state.pos.x, this.state.pos.y]
+    if (this.state.pos.x !== null && this.state.pos.y !== null) this.notePositions[this.state.selectedNote] = [this.state.pos.x, this.state.pos.y]
     evt.stopPropagation()
     evt.preventDefault()
     this.setState({dragging: false})
@@ -64,56 +80,90 @@ export class Home extends Component {
   //when state.pos is set to anything but null, the top and left of card is set to state.pos instead of note.position[0] & note.position[1]
   onMouseMove(evt) {
     if (!this.state.dragging) return
-    const xVal = evt.pageX - this.state.rel.x
-    const yVal = evt.pageY - this.state.rel.y
+    let currX = evt.pageX - this.state.rel.x
+    let currY = evt.pageY - this.state.rel.y
 
-    let xLimit, yLimit = 0
-    if (xVal > 1265) xLimit = 1265
-    if (xVal < 85) xLimit = 85
+    var bodyPos = document.body.getBoundingClientRect()
+    var whiteboardPos = document.getElementById('mini-whiteboard').getBoundingClientRect()
+    var card = document.body.getElementsByClassName('card')[this.state.selectedNote].getBoundingClientRect()
 
-    if (yVal > 630) yLimit = 630
-    if (yVal < 335) yLimit = 335
+    let valX = currX
+    let valY = currY
+    let xLeftLimit = whiteboardPos.width + whiteboardPos.left - card.width
+    if (currX < whiteboardPos.left) valX = whiteboardPos.left
+    else if (currX > xLeftLimit) valX = xLeftLimit
+
+    if (currY < Math.abs(bodyPos.top) + whiteboardPos.top) valY = Math.abs(bodyPos.top) + whiteboardPos.top
+    else if (currY > Math.abs(bodyPos.top) + whiteboardPos.top + whiteboardPos.height - card.height) valY = Math.abs(bodyPos.top) + whiteboardPos.top + whiteboardPos.height - card.height
 
     this.setState({
       pos: {
-        x: (xVal > 1265 || xVal < 85) ? xLimit : xVal,
-        y: (yVal > 630 || yVal < 335)  ? yLimit : yVal
+        x: valX,
+        y: valY
       }
     })
-    console.log(this.state.pos)
     evt.stopPropagation()
     evt.preventDefault()
   }
 
   render() {
-    const { whiteboard, notes, handleRemove } = this.props
+    const { notes, handleRemove } = this.props
+    let auth = $('#home-slider')
+    let backgrounds = new Array(
+    'url(/meeting-01.jpg)', 'url(/meeting-03.jpg)', 'url(/meeting-02.jpeg)', 'url(/meeting-04.jpeg)')
+
+    var current = 0;
+
+    function nextBackground() {
+        current++;
+        current = current % backgrounds.length;
+        auth.css('background-image', `${backgrounds[current]}`)
+    }
+    setInterval(nextBackground, 10000);
+
+    auth.css('background-image', `${backgrounds[0]}`)
+
     return (
       <div className="home-whiteboard">
-        <ReactPlayer
+        <div id="home-slider" style={{ height: '100vh', width: '100vw', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center', textAlign: 'center'}}>
+          <div className="row">
+            <div className="col m6 offset-m3" style={{ backgroundColor: 'rgba(255, 255, 255, 0.5)', width: '70vw', borderRadius: '10px', position: 'absolute', margin: '20% auto' }}>
+            <h4 style={{ textAlign: 'center', color: 'black', font: 'Verdana' }}>Collaborative brainstorming couldn't be easier</h4>
+            {/* <button className="waves-effect waves-light btn">Sign Up</button> */}
+            </div>
+          </div>
+
+          {/* <button className="waves-effect waves-light btn">Sign Up</button> */}
+        </div>
+        {/* <ReactPlayer
           url="https://www.youtube.com/watch?v=BD1c3XqT4lY"
           playing muted loop
           style={{margin: '0 auto', marginTop: '5vh'}}
           width="1500px"
           height="650px"
-          preload
-          />
+          /> */}
 
         <div className="home-info">
           <div className="details">
-            <h5>IdeaStorm, brewing your ideas</h5>
+            <h5>IdeaStorm: brewing your ideas</h5>
+            <span>
             <p>IdeaStorm is a real-time collaborative tool that facilitates team brainstorming</p>
             <p>We have many features available</p>
 
-            <p>Give It A Try Below!</p>
+            <p>Test it out below!</p>
+            </span>
           </div>
         </div>
+
         <div className="children">
+          <h3>Interactive Idea Board</h3>
+          <p>Test it out! You can do more with these notes when you sign up today!</p>
           <div id="mini-whiteboard">
-              { notes && notes.map(note => { return (
+              { this.notePositions.length > 0 && notes && notes.map(note => { return (
                 <div
                   className="card"
                   key={note.id}
-                  style = {{position: 'absolute', left: this.state.selectedNote === note.id && this.state.pos.x || this.notePositions[note.id][0], top: this.state.selectedNote === note.id && this.state.pos.y || this.notePositions[note.id][1], cursor: 'pointer' }}
+                  style = {{position: 'absolute', left: (this.state.selectedNote === note.id && this.state.pos.x) || this.notePositions[note.id][0], top: (this.state.selectedNote === note.id && this.state.pos.y) || this.notePositions[note.id][1], cursor: 'pointer' }}
                   onMouseMove={this.onMouseMove}
                   onMouseUp={this.onMouseUp}
                   onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt)}} >
@@ -139,7 +189,7 @@ export class Home extends Component {
               )
             }
           )}
-          <div className="fixed-action-btn horizontal click-to-toggle">
+          <div className="fixed-action-btn horizontal click-to-toggle home-toggle">
             <button className="btn-floating btn-large" type="submit" onClick={() => this.setState({ expandToggle: !this.state.expandToggle })}>+</button>
             { this.state.expandToggle &&
               <form onSubmit={ this.handleSubmit }>
@@ -150,6 +200,7 @@ export class Home extends Component {
           </div>
           </div>
           </div>
+          <Footer />
         </div>
     )
   }
@@ -167,6 +218,9 @@ const mapDispatch = dispatch => {
     },
     handleRemove(noteId) {
       dispatch(removeNote(noteId))
+    },
+    emptyNotes() {
+      dispatch(getNotes([]))
     }
   }
 }

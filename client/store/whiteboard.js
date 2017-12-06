@@ -7,7 +7,7 @@ import socket from '../socket';
  */
 const FIND_ALL_ROOMS = 'FIND_ALL_ROOMS'
 const CREATE_ROOM = 'CREATE_ROOM'
-// const REMOVE_ROOM = 'REMOVE_ROOM'
+const DELETE_ROOM = 'DELETE_ROOM'
 
 /**
  * INITIAL STATE
@@ -18,13 +18,12 @@ const CREATE_ROOM = 'CREATE_ROOM'
  * ACTION CREATORS
  */
 const findAllRooms = rooms => ({ type: FIND_ALL_ROOMS, rooms })
-const createRoom = room => ({ type: CREATE_ROOM, room })
-// const removeRoom = () => ({type: REMOVE_ROOM})
+export const createRoom = room => ({ type: CREATE_ROOM, room })
+export const deleteRoom = id => ({ type: DELETE_ROOM, id })
 
 // THUNK CREATORS
 
 export const getRooms = user => dispatch => {
-  console.log(`user: ${user}`)
   axios.get(`/api/whiteboards/myRooms/${user.id}`)
     .then(res => {
       console.log(res)
@@ -33,14 +32,6 @@ export const getRooms = user => dispatch => {
     .catch(err => console.error('Could not find rooms!', err));
 }
 
-// export const newRoom = user => dispatch => {
-//   axios.post('/api/whiteboards', { host: user.name, userId: user.id })
-//     .then(res => {
-//       dispatch(createRoom(res.data))
-//       history.push(`/whiteboards/${res.data.id}`);
-//     })
-//     .catch(err => console.error('Could not create room!', err));
-// };
 export const newRoom = (roomName, host, attendeeId, date, time, note) => dispatch => {
 
   axios.post('/api/whiteboards', {
@@ -53,15 +44,35 @@ export const newRoom = (roomName, host, attendeeId, date, time, note) => dispatc
   })
     .then(res => {
       dispatch(createRoom(res.data))
-        note.whiteboardId = res.data.id;
+      socket.emit('new-room', res.data)
+      return res.data.id
+    })
+    .then(id => {
+      if (note !== null) {
+        if (note.link == '') { note.link = null; }
+        note.whiteboardId = id;
         note.userId = host.id
         note.host = host.name;
-        axios.post('/api/notes', {note})
-      // history.push(`/profile/${res.data.id}`);
-
+        note.position = [620, 95];
+        return axios.post('/api/notes', { note })
+        // history.push(`/profile/${res.data.id}`)
+      }
+      return null;
+    })
+    .then(newNote => {
+      if (newNote) {socket.emit('new-note', newNote.data)}
     })
     .catch(err => console.error('Could not create room!', err));
 };
+
+export const removeRoom = (id) => dispatch => {
+  axios.delete(`/api/whiteboards/${id}`)
+    .then(_ => {
+      dispatch(deleteRoom(id))
+      socket.emit('delete-room', id)
+    })
+    .catch(err => console.error(`Could not remove ${id}!`, err));
+}
 
 
 // REDUCER
@@ -74,6 +85,9 @@ export default function reducer(state = [], action) {
 
     case CREATE_ROOM:
       return [...state, action.room]
+
+    case DELETE_ROOM:
+      return state.filter(room => room.id !== action.id)
 
     default:
       return state;

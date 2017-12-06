@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 import Chatbox from './Chatbox'
-import Attendees from './Attendees'
+// import Attendees from './Attendees'
+import {resetMessageCount} from '../store'
 
 class Sidebar extends Component {
   constructor(props) {
@@ -10,32 +11,42 @@ class Sidebar extends Component {
     this.state = {
       show: false
     }
+    this.toggleMessageBox = this.toggleMessageBox.bind(this);
+  }
+  toggleMessageBox() {
+    this.setState({ show: !this.state.show });
+    this.props.resetMessageCount();
   }
 
   render() {
-    const { show } = this.state
+    const { show } = this.state;
+    let {newMessageCount} = this.props;
     return (
-      <div className="sidebar">
-        <button onClick={() => this.setState({ show: !show })}>-</button>
+      <div className="sidebar white">
+        <div
+            className="btn grey darken-4"
+            onClick= {this.toggleMessageBox}
+              >
+              {/* ↓Messages↓ */}
+
+            <a style={{color: 'yellow'}}>↓Messages↓
+              {
+                (newMessageCount > 0 && !this.state.show) &&
+                <a style={{color: 'white'}} className="new badge">{newMessageCount} new</a>
+              }
+            </a>
+
+        </div>
           {
-            show ?
-            <span>
-              <h5 href="#">
-              <div>Attendees</div>
-              <i alt="Brand" className="glyphicon glyphicon-comment">
-              </i>
-              </h5>
-              <Attendees />
-              <Chatbox />
-            </span> : null
+            show && <Chatbox />
           }
       </div>
     );
   }
 }
 
-const mapState = null
+const mapState = (state) => ({newMessageCount: state.messageEntry.count})
 
-const mapDispatch = null
+const mapDispatch = {resetMessageCount}
 
 export default withRouter(connect(mapState, mapDispatch)(Sidebar))

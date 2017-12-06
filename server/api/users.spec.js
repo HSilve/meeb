@@ -12,10 +12,12 @@ describe('User routes', () => {
   })
 
   describe('/api/users/', () => {
-    const codysEmail = 'cody@puppybook.com'
+    const codysEmail = 'cody@puppybook.com',
+    codysName = 'Cody Bark';
 
     beforeEach(() => {
       return User.create({
+        name: codysName,
         email: codysEmail
       })
     })

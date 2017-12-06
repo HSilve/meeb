@@ -20,6 +20,21 @@ const Whiteboard = db.define('whiteboard', {
   endTime: {
     type: Sequelize.STRING,
     allowNull: true
+  },
+  closed: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
+  },
+  voteable: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
+    allowNull: false
+  },
+  swimlane: {
+    type: Sequelize.INTEGER
+  },
+  categories: {
+    type: Sequelize.ARRAY(Sequelize.TEXT)
   }
 
 })
