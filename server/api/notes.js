@@ -59,6 +59,7 @@ router.put('/vote/:id', (req, res, next) => {
   Note.findById(req.params.id)
     .then(note => {
       let vts = note.votes + 1;
+
       return note.update({ votes: vts }, {
         returning: true,
         plain: true
