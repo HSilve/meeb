@@ -81,16 +81,16 @@ Deployment:
 
     Now, you should be deployed!
 
-Built With:
-    PostgreSQL- Database management system
-    Sequelize -
-    React- JavaScript interface library
-    Amazon Web Services- Image hosting service
-    Express -
-    Data Driven Documents (D3) - library for visualizing data
-    Materalize - CSS framework
-    Sockets - JavaScript library for realtime applications
+## Built With:
+    *PostgreSQL- Database management system
+    *Sequelize
+    *React- JavaScript interface library
+    *Amazon Web Services- Image hosting service
+    *Express 
+    *Data Driven Documents (D3) - library for visualizing data
+    *Materalize - CSS framework
+    *Sockets - JavaScript library for realtime applications
 
 
-Authors:
+## Authors:
     Erica Chai, Maria Betencas, Evlis Henry, Blanca Sanchez
