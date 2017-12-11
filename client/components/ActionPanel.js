@@ -110,7 +110,7 @@ class ActionPanel extends React.Component {
                   id="actionForm"
                   onSubmit={(evt) => { evt.preventDefault();
                       this.props.handleSubmit(evt, this.state.file, this.state.name, this.state.type, this.props.user.id, this.props.match.params.id, this.props.notes.length);
-                      this.setState({ expand: false, text: false, image: false, link: false, file: [], name: '' }); evt.target.file.value = '' }}
+                      this.setState({ expandToggle: false, textToggle: false, imageToggle: false, linkToggle: false, file: [], name: '' }); evt.target.file = '' }}
                     style={{ bottom: '90px', right: '100px', position: 'fixed' }}>
                 {(this.state.text) && <div><input name="text" type="text" /></div>}
                 {(this.state.link) && <div><input name="link" type="text" /></div>}
