@@ -12,11 +12,10 @@ class ActionPanel extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      expandToggle: false,
-      textToggle: false,
-      imageToggle: false,
-      linkToggle: false,
-      drawToggle: false,
+      expand: false,
+      text: false,
+      image: false,
+      link: false,
       toggleBranches: true,
       file: [],
       name: '',
@@ -27,6 +26,7 @@ class ActionPanel extends React.Component {
     this.handleColorChange = this.handleColorChange.bind(this)
     this.toggleBranches = this.toggleBranches.bind(this)
     this.onClickVertical = this.onClickVertical.bind(this)
+    this.toggle = this.toggle.bind(this)
   }
 
   handleColorChange = (color) => {
@@ -44,10 +44,13 @@ class ActionPanel extends React.Component {
   }
 
   toggle(type) {
-    if (type === 'expand') this.setState({ expandToggle: !this.state.expandToggle })
-    else if (type === 'text') this.setState({ textToggle: !this.state.textToggle })
-    else if (type === 'image') this.setState({ imageToggle: !this.state.imageToggle, file: [], name: '' })
-    else if (type === 'link') this.setState({ linkToggle: !this.state.linkToggle })
+    // if (type === 'expand') this.setState({ expand: !this.state.expand })
+    // else if (type === 'text') this.setState({ text: !this.state.text })
+    // else if (type === 'image') this.setState({ image: !this.state.image, file: [], name: '' })
+    // else if (type === 'link') this.setState({ link: !this.state.link })
+
+    this.setState({ [type]: !this.state[type] })
+    console.log(this.state[type])
   }
 
   toggleBranches(swimlane) {
@@ -107,16 +110,16 @@ class ActionPanel extends React.Component {
                   id="actionForm"
                   onSubmit={(evt) => { evt.preventDefault();
                       this.props.handleSubmit(evt, this.state.file, this.state.name, this.state.type, this.props.user.id, this.props.match.params.id, this.props.notes.length);
-                      this.setState({ expandToggle: false, textToggle: false, imageToggle: false, linkToggle: false, file: [], name: '' }); evt.target.file.value = '' }}
+                      this.setState({ expand: false, text: false, image: false, link: false, file: [], name: '' }); evt.target.file.value = '' }}
                     style={{ bottom: '90px', right: '100px', position: 'fixed' }}>
-                {(this.state.textToggle) && <div><input name="text" type="text" /></div>}
-                {(this.state.linkToggle) && <div><input name="link" type="text" /></div>}
-                {this.state.imageToggle &&
+                {(this.state.text) && <div><input name="text" type="text" /></div>}
+                {(this.state.link) && <div><input name="link" type="text" /></div>}
+                {this.state.image &&
                   <div>
                     <input name="file" type="file" onChange={this.handleFileUpload} />
                   </div>
                 }
-                {(this.state.textToggle || this.state.linkToggle || this.state.imageToggle) && <button type="submit">Insert</button> }
+                {(this.state.text || this.state.link || this.state.image) && <button type="submit">Insert</button> }
               </form>
             </span>
 
@@ -130,7 +133,7 @@ class ActionPanel extends React.Component {
             <span>
               <ul>
                 <li>
-                  <a className=" btn-floating" id="myBtn" onClick={(evt) => { evt.preventDefault(); this.onClickVertical(evt, 3); }}><i className="material-icons">
+                  <a className="btn-floating swimlanes" id="myBtn" onClick={(evt) => { evt.preventDefault(); this.onClickVertical(evt, 3); }}><i className="material-icons">
                     view_column
                     </i></a>
                 </li>
@@ -151,7 +154,7 @@ class ActionPanel extends React.Component {
                     </li>
                 }
                 <li>
-                  <a className="btn-floating" id="myBtn" onClick={() => this.toggleBranches() }><i className="material-icons">
+                  <a className="btn-floating branches" id="myBtn" onClick={() => this.toggleBranches() }><i className="material-icons">
                     device_hub</i>
                   </a>
                 </li>
