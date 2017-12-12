@@ -44,13 +44,7 @@ class ActionPanel extends React.Component {
   }
 
   toggle(type) {
-    // if (type === 'expand') this.setState({ expand: !this.state.expand })
-    // else if (type === 'text') this.setState({ text: !this.state.text })
-    // else if (type === 'image') this.setState({ image: !this.state.image, file: [], name: '' })
-    // else if (type === 'link') this.setState({ link: !this.state.link })
-
     this.setState({ [type]: !this.state[type] })
-    console.log(this.state[type])
   }
 
   toggleBranches(swimlane) {
@@ -72,7 +66,6 @@ class ActionPanel extends React.Component {
         type: imageFile.type
       })
     }
-
   }
 
   onClickVertical(evt, num) {
@@ -87,9 +80,10 @@ class ActionPanel extends React.Component {
   }
 
   render() {
+    const { whiteboard, notes, match, user, letsVote, closeVote, handleClose } = this.props
     return (
       <div>
-        {!this.props.whiteboard.closed &&
+        {!whiteboard.closed &&
           <div className="fixed-action-btn" style={{ bottom: '25px', right: '24px' }} >
             <a className="btn-floating btn-large" type="submit" ><i className="material-icons">add</i></a>
 
@@ -109,7 +103,7 @@ class ActionPanel extends React.Component {
               <form
                   id="actionForm"
                   onSubmit={(evt) => { evt.preventDefault();
-                      this.props.handleSubmit(evt, this.state.file, this.state.name, this.state.type, this.props.user.id, this.props.match.params.id, this.props.notes.length);
+                      this.props.handleSubmit(evt, this.state.file, this.state.name, this.state.type, user.id, match.params.id, notes.length);
                       this.setState({ expandToggle: false, textToggle: false, imageToggle: false, linkToggle: false, file: [], name: '' }); evt.target.file = '' }}
                     style={{ bottom: '90px', right: '100px', position: 'fixed' }}>
                 {(this.state.text) && <div><input name="text" type="text" /></div>}
@@ -125,8 +119,8 @@ class ActionPanel extends React.Component {
 
           </div>}
         {
-          this.props.user.id === this.props.whiteboard.userId &&
-          !this.props.whiteboard.closed &&
+          user.id === whiteboard.userId &&
+          !whiteboard.closed &&
           <div className="fixed-action-btn horizontal" style={{ bottom: '25px', right: '100px' }} >
             <a className="btn-floating btn-large" type="submit" ><i className="material-icons">settings</i></a>
 
@@ -140,15 +134,15 @@ class ActionPanel extends React.Component {
 
 
                 {
-                  !this.props.whiteboard.voteable ?
+                  !whiteboard.voteable ?
                     <li>
-                      <a className="btn-floating" id="myBtn" onClick={(evt) => { evt.preventDefault(); this.props.letsVote(this.props.whiteboard.id) }}><i className="material-icons">
+                      <a className="btn-floating" id="myBtn" onClick={(evt) => { evt.preventDefault(); letsVote(whiteboard.id) }}><i className="material-icons">
                         flash_on</i>
                       </a>
                     </li>
                     :
                     <li>
-                      <a className="btn-floating" id="myBtn" onClick={(evt) => { evt.preventDefault(); this.props.closeVote(this.props.whiteboard.id, this.props.whiteboard.voteable) }}><i className="material-icons">
+                      <a className="btn-floating" id="myBtn" onClick={(evt) => { evt.preventDefault(); closeVote(whiteboard.id, whiteboard.voteable) }}><i className="material-icons">
                         flash_off</i>
                       </a>
                     </li>
@@ -180,8 +174,8 @@ class ActionPanel extends React.Component {
               }}
               className="close">X</button>
             <h3>End Session </h3>
-            <p>Are you sure you want to end collaboration on {this.props.whiteboard.name}? Collaborators will no longer be able to send messages or edit the whiteboard.</p>
-            <button onClick={(evt) => { evt.preventDefault(); this.props.handleClose(this.props.whiteboard.id) }}> End Session </button>
+            <p>Are you sure you want to end collaboration on {whiteboard.name}? Collaborators will no longer be able to send messages or edit the whiteboard.</p>
+            <button onClick={(evt) => { evt.preventDefault(); handleClose(whiteboard.id) }}> End Session </button>
           </div>
         </div>
         {/* <!-- The Modal for Voting Results --> */}
@@ -196,7 +190,7 @@ class ActionPanel extends React.Component {
               className="close">X</button>
             <h3>Vote Results </h3>
             <VoteResults />
-            <button onClick={(evt) => { evt.preventDefault(); this.props.handleClose(this.props.whiteboard.id) }}> End Session </button>
+            <button onClick={(evt) => { evt.preventDefault(); handleClose(whiteboard.id) }}> End Session </button>
           </div>
         </div>
 
@@ -216,7 +210,6 @@ const mapState = (state, ownProps) => {
 }
 
 const mapDispatch = (dispatch, ownProps) => {
-  console.log(ownProps)
   return {
     handleSubmit(evt, file, imageName, fileType, userId, whiteboardId, noteIdx) {
       evt.preventDefault()
@@ -225,8 +218,6 @@ const mapDispatch = (dispatch, ownProps) => {
       const text = evt.target.text && evt.target.text.value;
       const link = evt.target.link && evt.target.link.value;
       let data = document.getElementById('basket').getBoundingClientRect();
-      let body = document.body
-      console.log(`body pos: `, body.scrollTop)
       const position = [data.x + (noteIdx * 5) + window.pageXOffset, data.y + (noteIdx * 5) + window.pageYOffset];
 
       document.getElementById('actionForm').reset();

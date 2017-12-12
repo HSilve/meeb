@@ -1,4 +1,5 @@
 /* eslint-disable no-lone-blocks */
+/* eslint-disable react/self-closing-comp */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { editNote, fetchNotes, deleteNote, castVote, fetchRoom,
@@ -24,7 +25,6 @@ class Whiteboard extends Component {
       branches: [],
       edit: false
     }
-    this.notLoaded = true
     this.onMouseDown = this.onMouseDown.bind(this)
     this.onMouseUp = this.onMouseUp.bind(this)
     this.onMouseMove = this.onMouseMove.bind(this)
@@ -118,7 +118,6 @@ class Whiteboard extends Component {
         })
     })
 
-
     evt.stopPropagation()
     evt.preventDefault()
   }
@@ -152,7 +151,6 @@ class Whiteboard extends Component {
 
       })
   }
-
 
   showBranches() {
     d3.selectAll('line').remove()
@@ -194,14 +192,13 @@ class Whiteboard extends Component {
   }
 
   render() {
-    const { userId, hostId } = this.props
+    const { userId, hostId, notes, singleWhiteboard } = this.props
     let data = [];
-    if (this.props.notes) {
-      data = this.props.notes
+    if (notes) {
+      data = notes
     }
 
     let swimlaneArray = []
-    const {singleWhiteboard} = this.props
     for (let i = 0; i < singleWhiteboard.swimlane; i++) {
         swimlaneArray.push(<VerticalSwimlane category={singleWhiteboard.categories[i]} index={i} key={i} />)
     }
@@ -248,7 +245,7 @@ class Whiteboard extends Component {
                       {this.props.open &&
                         <span>
                           {
-                            (note.userId == this.props.userId || this.props.hostId == this.props.userId) &&
+                            (note.userId === this.props.userId || this.props.hostId === this.props.userId) &&
                             <button style={{ float: 'left' }} value={note.id} onClick={this.handleDelete}>x</button>
                           }
 

@@ -49,12 +49,6 @@ describe('Frontend tests', () => {
       expect(mockOnSubmit.calledOnce).to.equal(true)
     })
 
-    it('ensures file is cleared when submitted', () => {
-      instance.setState({ imageToggle: true }, () => { wrapper.update() })
-      // wrapper.find('[type="file"]').simulate('change', { target: { files: [ 'dummyFile.txt' ] }, preventDefault: () => {} })
-
-    })
-
     it('should render swimlanes and toggle off branches', () => {
       sinon.spy(instance, 'onClickVertical')
       wrapper.find('a.swimlanes').simulate('click', { target: { name: 'name', value: 'test'}, preventDefault: () => {} } )

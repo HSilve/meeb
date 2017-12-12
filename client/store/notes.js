@@ -16,7 +16,7 @@ export const updateNote = note => ({ type: UPDATE_NOTE, note })
 export const fetchNotes = whiteboardId =>
   dispatch =>
     axios.get(`/api/whiteboards/${whiteboardId}`)
-      .then(whiteboard => whiteboard.data)
+      .then(whiteboard => whiteboard.data.notes)
       .then(notes => dispatch(getNotes(notes)))
       .catch(err => console.log(err))
 
