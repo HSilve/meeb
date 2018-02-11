@@ -109,8 +109,7 @@ export class Home extends Component {
   render() {
     const { notes, handleRemove } = this.props
     let auth = $('#home-slider')
-    let backgrounds = new Array(
-    'url(/meeting-01.jpg)', 'url(/meeting-03.jpg)', 'url(/meeting-02.jpeg)', 'url(/meeting-04.jpeg)')
+    let backgrounds = ['url(/meeting-01.jpg)', 'url(/meeting-03.jpg)', 'url(/meeting-02.jpeg)', 'url(/meeting-04.jpeg)']
 
     var current = 0;
 
