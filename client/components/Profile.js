@@ -37,7 +37,8 @@ class Profile extends Component {
     var hours = dateObj.getHours();
     var minutes = dateObj.getMinutes();
 
-    if (day < 10) day = '0' + day
+    day = day < 10 ? '0' + day : day
+    month = month < 10 ? '0' + month : month
 
     var newdate = year + '-' + month + '-' + day;
     var newtime = hours + ':' + minutes;
