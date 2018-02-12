@@ -1,6 +1,7 @@
 body {
   font-family: sans-serif;
-  max-width: 100%
+  max-width: 100%;
+  background-color: white;
 
   a {
     text-decoration: none;
@@ -20,21 +21,20 @@ body {
   background-color: #212121;
    color: yellow;
  }
-  nav {
-    z-index: 1;
-    background-color: #ffca28;
+nav {
+  z-index: 1;
+  background-color: transparent;
+  margin-top: 1em;
+  &.nav {
+    box-shadow: none;
   }
-  // #attendee-box {
-  //   margin-top: 30px;
-  //   #attendees {
-  //     display: inline-block;
-  //     height: 30px;
-  //     overflow-x: auto;
-  //     white-space:nowrap;
-  //     width: 70vw;
-  //   }
-  // }
-
+  .nav-wrapper {
+    border-top: grey 0.1em solid;
+  }
+  .left.brand-logo {
+    margin-top: 0.1em
+  }
+}
   #attendee-box {
     margin-top: 30px;
     width:10vw;
@@ -151,12 +151,12 @@ body {
     border-radius: 50%;
   }
 
-  #mini-whiteboard {
-    width: 90vw;
-    height: 50vh;
-    background-color: pink;
-    margin: 0 auto;
-  }
+  // #mini-whiteboard {
+  //   width: 90vw;
+  //   height: 50vh;
+  //   background-color: pink;
+  //   margin: 0 auto;
+  // }
 
   i.icon-grey{
     color: grey;
@@ -226,6 +226,76 @@ body {
   padding: 10px;
   font-weight: bold;
   box-shadow: none;
+}
+
+div.home-whiteboard {
+  .intro {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    h3 {
+      font-weight: 300;
+    }
+    p {
+      color: orange;
+      font-size: 1.5em;
+    }
+  }
+  .mini-whiteboard {
+    height: 120vh;
+    width: 100vw;
+    background-color: aliceblue;
+    border: lightgrey 1.5em solid;
+  }
+  .features {
+    background-color: lightyellow;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    span {
+      width: 100vw;
+    }
+    h4 {
+      margin: 0;
+      padding-bottom: 2em;
+      text-align: center;
+      color: navy;
+      font-weight: 300;
+    }
+    .row {
+      width: 80vw;
+    }
+    .col.s4 {
+      text-align: center;
+      padding: 2em;
+      .material-icons {
+        font-size: 5.5em;
+      }
+      p {
+        font-size: 1.3em;
+        color: cadetblue;
+      }
+    }
+  }
+
+  .take-actions {
+    min-height: 30vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    button {
+      color: aliceblue;
+      background-color: orange;
+      border-radius: 0.5em;
+      font-size: 1.8em;
+      margin: 0.7em;
+      padding: 0.8em;
+      font-weight: 300;
+    }
+  }
 }
 
 }

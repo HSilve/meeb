@@ -47,17 +47,16 @@ nav {
   margin-bottom: 25vh !important
 }*/
 
-div.home-toggle {
+/* div.home-toggle {
   position: absolute;
   top: 210vh
-}
+} */
 
 footer {
   width: 100%;
   left: 0;
   bottom: 0;
   margin-bottom: 0;
-  margin-top: 50vh;
   background-color: teal !important
 }
 

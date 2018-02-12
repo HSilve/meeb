@@ -15,16 +15,32 @@ export class Home extends Component {
       dragging: false,
       rel: null,
       pos: {x: null, y: null},
-      selectedNote: -1
+      selectedNote: -1,
+      scrollPos: 0
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.onMouseDown = this.onMouseDown.bind(this)
     this.onMouseUp = this.onMouseUp.bind(this)
     this.onMouseMove = this.onMouseMove.bind(this)
+    this.handleScroll = this.handleScroll.bind(this)
   }
 
   componentDidMount() {
     this.props.emptyNotes()
+    window.addEventListener('scroll', this.handleScroll)
+    const demoBoard = ['Click on the bottom right toggle and input text', 'Submit and note will appear on whiteboard', 'You can drag the card around. Sign up to unlock more features']
+    console.log(this.props.notes)
+    demoBoard.forEach(text => {
+      console.log('text: ', text)
+      let bodyPos = document.body.getBoundingClientRect()
+      let whiteboardPos = document.getElementById('mini-whiteboard').getBoundingClientRect()
+      this.notePositions[++this.noteId] = [this.noteId * 500 + 50, Math.abs(bodyPos.top) + whiteboardPos.top + 100]
+      this.props.createNote({ id: this.noteId, text, position: this.notePositions[this.noteId] })
+    })
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll)
   }
 
   componentDidUpdate(props, state) {
@@ -35,6 +51,18 @@ export class Home extends Component {
       document.removeEventListener('mousemove', this.onMouseMove)
       document.removeEventListener('mouseup', this.onMouseUp)
     }
+  }
+
+  handleScroll() {
+    const intro = document.getElementById('intro')
+    let prevScrollPos = this.state.scrollPos
+    let introPos = intro.getBoundingClientRect()
+    if (introPos.top < 25 && introPos.top > 5 && prevScrollPos < window.scrollY) {
+      window.scrollTo(0, 108)
+    } else if (introPos.height - introPos.bottom > 600 && (prevScrollPos < window.scrollY) && introPos.height - introPos.bottom < 620) {
+      window.scrollTo(0, introPos.height + 108)
+    }
+    this.setState({ scrollPos: window.scrollY })
   }
 
   handleSubmit(evt) {
@@ -108,86 +136,47 @@ export class Home extends Component {
 
   render() {
     const { notes, handleRemove } = this.props
-    let auth = $('#home-slider')
-    let backgrounds = new Array(
-    'url(/meeting-01.jpg)', 'url(/meeting-03.jpg)', 'url(/meeting-02.jpeg)', 'url(/meeting-04.jpeg)')
-
-    var current = 0;
-
-    function nextBackground() {
-        current++;
-        current = current % backgrounds.length;
-        auth.css('background-image', `${backgrounds[current]}`)
-    }
-    setInterval(nextBackground, 10000);
-
-    auth.css('background-image', `${backgrounds[0]}`)
 
     return (
       <div className="home-whiteboard">
-        <div id="home-slider" style={{ height: '100vh', width: '100vw', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center', textAlign: 'center'}}>
-          <div className="row">
-            <div className="col m6 offset-m3" style={{ backgroundColor: 'rgba(255, 255, 255, 0.5)', width: '70vw', borderRadius: '10px', position: 'absolute', margin: '20% auto' }}>
-            <h4 style={{ textAlign: 'center', color: 'black', font: 'Verdana' }}>Collaborative brainstorming couldn't be easier</h4>
-            {/* <button className="waves-effect waves-light btn">Sign Up</button> */}
-            </div>
-          </div>
 
-          {/* <button className="waves-effect waves-light btn">Sign Up</button> */}
-        </div>
-        {/* <ReactPlayer
-          url="https://www.youtube.com/watch?v=BD1c3XqT4lY"
-          playing muted loop
-          style={{margin: '0 auto', marginTop: '5vh'}}
-          width="1500px"
-          height="650px"
-          /> */}
-
-        <div className="home-info">
-          <div className="details">
-            <h5>IdeaStorm: brewing your ideas</h5>
-            <span>
-            <p>IdeaStorm is a real-time collaborative tool that facilitates team brainstorming</p>
-            <p>We have many features available</p>
-
-            <p>Test it out below!</p>
-            </span>
-          </div>
+        <div className="intro" id="intro">
+          <span>
+          <h3>Collaborative brainstorming?</h3>
+          <h3>All you need is our virtual whiteboard.</h3>
+          <p>Test it out with our demo below</p>
+          </span>
         </div>
 
-        <div className="children">
-          <h3>Interactive Idea Board</h3>
-          <p>Test it out! You can do more with these notes when you sign up today!</p>
-          <div id="mini-whiteboard">
-              { this.notePositions.length > 0 && notes && notes.map(note => { return (
-                <div
-                  className="card"
-                  key={note.id}
-                  style = {{position: 'absolute', left: (this.state.selectedNote === note.id && this.state.pos.x) || this.notePositions[note.id][0], top: (this.state.selectedNote === note.id && this.state.pos.y) || this.notePositions[note.id][1], cursor: 'pointer' }}
-                  onMouseMove={this.onMouseMove}
-                  onMouseUp={this.onMouseUp}
-                  onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt)}} >
+        <div className="mini-whiteboard" id="mini-whiteboard">
+          { this.notePositions.length > 0 && notes && notes.map(note => (
+            <div
+              className="card"
+              key={note.id}
+              style = {{position: 'absolute', left: (this.state.selectedNote === note.id && this.state.pos.x) || this.notePositions[note.id][0], top: (this.state.selectedNote === note.id && this.state.pos.y) || this.notePositions[note.id][1], cursor: 'pointer' }}
+              onMouseMove={this.onMouseMove}
+              onMouseUp={this.onMouseUp}
+              onMouseDown={(evt) => {this.setState({ selectedNote: note.id }); this.onMouseDown(evt)}} >
 
-                <button value={note.id} onClick={() => handleRemove(note.id)}>x</button>
+            <button value={note.id} onClick={() => handleRemove(note.id)}>x</button>
 
-                  { note.text &&
-                    <div className="card-content">
-                      {note.text}
-                    </div>
-                  }
-                  {note.image &&
-                    <div className="card-image">
-                      <img onClick={this.clickImage} src={note.image} />
-                    </div>
-                  }
-                  {note.link &&
-                    <div className="card-action">
-                      <a type="text/css" href={note.link}>Go Here </a>
-                    </div>
-                  }
+              { note.text &&
+                <div className="card-content">
+                  {note.text}
                 </div>
+              }
+              {note.image &&
+                <div className="card-image">
+                  <img onClick={this.clickImage} src={note.image} />
+                </div>
+              }
+              {note.link &&
+                <div className="card-action">
+                  <a type="text/css" href={note.link}>Go Here </a>
+                </div>
+              }
+            </div>
               )
-            }
           )}
           <div className="fixed-action-btn horizontal click-to-toggle home-toggle">
             <button className="btn-floating btn-large" type="submit" onClick={() => this.setState({ expandToggle: !this.state.expandToggle })}>+</button>
@@ -198,10 +187,51 @@ export class Home extends Component {
               </form>
             }
           </div>
-          </div>
-          </div>
-          <Footer />
         </div>
+
+        <div className="features">
+          <span>
+          <h4>Key Features</h4>
+          <div className="row">
+            <div className="col s4">
+              <div className="material-icons">add_a_photo</div>
+              <p>Insert an image to your note</p>
+            </div>
+            <div className="col s4">
+              <div className="material-icons">insert_link</div>
+              <p>Share a link</p>
+            </div>
+            <div className="col s4">
+              <div className="material-icons">device_hub</div>
+              <p>Connect notes with branches</p>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col s4">
+              <div className="material-icons">flash_on</div>
+              <p>Vote on an idea</p>
+            </div>
+            <div className="col s4">
+              <div className="material-icons">view_column</div>
+              <p>Use swimlanes to organize ideas</p>
+            </div>
+            <div className="col s4">
+              <div className="material-icons">edit</div>
+              <p>Edit and create in real-time</p>
+            </div>
+          </div>
+          </span>
+        </div>
+
+        <div className="take-actions">
+          <span>
+            <button>Sign Up Today</button>
+            <button>Log In</button>
+          </span>
+        </div>
+        <Footer />
+      </div>
     )
   }
 }
