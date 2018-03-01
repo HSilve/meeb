@@ -2,7 +2,14 @@ import axios from 'axios';
 import socket from '../socket';
 
 let initialState = {
-  list: [],
+  list: [ {name: 'Waylon Dalton', id: 90},
+    {name: 'Justine Henderson', id: 91},
+    {name: 'Abdullah Lang', id: 92},
+    {name: 'Marcus Cruz', id: 93},
+    {name: 'Thalia Cobb', id: 94},
+    {name: 'Mathias Little', id: 95},
+    {name: 'Eddie Randolph', id: 96},
+    {name: 'Angela Walker', id: 97}],
   justEntered: '',
   invited: []
 }
@@ -55,20 +62,20 @@ export default function reducer(state = initialState, action) {
       })
     case SHOW_COLLABORATOR:
       return Object.assign({}, state, {
-        list: [...state.list, state.invited.filter(co => co.id === action.cId)[0]].sort()
+        list: [...state.list, state.invited.filter(co => co.id === action.cId)[0]].sort(compare)
       })
     case HIDE_COLLABORATOR:
       return Object.assign({}, state, {
-        list: state.list.filter(co => co.id !== action.cId).sort()
+        list: state.list.filter(co => co.id !== action.cId).sort(compare)
       })
     case ANNOUNCE_COLLABORATOR:
       return Object.assign({}, state, {
-        list: [...state.list, action.collaborator].sort(),
+        list: [...state.list, action.collaborator].sort(compare),
         justEntered: action.collaborator.name
       })
     case ANNOUNCE_SELF:
     return Object.assign({}, state, {
-        list: [...state.list, action.collaborator].sort()
+        list: [...state.list, action.collaborator].sort(compare)
       })
     case DENNOUNCE_COLLABORATOR:
     return Object.assign({}, state, {
@@ -78,4 +85,16 @@ export default function reducer(state = initialState, action) {
       return state;
   }
 
+}
+
+
+function compare(a, b) {
+  if (a.name < b.name) {
+    return -1;
+  }
+  if (a.name > b.name) {
+    return 1;
+  }
+  // a must be equal to b
+  return 0;
 }
