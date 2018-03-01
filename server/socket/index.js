@@ -35,10 +35,9 @@ module.exports = (io) => {
         console.log('broadcast done')
       })
       socket.on('mark-me-present', (userId, whiteboardId, senderSocketId) => {
-        console.log("sould be marking someone present")
         console.log(userId, "is present in ", whiteboardId);
-        // socket.broadcast.to(whiteboardId).emit('mark-me-present', userId);
-        socket.broadcast.to(senderSocketId).emit('mark-me-present', userId, whiteboardId);
+        socket.broadcast.to(whiteboardId).emit('mark-me-present', userId);
+        // socket.broadcast.to(senderSocketId).emit('mark-me-present', userId, whiteboardId);
       })
 
       socket.on('edit-room', (whiteboard) => {

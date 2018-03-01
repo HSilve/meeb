@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Sidebar, Whiteboard, ActionPanel, Attendees } from './index'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
-import {fetchCollaborators, fetchRoom, denounceCollaborator, announceCollaborator} from '../store'
+import {fetchInvited, fetchRoom, denounceCollaborator, announceCollaborator} from '../store'
 // import VerticalSwimlane from './VerticalSwimlane'
 
 class ConferenceRoom extends Component {
@@ -13,7 +13,7 @@ class ConferenceRoom extends Component {
   componentDidMount() {
     let boardId = this.props.match.params.id;
     this.props.fetchRoom(boardId);
-    this.props.fetchCollaborators(boardId);
+    this.props.fetchInvited(boardId);
     this.props.announceCollaborator(this.props.user.id, boardId);
   }
   componentDidUpdate() {
@@ -108,6 +108,6 @@ const mapState = (state) => ({
   user: state.user,
   person: state.attendees.justEntered
 })
-const mapDispatch = {fetchCollaborators, fetchRoom, denounceCollaborator, announceCollaborator}
+const mapDispatch = {fetchInvited, fetchRoom, denounceCollaborator, announceCollaborator}
 
 export default withRouter(connect(mapState, mapDispatch)(ConferenceRoom))

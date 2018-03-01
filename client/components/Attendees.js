@@ -21,7 +21,7 @@ class Attendees extends Component {
         this.state.show &&
         <ul id="attendees" >
           {
-            this.props.attendees.map(user =>
+            this.props.attendees && this.props.attendees.map(user =>
                 (<li style={{fontSize: 12}} key={user.id}>
                     {user.name}
                 </li>)

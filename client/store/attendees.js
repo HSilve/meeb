@@ -21,7 +21,6 @@ export const clearOldCollaborator = () => ({type: DENNOUNCE_COLLABORATOR})
 export const enterSelf = collaborator => ({type: ANNOUNCE_SELF, collaborator})
 export const getInvitees = invitees => ({type: GET_INVITED, invitees});
 
-export const fetchCollaborators = (whiteboardId) => _ => socket.emit('roll-call', whiteboardId);
 
 export const fetchInvited = whiteboardId => dispatch =>
 axios.get(`/api/attendees/${whiteboardId}`)

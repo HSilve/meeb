@@ -29,9 +29,12 @@ export const me = () =>
       .then(res =>
         dispatch(getUser(res.data || defaultUser)))
       .catch(err => console.log(err))
-export const myId = () =>
+
+export const myId = (whiteboardId) =>
     axios.get('/auth/me')
-    .then(res => res.data.id)
+    .then(res =>
+          socket.emit('mark-me-present', res.data.id, whiteboardId)
+      )
     .catch(err => console.log(err))
 
 export const auth = (email, password, method, name) =>

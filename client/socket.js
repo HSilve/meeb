@@ -44,13 +44,11 @@ socket.on('enter-room', (user) => {
 })
 
 socket.on('roll-call', (whiteboardId) => {
-  console.log("taking attendance in ", whiteboardId);
-  let id = myId();
-  console.log("this is the id i got", id)
-  // socket.emit('mark-me-present', 3)
+  console.log('Asking for a roll call in', whiteboardId)
+  myId(whiteboardId);
 })
 socket.on('mark-me-present', (userId) => {
-  console.log(userId, "is here");
+  console.log('User', userId, 'is here');
   store.dispatch(markCollaboratorPresent(userId))
 })
 
