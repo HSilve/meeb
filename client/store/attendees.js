@@ -55,24 +55,23 @@ export default function reducer(state = initialState, action) {
       })
     case SHOW_COLLABORATOR:
       return Object.assign({}, state, {
-        list: [...state.list, state.invited.filter(co => co.id === action.cId)[0]]
+        list: [...state.list, state.invited.filter(co => co.id === action.cId)[0]].sort()
       })
     case HIDE_COLLABORATOR:
       return Object.assign({}, state, {
-        list: state.list.filter(co => co.id !== action.cId)
+        list: state.list.filter(co => co.id !== action.cId).sort()
       })
     case ANNOUNCE_COLLABORATOR:
       return Object.assign({}, state, {
-        list: [...state.list, action.collaborator],
+        list: [...state.list, action.collaborator].sort(),
         justEntered: action.collaborator.name
       })
     case ANNOUNCE_SELF:
     return Object.assign({}, state, {
-        list: [...state.list, action.collaborator]
+        list: [...state.list, action.collaborator].sort()
       })
     case DENNOUNCE_COLLABORATOR:
     return Object.assign({}, state, {
-      list: [...state.list],
       justEntered: ''
     })
     default:
