@@ -137,8 +137,6 @@ onClick={event => this.props.deleteARoom(result.id)}
             <ul className="collection">
               {
                 this.props.allRooms.filter(room => {
-                  console.log(room.date)
-                  console.log(newdate)
                   return room.date > newdate
                 })
                   .map(result => {

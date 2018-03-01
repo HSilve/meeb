@@ -20,13 +20,25 @@ module.exports = (io) => {
       socket.on('enter-room', (user, whiteboardId) => {
         console.log(user.name, 'joining room', whiteboardId);
         socket.join(whiteboardId)
-        socket.broadcast.to(whiteboardId).emit('enter-room', user)
+        socket.broadcast.to(whiteboardId).emit('enter-room', user);
         console.log('broadcast done')
       })
 
       socket.on('leave-room', (userId, whiteboardId) => {
         console.log(userId, 'leaving room', whiteboardId);
+        socket.broadcast.to(whiteboardId).emit('leave-room', userId);
         socket.leave(whiteboardId)
+      })
+      socket.on('roll-call', (whiteboardId) => {
+        console.log('Taking attendance for room', whiteboardId);
+        socket.broadcast.to(whiteboardId).emit('roll-call', whiteboardId )
+        console.log('broadcast done')
+      })
+      socket.on('mark-me-present', (userId, whiteboardId, senderSocketId) => {
+        console.log("sould be marking someone present")
+        console.log(userId, "is present in ", whiteboardId);
+        // socket.broadcast.to(whiteboardId).emit('mark-me-present', userId);
+        socket.broadcast.to(senderSocketId).emit('mark-me-present', userId, whiteboardId);
       })
 
       socket.on('edit-room', (whiteboard) => {
