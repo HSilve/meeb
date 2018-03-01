@@ -1,15 +1,19 @@
 import axios from 'axios';
 import socket from '../socket';
 
+//list dummy data
+// list: [ {name: 'Waylon Dalton', id: 90},
+// {name: 'Justine Henderson', id: 91},
+// {name: 'Abdullah Lang', id: 92},
+// {name: 'Marcus Cruz', id: 93},
+// {name: 'Thalia Cobb', id: 94},
+// {name: 'Mathias Little', id: 95},
+// {name: 'Eddie Randolph', id: 96},
+// {name: 'Angela Walker', id: 97}],
+
+
 let initialState = {
-  list: [ {name: 'Waylon Dalton', id: 90},
-    {name: 'Justine Henderson', id: 91},
-    {name: 'Abdullah Lang', id: 92},
-    {name: 'Marcus Cruz', id: 93},
-    {name: 'Thalia Cobb', id: 94},
-    {name: 'Mathias Little', id: 95},
-    {name: 'Eddie Randolph', id: 96},
-    {name: 'Angela Walker', id: 97}],
+  list: [],
   justEntered: '',
   invited: []
 }
