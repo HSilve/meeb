@@ -172,7 +172,7 @@ nav {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 26; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
+  padding-top: 10px; /* Location of the box */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
@@ -180,18 +180,25 @@ nav {
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  /* Modal Content */
+  .modal-content {
+    background-color: #fefefe;
+    margin: 10vh 10vw;
+    border: 1px solid #888;
+    width: 80%;
+    position: fixed;
+    max-height: 95vh;
+    overflow: scroll;
+    padding: 20px;
+    font-size: 3vw;
+    text-align: center;
+    td{
+      padding: 1vw 1vh;
+    }
+  }
 }
 
-/* Modal Content */
-.modal-content {
-  background-color: #fefefe;
-  // margin: 20 auto;
-  margin-left: 12vw;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-  position: fixed;
-}
+
 
 /* The Close Button */
 .close {
