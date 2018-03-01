@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Sidebar, Whiteboard, ActionPanel, Attendees } from './index'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
-import {announceSelf, fetchCollaborators, fetchRoom, modifyRoom, denounceCollaborator, announceCollaborator} from '../store'
+import {fetchCollaborators, fetchRoom, modifyRoom, denounceCollaborator, announceCollaborator} from '../store'
 // import VerticalSwimlane from './VerticalSwimlane'
 
 class ConferenceRoom extends Component {
@@ -14,7 +14,6 @@ class ConferenceRoom extends Component {
     let boardId = this.props.match.params.id;
     this.props.fetchRoom(boardId);
     this.props.fetchCollaborators(boardId);
-    // this.props.announceSelf(this.props.user.id, boardId);
     this.props.announceCollaborator(this.props.user.id, boardId);
   }
 
@@ -26,15 +25,6 @@ class ConferenceRoom extends Component {
   }
 
   render() {
-//     if (this.props.person) {
-//       Materialize.toast(`${this.props.person}, has entered the session`, 3000) // 4000 is the duration of the toast
-//       this.props.denounceCollaborator();
-// }
-    // let swimlaneArray  = []
-    // const {singleWhiteboard} = this.props
-    // for (let i = 0; i < singleWhiteboard.swimlane; i++) {
-    //     swimlaneArray.push(<VerticalSwimlane category={singleWhiteboard.categories[i]} index={i} key={i} />)
-    // }
     return (
       <div>
       <div id="main-space">
@@ -119,6 +109,6 @@ const mapState = (state) => ({
   user: state.user,
   person: state.attendees.justEntered
 })
-const mapDispatch = {announceSelf, fetchCollaborators, fetchRoom, modifyRoom, denounceCollaborator, announceCollaborator}
+const mapDispatch = {fetchCollaborators, fetchRoom, modifyRoom, denounceCollaborator, announceCollaborator}
 
 export default withRouter(connect(mapState, mapDispatch)(ConferenceRoom))
