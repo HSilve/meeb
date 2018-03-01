@@ -37,19 +37,26 @@ nav {
 }
   #attendee-box {
     margin-top: 30px;
-    width:5vw;
+    width:10vw;
     height: 5vh;
     position: fixed;
     z-index: 25;
     .material-icons{
-      font-size: 40px;
+      font-size: 3vw;
+      margin-left: 2vw;
+      position: absolute;
     }
     #attendees {
       display: flex;
       flex-direction: column;
-      width: 8vw;
-      margin-top: 40px;
+      margin: 40px 2px;
       overflow-y: scroll;
+      border-left: thick solid black;
+      padding-left: 10px;
+      font-size: 10px;
+      .attendee-name{
+        border-bottom: thin solid black;
+      }
     }
     i{
       max-width: 5vw;

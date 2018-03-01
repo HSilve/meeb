@@ -15,21 +15,38 @@ class Attendees extends Component {
 
   render() {
     return (
-      <div id="attendee-box">
-        <i className="material-icons" onClick={this.showAtt}>people</i>
+      // <div id="attendee-box">
+      //   <i className="material-icons" onClick={this.showAtt}>people</i>
+      //   {
+      //   this.state.show &&
+      //   <ul id="attendees" >
+      //     {
+      //       this.props.attendees && this.props.attendees.map(user =>
+      //           (<li key={user.id}>
+      //               {user.name}
+      //           </li>)
+      //         )
+      //     }
+      //   </ul>
+      //   }
+      // </div>
+      <table id="attendee-box">
+      <thead>
+      <tr><i className="material-icons" onClick={this.showAtt}>people</i></tr>
+      </thead>
+      {
+      this.state.show &&
+      <tbody id="attendees" >
         {
-        this.state.show &&
-        <ul id="attendees" >
-          {
-            this.props.attendees && this.props.attendees.map(user =>
-                (<li style={{fontSize: 12}} key={user.id}>
-                    {user.name}
-                </li>)
-              )
-          }
-        </ul>
+          this.props.attendees && this.props.attendees.map(user =>
+              (<tr className="attendee-name" key={user.id}>
+                  {user.name}
+              </tr>)
+            )
         }
-      </div>
+      </tbody>
+      }
+    </table>
     )
   }
 }
