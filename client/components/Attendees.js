@@ -14,37 +14,39 @@ class Attendees extends Component {
   showAtt = (evt) => {evt.preventDefault(); this.setState({show: !this.state.show})}
 
   render() {
-    const foundWhiteboard = this.props.whiteboard
     return (
-      <div id="attendee-box">
-        <button
-
-          onClick={this.showAtt}>
-          <div>Host: </div>
-          <div>{foundWhiteboard.host}</div>
-
-        </button>
+      // <div id="attendee-box">
+      //   <i className="material-icons" onClick={this.showAtt}>people</i>
+      //   {
+      //   this.state.show &&
+      //   <ul id="attendees" >
+      //     {
+      //       this.props.attendees && this.props.attendees.map(user =>
+      //           (<li key={user.id}>
+      //               {user.name}
+      //           </li>)
+      //         )
+      //     }
+      //   </ul>
+      //   }
+      // </div>
+      <table id="attendee-box">
+      <thead>
+      <tr><td><i className="material-icons" onClick={this.showAtt}>people</i></td></tr>
+      </thead>
+      {
+      this.state.show &&
+      <tbody id="attendees" >
         {
-        this.state.show &&
-        <ul id="attendees" >
-          {
-            this.props.attendees.map(user => {
-              return (
-                <li className="chip" style={{fontSize: 12}} key={user.id}>
-                {
-                    user.whiteboards[0].attendees.attended ?
-                    <img className="circle green" />
-                    :
-                    <img className="circle pink darken-4" />
-                }
-                    {user.name}
-                </li>
-                )
-              })
-          }
-        </ul>
+          this.props.attendees && this.props.attendees.map(user =>
+              (<tr className="attendee-name" key={user.id}>
+                  <td>{user.name}</td>
+              </tr>)
+            )
         }
-      </div>
+      </tbody>
+      }
+    </table>
     )
   }
 }

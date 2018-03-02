@@ -26,7 +26,6 @@ export const deleteRoom = id => ({ type: DELETE_ROOM, id })
 export const getRooms = user => dispatch => {
   axios.get(`/api/whiteboards/myRooms/${user.id}`)
     .then(res => {
-      console.log(res)
       dispatch(findAllRooms(res.data))
     })
     .catch(err => console.error('Could not find rooms!', err));

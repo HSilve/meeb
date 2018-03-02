@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Sidebar, Whiteboard, ActionPanel, Attendees } from './index'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
-import {announceSelf, fetchCollaborators, fetchRoom, modifyRoom, denounceCollaborator, announceCollaborator} from '../store'
+import {fetchInvited, fetchRoom, denounceCollaborator, announceCollaborator} from '../store'
 // import VerticalSwimlane from './VerticalSwimlane'
 
 class ConferenceRoom extends Component {
@@ -13,11 +13,9 @@ class ConferenceRoom extends Component {
   componentDidMount() {
     let boardId = this.props.match.params.id;
     this.props.fetchRoom(boardId);
-    this.props.fetchCollaborators(boardId);
-    // this.props.announceSelf(this.props.user.id, boardId);
+    this.props.fetchInvited(boardId);
     this.props.announceCollaborator(this.props.user.id, boardId);
   }
-
   componentDidUpdate() {
     if (this.props.person) {
       Materialize.toast(`${this.props.person}, has entered the session`, 3000) // 4000 is the duration of the toast
@@ -27,18 +25,18 @@ class ConferenceRoom extends Component {
 
   render() {
     let userActions = [
-      {iconName: 'format_quote', title:'Insert Text'},
-      {iconName: 'add_a_photo', title:'Insert Images'},
-      {iconName: 'insert_link', title:'Insert File'},
-      {iconName: 'brush', title:'Color Notes'},
-      {iconName: 'flash_on', title:'Vote'}
+      {iconName: 'format_quote', title: 'Insert Text'},
+      {iconName: 'add_a_photo', title: 'Insert Images'},
+      {iconName: 'insert_link', title: 'Insert File'},
+      {iconName: 'brush', title: 'Color Notes'},
+      {iconName: 'flash_on', title: 'Vote'}
     ];
     let hostActions = [
-      {iconName: 'view_column', title:'Add Swimlanes'},
-      {iconName: 'flash_on', title:'Open Voting'},
-      {iconName: 'flash_off', title:'Close Voting'},
-      {iconName: 'device_hub', title:'Toggle Branches'},
-      {iconName: 'close', title:'End Session'}
+      {iconName: 'view_column', title: 'Add Swimlanes'},
+      {iconName: 'flash_on', title: 'Open Voting'},
+      {iconName: 'flash_off', title: 'Close Voting'},
+      {iconName: 'device_hub', title: 'Toggle Branches'},
+      {iconName: 'close', title: 'End Session'}
     ];
     return (
       <div>
@@ -64,19 +62,19 @@ class ConferenceRoom extends Component {
                 </thead>
                 <tbody>
                   {
-                    userActions.map ((act, idx) =>
-                    <tr key={idx}>
-                      <td><a className='black-text'><i className="material-icons">
+                    userActions.map((act, idx) =>
+                    (<tr key={idx}>
+                      <td><a className="black-text"><i className="material-icons">
                       {act.iconName}</i>
                       {act.title}
                       </a>
                       </td>
-                      <td style={{borderLeft: 'thin solid black'}}><a className='black-text'><i className="material-icons">
+                      <td style={{borderLeft: 'thin solid black'}}><a className="black-text"><i className="material-icons">
                       {hostActions[idx].iconName}</i>
                       {hostActions[idx].title}
                       </a>
                       </td>
-                    </tr>
+                    </tr>)
                     )
                   }
                 </tbody>
@@ -101,6 +99,6 @@ const mapState = (state) => ({
   user: state.user,
   person: state.attendees.justEntered
 })
-const mapDispatch = {announceSelf, fetchCollaborators, fetchRoom, modifyRoom, denounceCollaborator, announceCollaborator}
+const mapDispatch = {fetchInvited, fetchRoom, denounceCollaborator, announceCollaborator}
 
 export default withRouter(connect(mapState, mapDispatch)(ConferenceRoom))
