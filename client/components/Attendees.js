@@ -32,7 +32,7 @@ class Attendees extends Component {
       // </div>
       <table id="attendee-box">
       <thead>
-      <tr><i className="material-icons" onClick={this.showAtt}>people</i></tr>
+      <tr><td><i className="material-icons" onClick={this.showAtt}>people</i></td></tr>
       </thead>
       {
       this.state.show &&
@@ -40,7 +40,7 @@ class Attendees extends Component {
         {
           this.props.attendees && this.props.attendees.map(user =>
               (<tr className="attendee-name" key={user.id}>
-                  {user.name}
+                  <td>{user.name}</td>
               </tr>)
             )
         }
