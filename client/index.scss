@@ -10,7 +10,6 @@ body {
   label {
     display: block;
   }
-
   nav a, nav h4 {
     display: inline-block;
     margin: 1em;
@@ -66,6 +65,7 @@ nav {
     flex-direction: column;
     width: 20vw;
     bottom: 0;
+    min-width: 200px;
 
   }
 
@@ -100,7 +100,6 @@ nav {
   }
   .popup-box {
     height: 40vh;
-    float: left;
     overflow-y: scroll;
   }
 
@@ -119,9 +118,27 @@ nav {
     left: 0px;
     transition: all .4s ease-in-out;
     align-self: center;
+    min-width: 200px;
     .chat-list {
-      width: 18vw;
       overflow-wrap: break-word;
+      .message-box {
+        width: 100%;
+        line-height: 1;
+        border: thin solid black;
+        padding: 0 1rem;
+      }
+      .message-box.self{
+        border-radius: 20px 5px 20px 5px;
+        text-align: right;
+      }
+      .message-box:not(.self){
+        border-radius: 5px 20px 5px 20px;
+        text-align: left;
+      }
+    }
+    .smallName {
+      color: grey;
+      font-size: 10px;
     }
 
   }
@@ -304,5 +321,8 @@ div.home-whiteboard {
     }
   }
 }
-
+.smallImg{
+  width:20px;
+  border-radius: 50%;
+}
 }
