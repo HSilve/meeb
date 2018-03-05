@@ -14,22 +14,39 @@ export class MessagesList extends Component {
   }
 
   render () {
-    const { messageEntry } = this.props
+    console.log('the props', this.props)
+    const { messageEntry, userId} = this.props
     return (
       <div id="live-chat">
-          <ul className="collection">
+          <ul className="">
         {
-           messageEntry.allMessages.map(message => {
-            return (
-              <li className="collection-item avatar chat-list" key={message.id}>
-                <img src={message.user.image} alt="" className="circle" />
-                <span className="title"><b>{message.user.name}</b></span>
-                <p>{message.text}
-                </p>
+           messageEntry.allMessages.map(message =>
+              (message.user.id !== userId ?
+              <li className="chat-list row" key={message.id}>
+              <div className="col s2" style={{padding: 0}}>
+              <img src={message.user.image} alt="" className="circle smallImg" />
+              </div>
+              <div className="col s10" style={{padding: 0}}>
+              <div className="message-box">
+              <div>{message.text}</div>
+              <div className="smallName" >{message.user.name}</div>
+              </div>
+              </div>
               </li>
+              :
+              <li className="chat-list row" key={message.id}>
+              <div className="col s10" style={{paddingRight: 0}}>
+              <div className="message-box self">
+                <div>{message.text}</div>
+                <div className="smallName" >{message.user.name}</div>
+              </div>
+              </div>
+              <div className="col s2" style={{paddingLeft: 0}}>
+                <img src={message.user.image} alt="" className="circle smallImg" />
+              </div>
+              </li>)
 
-            )
-          })
+          )
         }
         </ul>
       </div>
@@ -37,7 +54,7 @@ export class MessagesList extends Component {
   }
 }
 
-const mapState = ({whiteboard, messageEntry}) => ({whiteboard, messageEntry})
+const mapState = ({whiteboard, messageEntry, user}) => ({whiteboard, messageEntry, userId: user.id})
 
 const mapDispatch = (dispatch) => ({
   getMessages: (id) => {

@@ -24,6 +24,20 @@ class ConferenceRoom extends Component {
   }
 
   render() {
+    let userActions = [
+      {iconName: 'format_quote', title: 'Insert Text'},
+      {iconName: 'add_a_photo', title: 'Insert Images'},
+      {iconName: 'insert_link', title: 'Insert File'},
+      {iconName: 'brush', title: 'Color Notes'},
+      {iconName: 'flash_on', title: 'Vote'}
+    ];
+    let hostActions = [
+      {iconName: 'view_column', title: 'Add Swimlanes'},
+      {iconName: 'flash_on', title: 'Open Voting'},
+      {iconName: 'flash_off', title: 'Close Voting'},
+      {iconName: 'device_hub', title: 'Toggle Branches'},
+      {iconName: 'close', title: 'End Session'}
+    ];
     return (
       <div>
       <div id="main-space">
@@ -38,58 +52,35 @@ class ConferenceRoom extends Component {
             <div className="modal-content">
             <div className="row">
 
-                <div className= "col s4">
+                <div className= "">
                 <table className= "striped bordered">
                 <thead>
-                  <tr><td><h5><i className="material-icons">add</i>Actions:</h5></td></tr>
+                  <tr>
+                    <td><b><i className="material-icons">add</i>User Actions:</b></td>
+                    <td><b><i className="material-icons">settings</i>Host Actions:</b></td>
+                    </tr>
                 </thead>
                 <tbody>
-                    <tr><td><a><i className="material-icons">
-                      format_quote</i></a> : Insert Text
-                      </td></tr>
-                    <tr><td><a><i className="material-icons">
-                        add_a_photo</i></a> : Insert Images
-                        </td></tr>
-                    <tr><td><a><i className="material-icons">
-                        insert_link</i></a> : Insert Images
-                        </td></tr>
-                    <tr><td><a><i className="material-icons">
-                        brush</i></a> : Color Notes
-                        </td></tr>
-                    <tr><td><a><i className="material-icons">
-                          ⚡️</i></a> : Vote for note
-                          </td></tr>
+                  {
+                    userActions.map((act, idx) =>
+                    (<tr key={idx}>
+                      <td><a className="black-text"><i className="material-icons">
+                      {act.iconName}</i>
+                      {act.title}
+                      </a>
+                      </td>
+                      <td style={{borderLeft: 'thin solid black'}}><a className="black-text"><i className="material-icons">
+                      {hostActions[idx].iconName}</i>
+                      {hostActions[idx].title}
+                      </a>
+                      </td>
+                    </tr>)
+                    )
+                  }
                 </tbody>
                 </table>
                 </div>
-                <div className= "col s4">
-                <table className= "striped bordered">
-                <thead>
-                  <tr><td><h5><i className="material-icons">settings</i>Host Settings:</h5></td></tr>
-                </thead>
-                <tbody>
-                  <tr><td><a><i className="material-icons">
-                      view_column</i></a> : Add swimlanes
-                      </td></tr>
-                  <tr><td><a><i className="material-icons">
-                        flash_on</i></a>
-                        : Open voting
-                        </td></tr>
-                  <tr><td><a><i className="material-icons">
-                        flash_off</i></a>
-                        : Close voting
-                        </td></tr>
-                        <tr><td><a><i className="material-icons">
-                        device_hub</i></a>
-                        : Toggle Branches On/Off
-                        </td></tr>
-                  <tr><td><a><i className="material-icons">
-                      close</i></a> : End Session
-                      </td></tr>
-              </tbody>
-              </table>
-              </div>
-          </div>
+                </div>
           <span
                 onClick={() => {
                   document.getElementById('introModal').style.display = 'none';
