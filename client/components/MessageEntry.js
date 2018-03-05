@@ -25,7 +25,7 @@ class MessageEntry extends Component {
     const whiteboardId = this.props.whiteboard.id
     const { text } = this.state
     const userId = this.props.user.id
-    this.props.sendMessage({ text, whiteboardId, userId })
+    text && this.props.sendMessage({ text, whiteboardId, userId })
     this.setState({ text: '' })
   }
 

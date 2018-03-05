@@ -29,9 +29,7 @@ export class Home extends Component {
     this.props.emptyNotes()
     window.addEventListener('scroll', this.handleScroll)
     const demoBoard = ['Click on the bottom right toggle and input text', 'Submit and note will appear on whiteboard', 'You can drag the card around. Sign up to unlock more features']
-    console.log(this.props.notes)
     demoBoard.forEach(text => {
-      console.log('text: ', text)
       let bodyPos = document.body.getBoundingClientRect()
       let whiteboardPos = document.getElementById('mini-whiteboard').getBoundingClientRect()
       this.notePositions[++this.noteId] = [this.noteId * 500 + 50, Math.abs(bodyPos.top) + whiteboardPos.top + 100]

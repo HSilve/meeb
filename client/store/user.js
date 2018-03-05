@@ -1,5 +1,7 @@
 import axios from 'axios'
 import history from '../history'
+import socket from '../socket';
+
 
 /**
  * ACTION TYPES
@@ -27,6 +29,13 @@ export const me = () =>
       .then(res =>
         dispatch(getUser(res.data || defaultUser)))
       .catch(err => console.log(err))
+
+export const myId = (whiteboardId) =>
+    axios.get('/auth/me')
+    .then(res =>
+          socket.emit('mark-me-present', res.data.id, whiteboardId)
+      )
+    .catch(err => console.log(err))
 
 export const auth = (email, password, method, name) =>
   dispatch =>

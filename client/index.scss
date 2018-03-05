@@ -38,21 +38,28 @@ nav {
   #attendee-box {
     margin-top: 30px;
     width:10vw;
+    height: 5vh;
     position: fixed;
     z-index: 25;
+    .material-icons{
+      font-size: 3vw;
+      margin-left: 2vw;
+      position: absolute;
+    }
     #attendees {
       display: flex;
       flex-direction: column;
-      height: 130px;
-      width: 8vw;
-      margin-top: 65px;
+      margin: 40px 2px;
       overflow-y: scroll;
-      .chip {
-        white-space: nowrap;
+      border-left: thick solid black;
+      padding-left: 10px;
+      font-size: 10px;
+      .attendee-name{
+        border-bottom: thin solid black;
       }
     }
-    button {
-      width: 7vw;
+    i{
+      max-width: 5vw;
       position: fixed
     }
   }

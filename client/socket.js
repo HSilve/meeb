@@ -1,5 +1,5 @@
 import io from 'socket.io-client'
-import store, { postMessage, insertNote, updateNote, removeNote, createRoom, updateRoom, enterCollaborator, destroyRoom, deleteRoom, getBranches, addBranch, removeBranch } from './store';
+import store, { postMessage, insertNote, updateNote, removeNote, createRoom, updateRoom, enterCollaborator, destroyRoom, deleteRoom, getBranches, addBranch, removeBranch, myId, markCollaboratorAbsent, markCollaboratorPresent} from './store';
 
 const socket = io(window.location.origin)
 
@@ -42,6 +42,16 @@ socket.on('enter-room', (user) => {
   console.log(user.name, 'joining room');
   store.dispatch(enterCollaborator(user));
 })
+
+socket.on('roll-call', (whiteboardId) => {
+  console.log('Asking for a roll call in', whiteboardId)
+  myId(whiteboardId);
+})
+socket.on('mark-me-present', (userId) => {
+  console.log('User', userId, 'is here');
+  store.dispatch(markCollaboratorPresent(userId))
+})
+
 socket.on('end-session', (whiteboard) => {
   console.log('The host has closed room', whiteboard.id)
   store.dispatch(destroyRoom(whiteboard));
@@ -53,6 +63,7 @@ socket.on('edit-room', (whiteboard) => {
 
 socket.on('leave-room', (userId, roomId) => {
   console.log(userId, 'leaving', roomId);
+  store.dispatch(markCollaboratorAbsent(userId))
 })
 
 socket.on('add branch', (branch) => {
